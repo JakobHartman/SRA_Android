@@ -16,7 +16,7 @@ import org.rbdc.sra.R;
 import com.special.menu.ResideMenu;
 import com.special.utils.UISwipableList;
 
-public class TransitionListFragment extends Fragment {
+public class NotesFragment extends Fragment {
 
 	//Views & Widgets
     private View parentView;

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import org.rbdc.sra.R;
 
-public class ListFragment extends Fragment {
+public class QuestionsFragment extends Fragment {
 
     private View parentView;
     private ListView listView;

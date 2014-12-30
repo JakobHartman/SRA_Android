@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 
-public class ElementsFragment extends Fragment {
+public class AreasFragment extends Fragment {
 	
 	//Layouts
 	private ResideMenu resideMenu;

@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         setUpMenu();
-        changeFragment(new HomeFragment());
+        changeFragment(new DashboardFragment());
         
     }
 
@@ -74,13 +74,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View view) {
 
         if (view == itemHome){
-            changeFragment(new HomeFragment());
+            changeFragment(new DashboardFragment());
         }else if (view == itemElements){
-            changeFragment(new ElementsFragment());
+            changeFragment(new AreasFragment());
         }else if (view == itemList1){
-            changeFragment(new ListFragment());
+            changeFragment(new QuestionsFragment());
         }else if (view == itemList2){
-            changeFragment(new TransitionListFragment());
+            changeFragment(new NotesFragment());
         }
 
         resideMenu.closeMenu();

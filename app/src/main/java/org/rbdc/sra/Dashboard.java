@@ -1,10 +1,11 @@
 package org.rbdc.sra;
 
 
-import com.special.ElementsFragment;
-import com.special.HomeFragment;
-import com.special.ListFragment;
-import com.special.TransitionListFragment;
+import com.special.AreasFragment;
+import com.special.DashboardFragment;
+import com.special.NotesFragment;
+import com.special.QuestionsFragment;
+import com.special.StatsFragment;
 import com.special.menu.ResideMenu;
 import com.special.menu.ResideMenuItem;
 
@@ -29,7 +30,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         setUpMenu();
-        changeFragment(new HomeFragment());
+        changeFragment(new DashboardFragment());
 
     }
 
@@ -54,11 +55,13 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         itemAreas.setOnClickListener(this);
         itemQuestions.setOnClickListener(this);
         itemNotes.setOnClickListener(this);
+        itemStats.setOnClickListener(this);
 
         resideMenu.addMenuItem(itemDashboard);
         resideMenu.addMenuItem(itemAreas);
         resideMenu.addMenuItem(itemQuestions);
         resideMenu.addMenuItem(itemNotes);
+        resideMenu.addMenuItem(itemStats);
 
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,13 +81,15 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     public void onClick(View view) {
 
         if (view == itemDashboard){
-            changeFragment(new HomeFragment());
+            changeFragment(new DashboardFragment());
         }else if (view == itemAreas){
-            changeFragment(new ElementsFragment());
+            changeFragment(new AreasFragment());
         }else if (view == itemQuestions){
-            changeFragment(new ListFragment());
+            changeFragment(new QuestionsFragment());
         }else if (view == itemNotes){
-            changeFragment(new TransitionListFragment());
+            changeFragment(new NotesFragment());
+        }else if(view == itemStats){
+            changeFragment(new StatsFragment());
         }
 
         resideMenu.closeMenu();
