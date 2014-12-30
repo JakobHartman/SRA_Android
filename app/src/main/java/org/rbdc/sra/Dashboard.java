@@ -18,15 +18,16 @@ import android.view.View;
 public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
     private ResideMenu resideMenu;
-    private ResideMenuItem itemHome;
-    private ResideMenuItem itemElements;
-    private ResideMenuItem itemList1;
-    private ResideMenuItem itemList2;
+    private ResideMenuItem itemDashboard;
+    private ResideMenuItem itemAreas;
+    private ResideMenuItem itemQuestions;
+    private ResideMenuItem itemNotes;
+    private ResideMenuItem itemStats;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dashboard);
         setUpMenu();
         changeFragment(new HomeFragment());
 
@@ -43,20 +44,21 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip. 
         resideMenu.setScaleValue(0.6f);
 
-        itemHome     = new ResideMenuItem(this, R.drawable.ic_dash, "Dashboard");
-        itemElements  = new ResideMenuItem(this, R.drawable.ic_map,  "Areas");
-        itemList1 = new ResideMenuItem(this, R.drawable.ic_question, "Question Sets");
-        itemList2 = new ResideMenuItem(this, R.drawable.ic_list_1, "List 2");
+        itemDashboard = new ResideMenuItem(this, R.drawable.ic_dash, "Dashboard");
+        itemAreas = new ResideMenuItem(this, R.drawable.ic_map,  "Areas");
+        itemQuestions = new ResideMenuItem(this, R.drawable.ic_question, "Question Sets");
+        itemNotes = new ResideMenuItem(this, R.drawable.ic_notes, "Notes");
+        itemStats = new ResideMenuItem(this,R.drawable.ic_stats,"Stats");
 
-        itemHome.setOnClickListener(this);
-        itemElements.setOnClickListener(this);
-        itemList1.setOnClickListener(this);
-        itemList2.setOnClickListener(this);
+        itemDashboard.setOnClickListener(this);
+        itemAreas.setOnClickListener(this);
+        itemQuestions.setOnClickListener(this);
+        itemNotes.setOnClickListener(this);
 
-        resideMenu.addMenuItem(itemHome);
-        resideMenu.addMenuItem(itemElements);
-        resideMenu.addMenuItem(itemList1);
-        resideMenu.addMenuItem(itemList2);
+        resideMenu.addMenuItem(itemDashboard);
+        resideMenu.addMenuItem(itemAreas);
+        resideMenu.addMenuItem(itemQuestions);
+        resideMenu.addMenuItem(itemNotes);
 
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,13 +77,13 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
 
-        if (view == itemHome){
+        if (view == itemDashboard){
             changeFragment(new HomeFragment());
-        }else if (view == itemElements){
+        }else if (view == itemAreas){
             changeFragment(new ElementsFragment());
-        }else if (view == itemList1){
+        }else if (view == itemQuestions){
             changeFragment(new ListFragment());
-        }else if (view == itemList2){
+        }else if (view == itemNotes){
             changeFragment(new TransitionListFragment());
         }
 

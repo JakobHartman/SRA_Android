@@ -24,7 +24,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dashboard);
         setUpMenu();
         changeFragment(new HomeFragment());
         
