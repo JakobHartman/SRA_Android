@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
@@ -24,6 +25,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     private ResideMenuItem itemQuestions;
     private ResideMenuItem itemNotes;
     private ResideMenuItem itemStats;
+    private TextView title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         setContentView(R.layout.activity_dashboard);
         setUpMenu();
         changeFragment(new DashboardFragment());
-
+        title = (TextView)findViewById(R.id.title);
+        title.setText("Dashboard");
     }
 
     private void setUpMenu() {
@@ -82,14 +85,19 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
         if (view == itemDashboard){
             changeFragment(new DashboardFragment());
+            title.setText("Dashboard");
         }else if (view == itemAreas){
             changeFragment(new AreasFragment());
+            title.setText("Areas");
         }else if (view == itemQuestions){
             changeFragment(new QuestionsFragment());
+            title.setText("Question Sets");
         }else if (view == itemNotes){
             changeFragment(new NotesFragment());
+            title.setText("Notes");
         }else if(view == itemStats){
             changeFragment(new StatsFragment());
+            title.setText("Statistics");
         }
 
         resideMenu.closeMenu();
