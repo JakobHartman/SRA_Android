@@ -43,9 +43,9 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip. 
         resideMenu.setScaleValue(0.6f);
 
-        itemHome     = new ResideMenuItem(this, R.drawable.ic_home,     "Home");
-        itemElements  = new ResideMenuItem(this, R.drawable.ic_elements_alternative,  "Elements");
-        itemList1 = new ResideMenuItem(this, R.drawable.ic_list_2, "List 1");
+        itemHome     = new ResideMenuItem(this, R.drawable.ic_dash, "Dashboard");
+        itemElements  = new ResideMenuItem(this, R.drawable.ic_map,  "Areas");
+        itemList1 = new ResideMenuItem(this, R.drawable.ic_question, "Question Sets");
         itemList2 = new ResideMenuItem(this, R.drawable.ic_list_1, "List 2");
 
         itemHome.setOnClickListener(this);
