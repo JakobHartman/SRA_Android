@@ -30,55 +30,8 @@ public class StatsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final ScrollView v =  (ScrollView) inflater.inflate(R.layout.fragment_elements, container, false);
+        final ScrollView v =  (ScrollView) inflater.inflate(R.layout.fragment_stats, container, false);
 
-        Dashboard parentActivity = (Dashboard) getActivity();
-        resideMenu = parentActivity.getResideMenu();
-
-        //Adding a view to be ignored by the menu for horizontal finger movements 
-        SeekBar ignored_view = (SeekBar) v.findViewById(R.id.seekbar1);
-        resideMenu.addIgnoredView(ignored_view);
-
-        Button b3 = (Button) v.findViewById(R.id.button3);
-        Button b4 = (Button) v.findViewById(R.id.button4);
-
-        //Set the color of any view without having to modify and duplicate original layout files
-        b3.getBackground().setColorFilter(getActivity().getResources().getColor(R.color.green), Mode.MULTIPLY);
-        b4.getBackground().setColorFilter(Color.BLACK, Mode.MULTIPLY);
-
-        //Set the (pressed) text color of any view without having to modify and duplicate original layout files
-        b3.setTextColor (new ColorStateList (
-                new int [] [] {
-                        new int [] {android.R.attr.state_pressed},
-                        new int [] {}
-                },
-                new int [] {
-                        getActivity().getResources().getColor(R.color.green),
-                        Color.WHITE
-                }
-        ));
-
-        b4.setTextColor (new ColorStateList (
-                new int [] [] {
-                        new int [] {android.R.attr.state_pressed},
-                        new int [] {}
-                },
-                new int [] {
-                        Color.WHITE,
-                        Color.BLACK
-                }
-        ));
-
-        //Adding a listener to a button
-        btn = (Button) v.findViewById(R.id.buttonDialog);
-        btn.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                showCustomDialog(v);
-            }
-
-        });
         return v;
     }
 
@@ -88,32 +41,4 @@ public class StatsFragment extends Fragment {
 
     }
 
-    //Showing a custom styled dialog and adding actions to the buttons
-    protected void showCustomDialog(View v) {
-
-        dialog = new Dialog(getActivity(),
-                android.R.style.Theme_Translucent);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.layout_dialog);
-
-        btnCancel = (Button) dialog.findViewById(R.id.btncancel);
-
-        btnCancel.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-
-        });
-
-        final ImageView myImage = (ImageView) dialog.findViewById(R.id.loader);
-        myImage.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate) );
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
-
-        dialog.show();
-    }
 }

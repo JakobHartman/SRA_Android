@@ -1,119 +1,85 @@
 package com.special;
 
-import org.rbdc.sra.Dashboard;
-import org.rbdc.sra.R;
-import com.special.menu.ResideMenu;
-import android.app.Dialog;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ScrollView;
-import android.widget.SeekBar;
+import android.widget.*;
+import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.ArrayList;
+
+import org.rbdc.sra.Dashboard;
+import org.rbdc.sra.R;
+import com.special.menu.ResideMenu;
+import com.special.utils.UISwipableList;
 
 public class AreasFragment extends Fragment {
-	
-	//Layouts
-	private ResideMenu resideMenu;
- 	Button btn, btnCancel;
- 	Dialog dialog;
+
+    //Views & Widgets
+    private View parentView;
+    private UISwipableList listView;
+    private TransitionListAdapter mAdapter;
+    private ResideMenu resideMenu;
+
+    //Vars
+    private String PACKAGE = "IDENTIFY";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	final ScrollView v =  (ScrollView) inflater.inflate(R.layout.fragment_elements, container, false);
-    	
-    	Dashboard parentActivity = (Dashboard) getActivity();
+        parentView = inflater.inflate(R.layout.fragment_areas, container, false);
+        listView   = (UISwipableList) parentView.findViewById(R.id.listView);
+        Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
-    	
-        //Adding a view to be ignored by the menu for horizontal finger movements 
-    	SeekBar ignored_view = (SeekBar) v.findViewById(R.id.seekbar1);
-        resideMenu.addIgnoredView(ignored_view);
-        
-        Button b3 = (Button) v.findViewById(R.id.button3);
-        Button b4 = (Button) v.findViewById(R.id.button4);
-        
-        //Set the color of any view without having to modify and duplicate original layout files
-        b3.getBackground().setColorFilter(getActivity().getResources().getColor(R.color.green), Mode.MULTIPLY);
-        b4.getBackground().setColorFilter(Color.BLACK, Mode.MULTIPLY);
-        
-        //Set the (pressed) text color of any view without having to modify and duplicate original layout files
-        b3.setTextColor (new ColorStateList (
-        		   new int [] [] {
-        		      new int [] {android.R.attr.state_pressed},
-        		      new int [] {}
-        		   },
-        		   new int [] {
-        			getActivity().getResources().getColor(R.color.green),
-        		      Color.WHITE
-        		   }
-        		));
-        
-        b4.setTextColor (new ColorStateList (
-        		   new int [] [] {
-        		      new int [] {android.R.attr.state_pressed},
-        		      new int [] {}
-        		   },
-        		   new int [] {
-        		      Color.WHITE,
-        		      Color.BLACK
-        		   }
-        		));
-        
-        //Adding a listener to a button
-        btn = (Button) v.findViewById(R.id.buttonDialog);
-        btn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				showCustomDialog(v);
-			}
-
-		});
-        return v;
+        initView();
+        return parentView;
     }
-    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
+
+    private void initView(){
+        mAdapter = new TransitionListAdapter(getActivity(), getListData());
+        listView.setActionLayout(R.id.hidden_view);
+        listView.setItemLayout(R.id.front_layout);
+        listView.setAdapter(mAdapter);
+        listView.setIgnoredViewHandler(resideMenu);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
+                ListItem item = (ListItem) listView.getAdapter().getItem(i);
+
+                Intent intent = new Intent(getActivity(), TransitionDetailActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("title", item.getTitle());
+                bundle.putInt("img", item.getImageId());
+                bundle.putString("descr", item.getDesc());
+
+                int[] screen_location = new int[2];
+                View view = viewa.findViewById(R.id.item_image);
+                view.getLocationOnScreen(screen_location);
+
+                bundle.putInt(PACKAGE + ".left", screen_location[0]);
+                bundle.putInt(PACKAGE + ".top", screen_location[1]);
+                bundle.putInt(PACKAGE + ".width", view.getWidth());
+                bundle.putInt(PACKAGE + ".height", view.getHeight());
+
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+                getActivity().overridePendingTransition(0, 0);
+            }
+        });
     }
-    
-    //Showing a custom styled dialog and adding actions to the buttons
-    protected void showCustomDialog(View v) {
 
-		dialog = new Dialog(getActivity(),
-				android.R.style.Theme_Translucent);
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-		dialog.setCancelable(true);
-		dialog.setContentView(R.layout.layout_dialog);
-
-		btnCancel = (Button) dialog.findViewById(R.id.btncancel);
-
-		btnCancel.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				dialog.cancel();
-			}
-
-		});
-		
-		final ImageView myImage = (ImageView) dialog.findViewById(R.id.loader);
-        myImage.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate) );
-        
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
-		
-		dialog.show();
-	}
+    private ArrayList<ListItem> getListData(){
+        ArrayList<ListItem> listData = new ArrayList<ListItem>();
+        listData.add(new ListItem(R.drawable.ph_1, "Henry Smith", "Vacation!", null, null));
+        listData.add(new ListItem(R.drawable.ph_2, "Martinez", "Still exited from my trip last week!", null, null));
+        listData.add(new ListItem(R.drawable.ph_3, "Olivier Smith", "Visiting Canada next week!", null, null));
+        listData.add(new ListItem(R.drawable.ph_4, "Aria Thompson", "Can not go shopping tomorrow :(", null, null));
+        listData.add(new ListItem(R.drawable.ph_5, "Sophie Hill", "Live every day like it is the last one!", null, null));
+        listData.add(new ListItem(R.drawable.ph_6, "Addison Adams", "Not available, working...", null, null));
+        return listData;
+    }
 }

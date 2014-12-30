@@ -29,7 +29,7 @@ public class NotesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentView = inflater.inflate(R.layout.fragment_list_transition, container, false);
+        parentView = inflater.inflate(R.layout.fragment_notes, container, false);
         listView   = (UISwipableList) parentView.findViewById(R.id.listView);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();

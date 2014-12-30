@@ -19,7 +19,7 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentView = inflater.inflate(R.layout.fragment_home, container, false);
+        parentView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         setUpViews();
         return parentView;
     }
