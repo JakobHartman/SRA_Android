@@ -1,5 +1,0 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <solid android:color="@color/theme_color"/>
-    
-</shape><!-- From: file:/Users/imac/Documents/SRA/Clear%20UI/src/main/res/drawable/button_circle.xml -->

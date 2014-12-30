@@ -1,9 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SRA</string>
+    <string name="title_activity_detail_view">DetailView</string>
+    <string name="button_placeholder_text">Button</string>
+    <string name="checkbox">CheckBox</string>
+    <string name="dashed_area_text">Cool information you might would like to know, that is why it is in this dashed area!</string>
+    <string name="show">Show</string>
+    <string name="show_dialog_text">Show a Custom Dialog and Loader</string>
+    <string name="text_input_hint">text input</string>
+    
+    <string name="four">Four</string>
+    <string name="three">Three</string>
+    <string name="two">Two</string>
+    <string name="one">One</string>
+    
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    
+    <string name="like">Like</string>
+    <string name="reply">Reply</string>
+    
+    <string name="detail_title_placeholder">Cool Title Of Some Movie</string>
+    <string name="contact_placeholder">Super useful contact info here I guess.\n\nProfile image is from FreePik.com</string>
+    <string name="social_1_placeholder">4.8</string>
+    <string name="social_1_placeholder_nr">15</string>
+    <string name="sumary_placeholder">Summary</string>
+    <string name="description_placeholder">Description</string>
+    <string name="description_tab_1">Wall</string>
+    <string name="description_tab_2">Contact</string>
+    <string name="image_description">Image Description</string>
+    <string name="description_title_placeholder">Cool Title Of Some Movie</string>
+    <string name="social_2_placeholder">Hotels &amp; Clubs</string>
+    <string name="social_3_placeholder">From 2 PM</string>
+    <string name="app_title">Clear UI Kit</string>
+    <string name="explore">Explore</string>
+    <string name="buy">"  Buy  "</string>
+    <string name="hidden_view_text">Click Me</string>
+    <string name="list_title_placeholder">Amazing Title</string>
+    <string name="list_description_placeholder">Cool Content Description of Item</string>
+    <string name="list_number_text_placeholder">Characters</string>
+    <string name="list_number_placeholder">27</string>
+    <string name="dialog_text_placeholder">With Custom loader (loader is also usable separately)</string>
+    <string name="dialog_title_placeholder">Styled Dialog</string>
+    <string name="dialog_button_text">" Cancel "</string>
+    <string name="placeholder_views">16 Thousand</string>
+    <string name="views">Views</string>
+    <string name="followers_placeholder">503</string>
+    <string name="followers">Followers</string>
+
+    <string name="app_name">Self Reliant Agriculture</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_dashboard">Self Reliant Agriculture - Dashboard</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="Logo">Logo Home Button</string>
+    <string name="feedtext">Feed The World</string>
+    <string name="login">Login</string>
+    <string name="landingtText">SELF RELIANCE + SUSTAINABLE FARMING + LASTING IMPACT</string>
+    <string name="title_activity_login">Login</string>
+    <string name="passwordText">Password</string>
+    <string name="usernameText">Username</string>
+    <string name="title_activity_dash_board">Dashboard</string>
+    <string name="title_activity_interview">Interview</string>
+    <string name="sync">Sync</string>
+    <string name="plus">+</string>
+    <string name="house">Add Household</string>
+    <string name="House">Add Household</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+    <string name="appPrefs">Application Preferences</string>
 
+    <!-- Interview strings -->
+    <string name="nutrition_tab_title">Nutrition</string>
+    <string name="agronomy_tab_title">Agronomy</string>
+    <string name="sas_tab_title">Small Animal Science</string>
+    <string name="nutrition_tab_header">Consumed Foods</string>
+    <string name="add_food_item_button">New food item</string>
+    <string name="remove_food_item_button">Delete</string>
+    <string name="food_item">Food Item</string>
+    <string name="serving_size">Serving Size</string>
+    <string name="servings">Number of Servings</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="entered_food_hint">food item</string>
+    <string name="serving_size_hint">serving size</string>
+
+    <string-array name="serving_units">
+        <item>oz.</item>
+        <item>ltr.</item>
+        <item>lbs.</item>
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+    <string-array name="frequency">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="addInterview">Add Interview</string>
+    <string name="title_activity_edit_question_set">EditQuestionSet</string>
+    <string name="title_activity_edit_question">EditQuestion</string>
+
+    <!-- strings for Creating Question Sets and Questions -->
+    <string-array name="data_point_types_array">
+        <item>Text</item>
+        <item>Number</item>
+        <item>Date</item>
+        <item>Option List</item>
+    </string-array>
+    <string-array name="question_set_categories_array">
+        <item>Area</item>
+        <item>Household</item>
+        <item>Individual</item>
+    </string-array>
+
+    <string name="title_activity_question_set_list">QuestionSetList</string>
+    <string name="title_activity_data_gather">DataGather</string>
 </resources>

@@ -1,10 +1,6 @@
-package org.rbdc.sra;
+package com.special;
 
 
-import com.special.ElementsFragment;
-import com.special.HomeFragment;
-import com.special.ListFragment;
-import com.special.TransitionListFragment;
 import com.special.menu.ResideMenu;
 import com.special.menu.ResideMenuItem;
 
@@ -15,25 +11,27 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class Dashboard extends FragmentActivity implements View.OnClickListener{
+import org.rbdc.sra.R;
+
+public class MainActivity extends FragmentActivity implements View.OnClickListener{
 
     private ResideMenu resideMenu;
     private ResideMenuItem itemHome;
     private ResideMenuItem itemElements;
     private ResideMenuItem itemList1;
     private ResideMenuItem itemList2;
-
+  
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpMenu();
         changeFragment(new HomeFragment());
-
+        
     }
 
     private void setUpMenu() {
-
+    	
         resideMenu = new ResideMenu(this);
         resideMenu.setBackground(R.drawable.menu_background);
         resideMenu.attachToActivity(this);
@@ -57,7 +55,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         resideMenu.addMenuItem(itemElements);
         resideMenu.addMenuItem(itemList1);
         resideMenu.addMenuItem(itemList2);
-
+        
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,13 +108,13 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     public ResideMenu getResideMenu(){
         return resideMenu;
     }
-
+    
     @Override
     public void onBackPressed() {
-        if (resideMenu.isOpened()){
-            resideMenu.closeMenu();
-        } else {
-            resideMenu.openMenu();
-        }
+    	if (resideMenu.isOpened()){
+    		resideMenu.closeMenu();
+    	} else {
+    		resideMenu.openMenu();
+    	}
     }
 }
