@@ -13,19 +13,19 @@ import org.rbdc.sra.objects.loginObject;
 
 
 public class MainActivity extends Activity {
-    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CRUDFlinger.setApplication(getApplication());
-        loginObject login = CRUDFlinger.load("User",loginObject.class);
-        if (login == null) {
-            login = new loginObject("");
-        }
-        if(login.isLoggedIn()){
-            goToDashboard();
+        CRUDFlinger.setPreferences();
+
+        if(CRUDFlinger.checkLocal("User")){
+            loginObject login = CRUDFlinger.load("User",loginObject.class);
+            if(login.isLoggedIn()){
+                goToDashboard();
+            }
         }
     }
 

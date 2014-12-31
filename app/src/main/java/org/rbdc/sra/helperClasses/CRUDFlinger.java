@@ -2,6 +2,7 @@ package org.rbdc.sra.helperClasses;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,7 +43,7 @@ public class CRUDFlinger {
         CRUDFlinger.application = applicationPassed;
     }
 
-    private static void setPreferences(){
+    public static void setPreferences(){
         if(application == null){
             throw new NullPointerException();
         }
@@ -92,7 +93,15 @@ public class CRUDFlinger {
    }
 
     public static boolean checkLocal(String key){
-        return loader.contains(key);
+        boolean check;
+        check = true;
+        try{
+            loader.contains(key);
+        }catch (NullPointerException e){
+            check = false;
+        }
+        System.out.println(check);
+        return check;
     }
 
     public static Region getRegion(){
@@ -103,6 +112,7 @@ public class CRUDFlinger {
     }
 
     public static void removeLocal(String key){
+        setPreferences();
         saver.remove(key);
     }
 
