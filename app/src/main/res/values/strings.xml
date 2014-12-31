@@ -73,20 +73,7 @@
     <string name="appPrefs">Application Preferences</string>
 
     <!-- Interview strings -->
-    <string name="nutrition_tab_title">Nutrition</string>
-    <string name="agronomy_tab_title">Agronomy</string>
-    <string name="sas_tab_title">Small Animal Science</string>
-    <string name="nutrition_tab_header">Consumed Foods</string>
-    <string name="add_food_item_button">New food item</string>
-    <string name="remove_food_item_button">Delete</string>
-    <string name="food_item">Food Item</string>
-    <string name="serving_size">Serving Size</string>
-    <string name="servings">Number of Servings</string>
-    <string name="daily">Daily</string>
-    <string name="weekly">Weekly</string>
-    <string name="monthly">Monthly</string>
-    <string name="entered_food_hint">food item</string>
-    <string name="serving_size_hint">serving size</string>
+    <string name="delete_question_set_text">Delete</string>
 
     <string-array name="serving_units">
         <item>oz.</item>

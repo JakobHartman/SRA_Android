@@ -1,45 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.special.MenuActivity$CalendarFragment"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:alpha=".75">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <FrameLayout
+        android:orientation="horizontal"
+        android:background="#ffffff"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        >
-        <!--<LinearLayout-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="0.5"></LinearLayout>-->
+        android:layout_height="wrap_content">
 
-        <com.special.utils.UISwipableList
-            android:id="@+id/listView"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:layout_marginRight="@dimen/list_horizontal_margin"
-            android:layout_marginLeft="@dimen/list_horizontal_margin"
-            android:layout_gravity="center_horizontal|bottom" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/UIButtonInverse"
+            android:text="New Question Set"
+            android:textSize="@dimen/textsize_medium"
+            android:padding="12dp"
+            android:id="@+id/new_question_set_button"
+            android:layout_gravity="right|center_vertical"
+            android:layout_margin="4dp"
+            android:layout_weight=".5" />
 
+    </FrameLayout>
 
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
+    <com.special.utils.UISwipableList
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Questions"
-        style="@style/UIButtonInverse"
-        android:layout_gravity="right|top"
-        android:layout_marginRight="3dp" />
+        android:layout_marginRight="@dimen/list_horizontal_margin"
+        android:layout_marginLeft="@dimen/list_horizontal_margin" />
 
-
-</FrameLayout>
+</LinearLayout>

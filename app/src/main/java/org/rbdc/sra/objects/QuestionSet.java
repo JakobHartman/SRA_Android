@@ -20,7 +20,7 @@ public class QuestionSet implements Serializable {
     public QuestionSet(String name, String url) {
         this.name = name;
         this.refUrl = url;
-        this.type = "Region";
+        this.type = "Household";
         this.questions = new ArrayList<Question>();
     }
 
