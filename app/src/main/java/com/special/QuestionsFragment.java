@@ -1,80 +1,68 @@
 package com.special;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.special.menu.ResideMenu;
+import com.special.utils.UISwipableList;
+
+import org.rbdc.sra.Dashboard;
+import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.objects.QuestionSet;
 
 import java.util.ArrayList;
 
-import org.rbdc.sra.R;
-
 public class QuestionsFragment extends Fragment {
-
+    //Views & Widgets
     private View parentView;
-    private ListView listView;
-    private ListAdapter mAdapter;
-    
+    private UISwipableList listView;
+    private TransitionListAdapter mAdapter;
+    private ArrayList<ListItem> listData;
+    private ResideMenu resideMenu;
+
+    //Vars
+    private String PACKAGE = "IDENTIFY";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentView = inflater.inflate(R.layout.fragment_list, container, false);
-        listView   = (ListView) parentView.findViewById(R.id.listView);
+        parentView = inflater.inflate(R.layout.fragment_questions, container, false);
+        listView   = (UISwipableList) parentView.findViewById(R.id.listView);
+        Dashboard parentActivity = (Dashboard) getActivity();
+        resideMenu = parentActivity.getResideMenu();
         initView();
         return parentView;
     }
 
-    @SuppressLint("NewApi")
-	@SuppressWarnings("deprecation")
-	private void initView(){
-    	//Getting width of display, could be usefull for scaling bitmaps
-    	Display display = getActivity().getWindowManager().getDefaultDisplay();
-    	int width;
-    	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2){
-    		Point size = new Point();
-    		display.getSize(size);
-    		width = size.x;
-    	} else{
-        	width = display.getWidth();
-    	}
-    	
-    	mAdapter = new ListAdapter(getActivity(), getListData(), width);
+    private void initView(){
+        listData = new ArrayList<ListItem>();
+        loadListData();
+        mAdapter = new TransitionListAdapter(getActivity(), listData);
+        listView.setActionLayout(R.id.hidden_view2);
+        listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
+        listView.setIgnoredViewHandler(resideMenu);
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                
-                ListItem item = (ListItem) listView.getAdapter().getItem(i);
-                
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("title", item.getTitle());
-                intent.putExtra("img", item.getImageId());
-                intent.putExtra("descr", item.getDesc());
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
+//                listData.remove(i);
+//                mAdapter.notifyDataSetChanged();
             }
         });
     }
 
-    private ArrayList<ListItem> getListData(){
-        ArrayList<ListItem> listData = new ArrayList<ListItem>();
-        listData.add(new ListItem(R.drawable.ph_hotel, "Airport Hotel", "Large hotel located next to the Airport Terminal", "5", "Rooms Available"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Select Hotel", "Small hotel near the City", "3", "Rooms Available" ));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Beach Hotel", "Located next to a white sand beach", "3", "Stars"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Dance and Party Club", "Ideal for teens", "10+", "Rooms Available"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Royal City Resort", "Enjoy luxery in the City", "5", "Stars"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Safari Lodge", "Relax in the Wild", "4.5", "Guest Rating"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Central Park", "The famous Park Hotel","10+", "Rooms Available"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Tropical by WorldClub", "Located in South Africa", "4.8", "Guest Rating"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Ski Hotel", "Located next to the Lifts", "All", "Inclusive"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Relax by WorldClub", "Affordable Luxery", "3", "Rooms Available"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Road Motel", "Make a stop worth waiting", "No", "Reservation Needed"));
-        listData.add(new ListItem(R.drawable.ph_hotel, "Alpine Lodge", "Located in the Alps", "Full", "Pension"));
-        return listData;
+    private void loadListData(){
+        listData.clear();
+        ArrayList<QuestionSet> sets = CRUDFlinger.getQuestionSets();
+        for (QuestionSet s : sets) {
+            listData.add(new ListItem(R.drawable.ic_question, s.getName(), "", "", ""));
+        }
+        listData.add(new ListItem(R.drawable.ic_question, "Nutrition", "Household", null, null));
+        listData.add(new ListItem(R.drawable.ic_question, "Water Access", "Community", null, null));
     }
 }
