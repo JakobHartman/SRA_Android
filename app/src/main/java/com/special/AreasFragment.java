@@ -1,6 +1,6 @@
 package com.special;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,35 +39,16 @@ public class AreasFragment extends Fragment {
 
     private void initView(){
         mAdapter = new TransitionListAdapter(getActivity(), getListData());
-        listView.setActionLayout(R.id.hidden_view);
+        listView.setActionLayout(R.id.hidden_view2);
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
-                ListItem item = (ListItem) listView.getAdapter().getItem(i);
 
-                Intent intent = new Intent(getActivity(), TransitionDetailActivity.class);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("title", item.getTitle());
-                bundle.putInt("img", item.getImageId());
-                bundle.putString("descr", item.getDesc());
 
-                int[] screen_location = new int[2];
-                View view = viewa.findViewById(R.id.item_image);
-                view.getLocationOnScreen(screen_location);
-
-                bundle.putInt(PACKAGE + ".left", screen_location[0]);
-                bundle.putInt(PACKAGE + ".top", screen_location[1]);
-                bundle.putInt(PACKAGE + ".width", view.getWidth());
-                bundle.putInt(PACKAGE + ".height", view.getHeight());
-
-                intent.putExtras(bundle);
-
-                startActivity(intent);
-                getActivity().overridePendingTransition(0, 0);
             }
         });
     }

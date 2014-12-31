@@ -5,11 +5,22 @@
     android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res/com.special">
 
     <TextView
-        android:id="@+id/hidden_view"
-        android:layout_width="200dp"
+        android:id="@+id/hidden_view1"
+        android:layout_width="100dp"
         android:layout_height="fill_parent"
         android:layout_gravity="right"
         android:background="@color/red"
+        android:enabled="false"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/hidden_view_text"
+        android:textColor="@android:color/white" />
+    <TextView
+        android:id="@+id/hidden_view2"
+        android:layout_width="100dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="right"
+        android:background="@color/green"
         android:enabled="false"
         android:visibility="gone"
         android:gravity="center"

@@ -5,7 +5,9 @@
     tools:context="com.special.MenuActivity$CalendarFragment"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:alpha=".75">
 
     <LinearLayout
         android:orientation="vertical"
@@ -36,7 +38,8 @@
         android:layout_height="wrap_content"
         android:text="Questions"
         style="@style/UIButtonInverse"
-        android:layout_gravity="right|top" />
+        android:layout_gravity="right|top"
+        android:layout_marginRight="3dp" />
 
 
 </FrameLayout>

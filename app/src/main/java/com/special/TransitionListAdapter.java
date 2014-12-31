@@ -72,7 +72,7 @@ class TransitionListAdapter extends BaseAdapter {
             viewHolder.image.setImageResource(imageid);
             viewHolder.title.setText(item);
             viewHolder.descr.setText(desc);
-            TextView hiddenView = (TextView) v.findViewById(R.id.hidden_view);
+            TextView hiddenView = (TextView) v.findViewById(R.id.hidden_view1);
             hiddenView.setOnClickListener(new OnClickListener() {
 
                 @Override

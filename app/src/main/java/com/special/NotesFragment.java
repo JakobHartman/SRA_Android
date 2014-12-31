@@ -39,7 +39,7 @@ public class NotesFragment extends Fragment {
 
     private void initView(){
     	mAdapter = new TransitionListAdapter(getActivity(), getListData());
-        listView.setActionLayout(R.id.hidden_view);
+        listView.setActionLayout(R.id.hidden_view1);
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);

@@ -152,6 +152,7 @@ public class UISwipableList extends ListView {
         case MotionEvent.ACTION_MOVE:
             float deltaX = lastX - mFirstX;
             float deltaY = lastY - mFirstY;
+
             if (isSwipeHorizontal(deltaX, deltaY)) {
                 return true;
             }
@@ -253,6 +254,7 @@ public class UISwipableList extends ListView {
         if (slideLeft) {
             if (mHiddenView != null) {
                 toPosition = -1 * mHiddenView.getMeasuredWidth();
+                System.out.println(toPosition);
                 mHiddenView.setVisibility(View.VISIBLE);
                 Animation animFadeIn = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in);
                 mHiddenView.setAnimation(animFadeIn);
