@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/DefaultBackgroundColor"
+    tools:context=".MainActivity"
+    android:weightSum="1"
+    android:orientation="horizontal">
+
+
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="247dp"
+    android:id="@+id/imageView"
+    android:src="@drawable/logo"
+    android:layout_weight="18.42"
+    android:layout_alignParentTop="true"
+    android:layout_alignLeft="@+id/textView"
+    android:layout_alignStart="@+id/textView"
+    android:layout_alignRight="@+id/textView"
+    android:layout_alignEnd="@+id/textView" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:text="@string/landingtText"
+    android:id="@+id/textView"
+    android:layout_below="@+id/imageView"
+    android:layout_centerHorizontal="true" />
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/login"
+    android:id="@+id/loginButton"
+    android:layout_below="@+id/textView"
+    android:layout_marginTop="62dp"
+    android:layout_alignLeft="@+id/textView"
+    android:layout_alignStart="@+id/textView"
+    android:layout_alignRight="@+id/textView"
+    android:layout_alignEnd="@+id/textView"
+    android:onClick="goToLogin"/>
+</RelativeLayout>

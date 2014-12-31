@@ -1,17 +1,32 @@
 package org.rbdc.sra;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.objects.loginObject;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_main);
+        CRUDFlinger.setApplication(getApplication());
+        loginObject login = CRUDFlinger.load("User",loginObject.class);
+        if (login == null) {
+            login = new loginObject("");
+        }
+        if(login.isLoggedIn()){
+            goToDashboard();
+        }
     }
 
 
@@ -35,5 +50,19 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void goToLogin(View v) { goToLogin(); }
+
+    public void goToLogin(){
+        Intent intent0 = new Intent(this, login.class);
+        startActivity(intent0);
+    }
+
+    private void goToDashboard(View v) { goToDashboard(); }
+
+    public void goToDashboard(){
+        Intent intent0 = new Intent(this, Dashboard.class);
+        startActivity(intent0);
     }
 }

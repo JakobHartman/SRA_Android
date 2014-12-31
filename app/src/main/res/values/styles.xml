@@ -39,6 +39,7 @@
     
 	<style name="AppTheme" parent="android:Theme.Light.NoTitleBar">
 	</style>
+    <color name="DefaultBackgroundColor">#efe</color>
 	
 	<style name="AppThemeTrans" parent="@style/AppTheme">
 	     <item name="android:windowIsTranslucent">true</item>

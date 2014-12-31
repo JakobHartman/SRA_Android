@@ -1,0 +1,111 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/DefaultBackgroundColor"
+    tools:context="com.example.chad.sraMobile.login"
+    android:id="@+id/loginActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/passwordText"
+        android:id="@+id/textView"
+        android:layout_above="@+id/passwordET"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/usernameText"
+        android:id="@+id/textView2"
+        android:layout_above="@+id/usernameET"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/usernameET"
+        android:background="#fff"
+        android:autoText="false"
+        android:editable="true"
+        android:shadowColor="#000"
+        android:selectAllOnFocus="false"
+        android:enabled="true"
+        android:focusable="true"
+        android:inputType="text"
+        android:layout_above="@+id/textView"
+        android:layout_alignLeft="@+id/passwordET"
+        android:layout_alignStart="@+id/passwordET"
+        android:layout_marginBottom="33dp"
+        android:layout_alignRight="@+id/passwordET"
+        android:layout_alignEnd="@+id/passwordET"
+        android:clickable="true"
+        android:textIsSelectable="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/passwordET"
+        android:background="#fff"
+        android:shadowColor="#000"
+        android:selectAllOnFocus="true"
+        android:enabled="true"
+        android:layout_above="@+id/loginButton"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:id="@+id/loginButton"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/passwordET"
+        android:layout_alignStart="@+id/passwordET"
+        android:layout_alignRight="@+id/passwordET"
+        android:layout_alignEnd="@+id/passwordET" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignBottom="@+id/passwordET"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_below="@+id/textView2" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_above="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Loading Test Here"
+        android:id="@+id/textView3"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="76dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
+
+</RelativeLayout>
