@@ -13,6 +13,11 @@ import java.util.ArrayList;
 
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.objects.Areas;
+import org.rbdc.sra.objects.Households;
+import org.rbdc.sra.objects.Region;
+
 import com.special.menu.ResideMenu;
 import com.special.utils.UISwipableList;
 
@@ -38,29 +43,52 @@ public class AreasFragment extends Fragment {
     }
 
     private void initView(){
-        mAdapter = new TransitionListAdapter(getActivity(), getListData());
+        mAdapter = new TransitionListAdapter(getActivity(), listArea());
         listView.setActionLayout(R.id.hidden_view2);
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View viewa,final int i, long l) {
 
-
+            mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(i));
+            listView.setAdapter(mAdapter);
+             listView.setOnItemClickListener(new OnItemClickListener() {
+                 @Override
+                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                     mAdapter = new TransitionListAdapter(getActivity(),listMembers(i,position));
+                     listView.setAdapter(mAdapter);
+                 }
+             });
 
             }
         });
     }
 
-    private ArrayList<ListItem> getListData(){
+    private ArrayList<ListItem> listArea(){
         ArrayList<ListItem> listData = new ArrayList<ListItem>();
-        listData.add(new ListItem(R.drawable.ph_1, "Henry Smith", "Vacation!", null, null));
-        listData.add(new ListItem(R.drawable.ph_2, "Martinez", "Still exited from my trip last week!", null, null));
-        listData.add(new ListItem(R.drawable.ph_3, "Olivier Smith", "Visiting Canada next week!", null, null));
-        listData.add(new ListItem(R.drawable.ph_4, "Aria Thompson", "Can not go shopping tomorrow :(", null, null));
-        listData.add(new ListItem(R.drawable.ph_5, "Sophie Hill", "Live every day like it is the last one!", null, null));
-        listData.add(new ListItem(R.drawable.ph_6, "Addison Adams", "Not available, working...", null, null));
+        for(Areas area : CRUDFlinger.getRegion().getAreas()){
+            listData.add(new ListItem(R.drawable.ic_like,area.getAreaName(),area.getHouseholds().size() + " Households",null,null));
+        }
         return listData;
     }
+
+
+    private ArrayList<ListItem> listHouseholds(int pos){
+        ArrayList<ListItem>listData = new ArrayList<ListItem>();
+        for(Households households : CRUDFlinger.getRegion().getAreas().get(pos).getHouseholds()){
+            listData.add(new ListItem(R.drawable.ic_like,households.getHouseholdName(),households.getMembers().size() + " Members",null,null));
+        }
+        return listData;
+    }
+
+    private ArrayList<ListItem> listMembers(int areaPos,int householdPos){
+        ArrayList<ListItem>listData = new ArrayList<ListItem>();
+        for(String member : CRUDFlinger.getRegion().getAreas().get(areaPos).getHouseholds().get(householdPos).getMembers()){
+            listData.add(new ListItem(R.drawable.ic_like,member,"",null,null));
+        }
+        return listData;
+    }
+
 }
