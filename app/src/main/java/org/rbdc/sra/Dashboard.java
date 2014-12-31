@@ -3,12 +3,14 @@ package org.rbdc.sra;
 
 import com.special.AreasFragment;
 import com.special.DashboardFragment;
+import com.special.LogoutFragment;
 import com.special.NotesFragment;
 import com.special.QuestionsFragment;
 import com.special.StatsFragment;
 import com.special.menu.ResideMenu;
 import com.special.menu.ResideMenuItem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +18,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import org.rbdc.sra.helperClasses.CRUDFlinger;
 
 public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
@@ -25,6 +29,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     private ResideMenuItem itemQuestions;
     private ResideMenuItem itemNotes;
     private ResideMenuItem itemStats;
+    private ResideMenuItem itemLogout;
     private TextView title;
 
     @Override
@@ -46,6 +51,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         resideMenu.setShadowVisible(true);
         resideMenu.setHeaderView(findViewById(R.id.actionbar));
         resideMenu.setMenuListener(menuListener);
+
         //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip. 
         resideMenu.setScaleValue(0.6f);
 
@@ -54,18 +60,21 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         itemQuestions = new ResideMenuItem(this, R.drawable.ic_question, "Question Sets");
         itemNotes = new ResideMenuItem(this, R.drawable.ic_notes, "Notes");
         itemStats = new ResideMenuItem(this,R.drawable.ic_stats,"Stats");
+        itemLogout = new ResideMenuItem(this,R.drawable.ic_logout,"Logout");
 
         itemDashboard.setOnClickListener(this);
         itemAreas.setOnClickListener(this);
         itemQuestions.setOnClickListener(this);
         itemNotes.setOnClickListener(this);
         itemStats.setOnClickListener(this);
+        itemLogout.setOnClickListener(this);
 
         resideMenu.addMenuItem(itemDashboard);
         resideMenu.addMenuItem(itemAreas);
         resideMenu.addMenuItem(itemQuestions);
         resideMenu.addMenuItem(itemNotes);
         resideMenu.addMenuItem(itemStats);
+        resideMenu.addMenuItem(itemLogout);
 
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +108,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         }else if(view == itemStats){
             changeFragment(new StatsFragment());
             title.setText("Statistics");
+        }else if(view == itemLogout){
+            changeFragment(new LogoutFragment());
         }
 
         resideMenu.closeMenu();
