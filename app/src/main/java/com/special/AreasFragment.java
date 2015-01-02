@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.AnimationUtils;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -20,7 +19,6 @@ import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.objects.Areas;
 import org.rbdc.sra.objects.Households;
-import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.loginObject;
 
 import com.special.menu.ResideMenu;
@@ -37,6 +35,8 @@ public class AreasFragment extends Fragment {
     Button btn, btnCancel;
     Dialog dialog;
     private static String navigation;
+    private static int areaId;
+    private static int householdId;
 
     //Vars
     private String PACKAGE = "IDENTIFY";
@@ -66,7 +66,7 @@ public class AreasFragment extends Fragment {
                 if(navigation == "area"){
                     addArea();
                 }else if(navigation == "household"){
-                    
+
                 }
             }
         });
@@ -76,14 +76,29 @@ public class AreasFragment extends Fragment {
 
             mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(i));
             listView.setAdapter(mAdapter);
-             listView.setOnItemClickListener(new OnItemClickListener() {
+            listView.setOnItemClickListener(new OnItemClickListener() {
                  @Override
                  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                     householdId = position;
                      mAdapter = new TransitionListAdapter(getActivity(),listMembers(i,position));
                      listView.setAdapter(mAdapter);
-                 }
+                     button.setText("Add Member");
+                     button.setOnClickListener(new View.OnClickListener() {
+                         @Override
+                         public void onClick(View v) {
+                             addMember();
+                         }
+                     });
+                }
              });
-
+            areaId = i;
+            button.setText("Add Household");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addHousehold();
+                }
+            });
             }
         });
     }
@@ -94,7 +109,7 @@ public class AreasFragment extends Fragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         dialog.setCancelable(true);
-        dialog.setContentView(R.layout.layout_dialog);
+        dialog.setContentView(R.layout.layout_area_dialog);
 
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final Spinner regionText = (Spinner) dialog.findViewById(R.id.spinner);
@@ -142,6 +157,64 @@ public class AreasFragment extends Fragment {
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
         dialog.show();
+    }
+
+    private void addHousehold(){
+        dialog = new Dialog(getActivity(),
+                android.R.style.Theme_Translucent);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.layout_household_dialog);
+
+        final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
+        final EditText headText = (EditText) dialog.findViewById(R.id.editText1);
+        final loginObject loginObject = CRUDFlinger.load("User",loginObject.class);
+        ArrayList<String> regions = new ArrayList<String>();
+        regions.add("Select Region");
+        regions.addAll(loginObject.getRegions());
+
+        btn = (Button) dialog.findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = new Toast(getActivity());
+
+                Households newHousehold = new Households();
+
+                if(areaText.getText().toString().matches("")){
+                    toast.makeText(getActivity(),"Please Enter A Valid Household Name", Toast.LENGTH_LONG).show();
+                }else if(headText.getText().toString().matches("")){
+                    toast.makeText(getActivity(),"Please Select A Valid Head Member Name", Toast.LENGTH_LONG).show();
+                }else{
+                    newHousehold.setHouseholdName(areaText.getText().toString());
+                    newHousehold.addMember(headText.getText().toString());
+                    CRUDFlinger.addHousehold(areaId,newHousehold);
+                    mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(areaId));
+                    listView.setAdapter(mAdapter);
+                    dialog.cancel();
+                    CRUDFlinger.saveRegion();
+                }
+            }
+        });
+
+        btnCancel = (Button) dialog.findViewById(R.id.btncancel);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
+        dialog.show();
+    }
+
+    private void addMember(){
+
     }
 
     private ArrayList<ListItem> listArea(){
