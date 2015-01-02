@@ -193,7 +193,7 @@ public class QuestionsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     final Dialog alert = new Dialog(getActivity());
-                    alert.setContentView(R.layout.delete_question_set_dialog);
+                    alert.setContentView(R.layout.confirmation_dialog);
                     alert.setCancelable(false);
                     alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                     //alert.setTitle("Data point");
