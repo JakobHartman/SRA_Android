@@ -6,6 +6,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.rbdc.sra.objects.Areas;
+import org.rbdc.sra.objects.Households;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
@@ -53,6 +56,7 @@ public class CRUDFlinger {
         }
 
     }
+
 
     public static void save(String key,Serializable serializable){
         setPreferences();
@@ -109,6 +113,14 @@ public class CRUDFlinger {
             loadRegion();
         }
         return region;
+    }
+
+    public static void addArea(Areas area){
+        region.addArea(area);
+    }
+
+    public static void addHousehold(int pos,Households households){
+        region.getAreas().get(pos).addHousehold(households);
     }
 
     public static void removeLocal(String key){
