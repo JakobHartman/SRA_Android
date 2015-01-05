@@ -12,17 +12,26 @@ import android.view.Window;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.objects.Areas;
 import org.rbdc.sra.objects.Households;
+import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.loginObject;
 
 import com.special.menu.ResideMenu;
 import com.special.utils.UISwipableList;
+import com.special.utils.UITabs;
+
+import quickconnectfamily.json.JSONException;
+import quickconnectfamily.json.JSONUtilities;
+import quickconnectfamily.json.ParseException;
 
 public class AreasFragment extends Fragment {
 
@@ -194,6 +203,7 @@ public class AreasFragment extends Fragment {
                     listView.setAdapter(mAdapter);
                     dialog.cancel();
                     CRUDFlinger.saveRegion();
+
                 }
             }
         });
@@ -214,7 +224,86 @@ public class AreasFragment extends Fragment {
     }
 
     private void addMember(){
+        final Member member = new Member();
+        dialog = new Dialog(getActivity(),
+                android.R.style.Theme_Translucent);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.layout_member_dialog);
+
+        final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
+        final Spinner relationship = (Spinner)dialog.findViewById(R.id.spinner1);
+        final DatePicker datePicker = (DatePicker)dialog.findViewById(R.id.datePicker);
+        final Spinner education = (Spinner)dialog.findViewById(R.id.spinner2);
+        final UITabs gender = (UITabs)dialog.findViewById(R.id.toggle);
+        final UITabs school = (UITabs)dialog.findViewById(R.id.toggle3);
+
+
+        btn = (Button) dialog.findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("GG");
+                Toast toast = new Toast(getActivity());
+                if (areaText.getText().toString().matches("")) {
+                    toast.makeText(getActivity(),"Please Enter A Valid Name",Toast.LENGTH_LONG).show();
+                } else if (relationship.getSelectedItemPosition() == 0) {
+                    toast.makeText(getActivity(),"Please Select A Valid Relationship",Toast.LENGTH_LONG).show();
+                } else if (education.getSelectedItemPosition() == 0) {
+                    toast.makeText(getActivity(),"Please Select A Valid Education Level",Toast.LENGTH_LONG).show();
+                } else {
+                    member.setName(areaText.getText().toString());
+                    member.setRelationship(relationship.getSelectedItem().toString());
+                    member.setBirthday(getDateFromDatePicker(datePicker));
+                    member.setEducationLevel(education.getSelectedItem().toString());
+                    int genderSelected = gender.getCheckedRadioButtonId();
+                    RadioButton gSelected = (RadioButton)gender.findViewById(genderSelected);
+                    member.setGender(gSelected.getText().toString());
+                    int schoolSelected = school.getCheckedRadioButtonId();
+                    RadioButton sSelected = (RadioButton)school.findViewById(schoolSelected);
+                    boolean isInSchool;
+                    switch (sSelected.getText().toString()){
+                        case "Yes":
+                            isInSchool = true;
+                            break;
+                        case "No":
+                            isInSchool = false;
+                            break;
+                        default:
+                            isInSchool = false;
+                            break;
+                    }
+                    member.setInSchool(isInSchool);
+                    member.setAreaName(CRUDFlinger.getRegion().getAreas().get(areaId).getAreaName());
+                    member.setHouseholdName(CRUDFlinger.getRegion().getAreas().get(areaId).getHouseholds().get(householdId).getHouseholdName());
+                    dialog.cancel();
+
+                    try{
+                        String string = JSONUtilities.stringify(member);
+                        System.out.println(string);
+                    }catch (JSONException e){
+
+                    }
+                }
+
+            }
+        });
+
+
+        btnCancel = (Button) dialog.findViewById(R.id.btncancel);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
+        dialog.show();
     }
 
     private ArrayList<ListItem> listArea(){
@@ -240,6 +329,18 @@ public class AreasFragment extends Fragment {
             listData.add(new ListItem(R.drawable.ic_like,member,"",null,null));
         }
         return listData;
+    }
+
+    public static String getDateFromDatePicker(DatePicker datePicker){
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year =  datePicker.getYear();
+
+        String time = day + "/" + month + "/" + year;
+
+
+
+        return time;
     }
 
 }
