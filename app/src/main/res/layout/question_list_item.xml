@@ -12,6 +12,7 @@
         android:text="New Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/list_item_name"
+        android:clickable="true"
         android:layout_weight=".75" />
 
     <Button

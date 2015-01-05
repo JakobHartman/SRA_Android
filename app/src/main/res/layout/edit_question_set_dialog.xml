@@ -42,17 +42,17 @@
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black"
-            android:text="Question Set Type: "
+            android:text="Question Set Type:  "
             android:id="@+id/type_label"
             android:singleLine="false"
             android:padding="10dp" />
 
-        <EditText
+        <Spinner
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="left|center_vertical"
-            android:id="@+id/type_field"
-            style="@style/UIButtonInverse" />
+            android:id="@+id/type_spinner" />
+            <!--style="@style/UIButtonInverse" />-->
     </LinearLayout>
 
     <TextView

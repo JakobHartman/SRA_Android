@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.QuestionSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class QuestionsFragment extends Fragment {
     //Views & Widgets
@@ -41,6 +43,8 @@ public class QuestionsFragment extends Fragment {
 
     private ArrayList<QuestionSet> questionSets;
     private ArrayList<ListItem> listItems;
+
+    private QuestionListAdapter questionListAdapter;
 
     //Vars
     private String PACKAGE = "IDENTIFY";
@@ -114,32 +118,44 @@ public class QuestionsFragment extends Fragment {
         toast.show();
     }
 
-    private void openQuestionSetDialog(final QuestionSet set) {
+    private void openQuestionSetDialog(final QuestionSet qSet) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_set_dialog);
 //        alert.setCancelable(false);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         final EditText nameField = (EditText) alert.findViewById(R.id.name_field);
-        nameField.setText(set.getName());
+        nameField.setText(qSet.getName());
         nameField.setSelection(nameField.length());
         nameField.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) { }
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                set.setName(nameField.getText().toString());
+                qSet.setName(nameField.getText().toString());
             }
         });
 
-        final ArrayList<String> questionListItems = new ArrayList<String>();
-        final ArrayList<Question> questions = set.getQuestions();
-        for (Question q : questions) { questionListItems.add(q.getName()); }
-        final QuestionListAdapter questionAdapter = new QuestionListAdapter(getActivity(), questionListItems);
+        final Spinner type = (Spinner) alert.findViewById(R.id.type_spinner);
+        String[] typesArray = getResources().getStringArray(R.array.question_set_categories_array);
+        final ArrayList<String> typesArrayList = new ArrayList<String>(Arrays.asList(typesArray));
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(
+                getActivity(), android.R.layout.simple_spinner_item, typesArrayList);
+        type.setAdapter(typesAdapter);
+        type.setSelection(typesArrayList.indexOf(qSet.getType()));
+        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                qSet.setType(typesArrayList.get(position));
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
+        questionListAdapter = new QuestionListAdapter(getActivity(), qSet);
         final ListView questionList = (ListView) alert.findViewById(R.id.list_view);
-        questionList.setAdapter(questionAdapter);
+        questionList.setAdapter(questionListAdapter);
         questionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
+                ArrayList<Question> questions = qSet.getQuestions();
                 openQuestionDialog(questions.get(i));
             }
         });
@@ -158,10 +174,10 @@ public class QuestionsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Question q = new Question("");
-                q.setName("New question");
-                set.addQuestion(q);
+                q.setName("");
+                qSet.addQuestion(q);
                 CRUDFlinger.saveQuestionSets();
-                questionAdapter.notifyDataSetChanged();
+                questionListAdapter.notifyDataSetChanged();
                 openQuestionDialog(q);
             }
         });
@@ -193,7 +209,7 @@ public class QuestionsFragment extends Fragment {
         final ArrayList<String> dataPointListItems = new ArrayList<String>();
         final ArrayList<Datapoint> points = q.getDataPoints();
         for (Datapoint dp : points) { dataPointListItems.add(dp.getLabel()); }
-        final QuestionListAdapter dpAdapter = new QuestionListAdapter(getActivity(), dataPointListItems);
+        final QuestionListAdapter dpAdapter = new QuestionListAdapter(getActivity(), null);
         final ListView questionList = (ListView) alert.findViewById(R.id.list_view);
         questionList.setAdapter(dpAdapter);
 
@@ -202,6 +218,9 @@ public class QuestionsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveQuestionSets();
+                if (questionListAdapter != null) {
+                    questionListAdapter.notifyDataSetChanged();
+                }
                 alert.dismiss();
             }
         });
@@ -210,7 +229,7 @@ public class QuestionsFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataPointListItems.add("New data point");
+                dataPointListItems.add("");
                 dpAdapter.notifyDataSetChanged();
             }
         });
@@ -320,34 +339,55 @@ public class QuestionsFragment extends Fragment {
     /*
      *
      */
-    public class QuestionListAdapter extends ArrayAdapter<String> {
+    public class QuestionListAdapter extends BaseAdapter {
         private final Context context;
-        private final ArrayList<String> values;
+        private final QuestionSet questionSet;
 
-        public QuestionListAdapter(Context context, ArrayList<String> values) {
-            super(context, R.layout.question_list_item, values);
+        public QuestionListAdapter(Context context, QuestionSet questionSet) {
             this.context = context;
-            this.values = values;
+            this.questionSet = questionSet;
+        }
+
+        @Override public long getItemId(int position) { return position;}
+        @Override
+        public Object getItem(int position) {
+            if (questionSet != null && questionSet.getQuestions() != null) {
+                return questionSet.getQuestions().get(position);
+            }
+            return null;
+        }
+        @Override
+        public int getCount() {
+            if (questionSet != null && questionSet.getQuestions() != null) {
+                return questionSet.getQuestions().size();
+            }
+            return 0;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View itemView = inflater.inflate(R.layout.question_list_item, parent, false);
             TextView textView = (TextView) itemView.findViewById(R.id.list_item_name);
-            final String value = values.get(position);
-            textView.setText(value);
+            final Question q = questionSet.getQuestions().get(position);
+            textView.setText(q.getName());
+
+            final QuestionListAdapter theAdapter = this;
 
             Button removeInterviewButton = (Button) itemView.findViewById(R.id.delete_button);
             removeInterviewButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    questionSet.deleteQuestion(q);
+                    theAdapter.notifyDataSetChanged();
+                    saveQuestionSets();
                 }
             });
 
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    openQuestionDialog(questionSet.getQuestions().get(position));
                 }
             });
 
