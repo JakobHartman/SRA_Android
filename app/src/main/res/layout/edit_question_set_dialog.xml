@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_margin="20dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:id="@+id/dialog"
+    android:background="@drawable/dialog_background"
+    android:padding="10dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
+            android:text="Question Set Name: "
+            android:id="@+id/name_label"
+            android:singleLine="false"
+            android:padding="10dp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="left|center_vertical"
+            android:id="@+id/name_field"
+            style="@style/UIButtonInverse" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
+            android:text="Question Set Type:  "
+            android:id="@+id/type_label"
+            android:singleLine="false"
+            android:padding="10dp" />
+
+        <Spinner
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="left|center_vertical"
+            android:id="@+id/type_spinner" />
+            <!--style="@style/UIButtonInverse" />-->
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/black"
+        android:text="Questions: "
+        android:id="@+id/list_title"
+        android:singleLine="false"
+        android:padding="10dp" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginRight="@dimen/list_horizontal_margin"
+        android:layout_marginLeft="@dimen/list_horizontal_margin"
+        android:paddingLeft="50dip"
+        android:paddingRight="0dip" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/UIButtonInverse"
+            android:text="Finish"
+            android:textSize="@dimen/textsize_medium"
+            android:padding="12dp"
+            android:id="@+id/finish_button"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight=".5" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/UIButtonInverse"
+            android:text="Add Question"
+            android:textSize="@dimen/textsize_medium"
+            android:padding="12dp"
+            android:id="@+id/add_button"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight=".5" />
+
+    </LinearLayout>
+</LinearLayout>
