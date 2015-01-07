@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="relationships">
+        <item>Select Relationship</item>
+        <item>GrandFather</item>
+        <item>GrandMother</item>
+        <item>Father</item>
+        <item>Mother</item>
+        <item>Daughter</item>
+        <item>Son</item>
+        <item>Niece</item>
+        <item>Nephew</item>
+        <item>Aunt</item>
+        <item>Uncle</item>
+        <item>Cousin</item>
+        <item>Friend</item>
+        <item>Roommate</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="education">
+        <item>Select Education Level</item>
+        <item>None</item>
+        <item>Some Elementary</item>
+        <item>Elementary</item>
+        <item>Some Secondary</item>
+        <item>Secondary</item>
+        <item>Some College</item>
+        <item>College</item>
+    </string-array>
+</resources>

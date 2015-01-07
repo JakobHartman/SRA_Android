@@ -76,6 +76,14 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible" />
 
+    <ProgressBar
+        android:indeterminateDrawable="@drawable/my_progress_indeterminate"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_above="@+id/progressBar"
+        android:layout_alignRight="@+id/progressBar"
+        android:layout_alignEnd="@+id/progressBar" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
