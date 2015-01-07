@@ -72,6 +72,8 @@
         android:layout_height="fill_parent"
         android:layout_marginRight="@dimen/list_horizontal_margin"
         android:layout_marginLeft="@dimen/list_horizontal_margin"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:paddingLeft="50dip"
         android:paddingRight="0dip" />
 

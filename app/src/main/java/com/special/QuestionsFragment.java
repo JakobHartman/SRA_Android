@@ -10,11 +10,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,6 +33,7 @@ import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.objects.Datapoint;
+import org.rbdc.sra.objects.DatapointTypes;
 import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.QuestionSet;
 
@@ -40,18 +44,13 @@ public class QuestionsFragment extends Fragment {
     //Views & Widgets
     private View parentView;
     private UISwipableList questionSetListView;
-    private QuestionSetListAdapter questionSetListAdapter;
     private ResideMenu resideMenu;
 
+    private QuestionSetListAdapter questionSetListAdapter;
     private ArrayList<QuestionSet> questionSets;
     private ArrayList<ListItem> listItems;
 
     private QuestionAdapter questionListAdapter;
-    private DataPointAdapter dataPointAdapter;
-    private OptionAdapter optionsListAdapter;
-
-    //Vars
-    private String PACKAGE = "IDENTIFY";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,9 +123,9 @@ public class QuestionsFragment extends Fragment {
     private void openQuestionSetDialog(final QuestionSet qSet) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_set_dialog);
-//        alert.setCancelable(false);
+        alert.setCancelable(false);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-//        alert.getWindow().setGravity(Gravity.TOP);
+        alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
         final EditText nameField = (EditText) alert.findViewById(R.id.name_field);
         nameField.setText(qSet.getName());
@@ -189,12 +188,109 @@ public class QuestionsFragment extends Fragment {
         alert.show();
     }
 
+    private void addOption(String option, final LinearLayout optionsList, final Datapoint dp) {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LinearLayout optionListItem = (LinearLayout) inflater.inflate(R.layout.option_list_item, null);
+        final EditText optionView = (EditText) optionListItem.findViewById(R.id.option_field);
+        optionView.setText(option);
+        optionView.setSelection(optionView.length());
+        optionView.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int index = optionsList.indexOfChild(optionListItem);
+                dp.setOption(index, optionView.getText().toString());
+            }
+        });
+
+        Button deleteButton = (Button) optionListItem.findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index = optionsList.indexOfChild(optionListItem);
+                dp.deleteOption(index);
+                optionsList.removeView(optionListItem);
+            }
+        });
+        optionsList.addView(optionListItem);
+    }
+
+    private void addDataPoint(final LinearLayout dpList, final Datapoint dp, final Question q) {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LinearLayout dpItemView = (LinearLayout) inflater.inflate(R.layout.data_point_list_item, null);
+        dpList.addView(dpItemView);
+
+        final EditText label = (EditText) dpItemView.findViewById(R.id.label_field);
+        label.setText(dp.getLabel());
+        label.setSelection(label.length());
+        label.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dp.setLabel(label.getText().toString());
+            }
+        });
+
+        final LinearLayout optionsContainer = (LinearLayout) dpItemView.findViewById(R.id.options_container);
+        final LinearLayout optionsList = (LinearLayout) dpItemView.findViewById(R.id.options_list_view);
+        ArrayList<String> options = dp.getOptions();
+        for (int i = 0; i < options.size(); i++) {
+            addOption(options.get(i), optionsList, dp);
+        }
+
+        Button addOption = (Button) dpItemView.findViewById(R.id.add_option_button);
+        addOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String option = "";
+                dp.addOption(option);
+                addOption(option, optionsList, dp);
+            }
+        });
+
+        Spinner dataTypeSpinner = (Spinner) dpItemView.findViewById(R.id.data_type_spinner);
+        String[] types = getResources().getStringArray(R.array.data_point_types_array);
+        ArrayList<String> typesList = new ArrayList<String>(Arrays.asList(types));
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(
+                getActivity(), android.R.layout.simple_spinner_item, typesList);
+        dataTypeSpinner.setAdapter(typesAdapter);
+        dataTypeSpinner.setSelection(DatapointTypes.getTypeIndex(dp.getDataType()));
+        if (dp.dataTypeIsAList()) {
+            optionsContainer.setVisibility(View.VISIBLE);
+        }
+        dataTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                dp.setDataType(DatapointTypes.getTypeFromIndex(position));
+                if (dp.dataTypeIsAList()) optionsContainer.setVisibility(View.VISIBLE);
+                else {
+                    optionsContainer.setVisibility(View.GONE);
+                    dp.getOptions().clear();
+                    optionsList.removeAllViews();
+                }
+            }
+            @Override public void onNothingSelected(AdapterView<?> parentView) {
+                optionsContainer.setVisibility(View.GONE);
+            }
+        });
+
+        Button delete = (Button) dpItemView.findViewById(R.id.delete_button);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                q.deleteDataPoint(dp);
+                dpList.removeView(dpItemView);
+                saveQuestionSets();
+            }
+        });
+    }
+
     private void openQuestionDialog(final Question q) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_dialog);
-//        alert.setCancelable(false);
+        alert.setCancelable(false);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-//        alert.getWindow().setGravity(Gravity.TOP);
+        alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
         final EditText nameField = (EditText) alert.findViewById(R.id.name_field);
         nameField.setText(q.getName());
@@ -207,9 +303,20 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
-        final DataPointAdapter dpAdapter = new DataPointAdapter(getActivity(), q);
-        final ListView questionList = (ListView) alert.findViewById(R.id.list_view);
-        questionList.setAdapter(dpAdapter);
+        final CheckBox multiUseBox = (CheckBox) alert.findViewById(R.id.multi_use_checkbox);
+        multiUseBox.setChecked(q.getMultiUse());
+        multiUseBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                q.setMultiUse(multiUseBox.isChecked());
+            }
+        });
+
+        final LinearLayout dataPointList = (LinearLayout) alert.findViewById(R.id.list_view);
+        ArrayList<Datapoint> datapoints = q.getDataPoints();
+        for (Datapoint dp : datapoints) {
+            addDataPoint(dataPointList, dp, q);
+        }
 
         Button finishButton = (Button) alert.findViewById(R.id.finish_button);
         finishButton.setOnClickListener(new View.OnClickListener() {
@@ -227,8 +334,9 @@ public class QuestionsFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                q.addDataPoint(new Datapoint());
-                dpAdapter.notifyDataSetChanged();
+                Datapoint dp = new Datapoint();
+                q.addDataPoint(dp);
+                addDataPoint(dataPointList, dp, q);
             }
         });
 
@@ -362,8 +470,10 @@ public class QuestionsFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View itemView = inflater.inflate(R.layout.question_list_item, parent, false);
-            TextView textView = (TextView) itemView.findViewById(R.id.list_item_name);
+
             final Question q = questionSet.getQuestions().get(position);
+
+            TextView textView = (TextView) itemView.findViewById(R.id.list_item_name);
             textView.setText(q.getName());
 
             final QuestionAdapter theAdapter = this;
@@ -381,164 +491,6 @@ public class QuestionsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     openQuestionDialog(questionSet.getQuestions().get(position));
-                }
-            });
-
-            return itemView;
-        }
-    }
-
-    /*
-     *
-     */
-    public class DataPointAdapter extends BaseAdapter {
-        private final Context context;
-        private final Question question;
-
-        public DataPointAdapter(Context context, Question question) {
-            this.context = context;
-            this.question = question;
-        }
-
-        @Override public long getItemId(int position) { return position;}
-        @Override public Object getItem(int position) {
-            if (question != null && question.getDataPoints() != null) {
-                return question.getDataPoints().get(position);
-            }
-            return null;
-        }
-        @Override public int getCount() {
-            if (question != null && question.getDataPoints() != null) {
-                return question.getDataPoints().size();
-            }
-            return 0;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View itemView = inflater.inflate(R.layout.data_point_list_item, parent, false);
-            final Datapoint dp = question.getDataPoints().get(position);
-
-            final EditText label = (EditText) itemView.findViewById(R.id.label_field);
-            label.setText(dp.getLabel());
-            label.setSelection(label.length());
-            label.addTextChangedListener(new TextWatcher() {
-                public void afterTextChanged(Editable s) { }
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    dp.setLabel(label.getText().toString());
-                }
-            });
-
-            final LinearLayout optionsContainer = (LinearLayout) itemView.findViewById(R.id.options_container);
-            final ListView optionsList = (ListView) itemView.findViewById(R.id.options_list_view);
-            optionsListAdapter = new OptionAdapter(getActivity(), dp);
-            optionsList.setAdapter(optionsListAdapter);
-
-            Button addOption = (Button) itemView.findViewById(R.id.add_option_button);
-            addOption.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dp.addOption("new option");
-                    optionsListAdapter.notifyDataSetChanged();
-                }
-            });
-
-            Spinner dataTypeSpinner = (Spinner) itemView.findViewById(R.id.data_type_spinner);
-            String[] types = getResources().getStringArray(R.array.data_point_types_array);
-            ArrayList<String> typesList = new ArrayList<String>(Arrays.asList(types));
-            ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_spinner_item, typesList);
-            dataTypeSpinner.setAdapter(typesAdapter);
-            if (!dp.getDataType().equals("")) {
-                dataTypeSpinner.setSelection(typesList.indexOf(dp.getDataType()));
-            }
-            else if (dp.getDataType().equals("Option List")) {
-                optionsContainer.setVisibility(View.VISIBLE);
-            }
-            dataTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    TextView typeView = (TextView) selectedItemView;
-                    String type = typeView.getText().toString();
-                    dp.setDataType(type);
-                    if (type.equals("Option List")) optionsContainer.setVisibility(View.VISIBLE);
-                    else optionsContainer.setVisibility(View.GONE);
-                }
-                @Override public void onNothingSelected(AdapterView<?> parentView) {
-                    optionsContainer.setVisibility(View.GONE);
-                }
-            });
-
-            final DataPointAdapter theAdapter = this;
-            Button delete = (Button) itemView.findViewById(R.id.delete_button);
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    question.deleteDataPoint(dp);
-                    theAdapter.notifyDataSetChanged();
-                    saveQuestionSets();
-                }
-            });
-
-            return itemView;
-        }
-    }
-
-    /*
-     *
-     */
-    public class OptionAdapter extends BaseAdapter {
-        private final Context context;
-        private final Datapoint dataPoint;
-
-        public OptionAdapter(Context context, Datapoint dataPoint) {
-            this.context = context;
-            this.dataPoint = dataPoint;
-            dataPoint.addOption("Poop");
-            System.out.println("NUM OPTIONS: " + dataPoint.getOptions().size());
-        }
-
-        @Override public long getItemId(int position) { return position;}
-        @Override public Object getItem(int position) {
-            if (dataPoint != null && dataPoint.getOptions() != null) {
-                return dataPoint.getOptions().get(position);
-            }
-            return null;
-        }
-        @Override public int getCount() {
-            if (dataPoint != null && dataPoint.getOptions() != null) {
-                return dataPoint.getOptions().size();
-            }
-            return 0;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View itemView = inflater.inflate(R.layout.option_list_item, parent, false);
-            final String option = dataPoint.getOptions().get(position);
-
-            final EditText label = (EditText) itemView.findViewById(R.id.option_field);
-            label.setText(option);
-            label.setSelection(label.length());
-            label.addTextChangedListener(new TextWatcher() {
-                public void afterTextChanged(Editable s) { }
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    dataPoint.getOptions().set(position, label.getText().toString());
-                }
-            });
-
-            final OptionAdapter theAdapter = this;
-            Button delete = (Button) itemView.findViewById(R.id.delete_button);
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dataPoint.getOptions().remove(position);
-                    theAdapter.notifyDataSetChanged();
-                    saveQuestionSets();
                 }
             });
 
