@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingBottom="10dip"
+    android:paddingTop="10dip">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <EditText
+            android:id="@+id/label_field"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:hint="Label"
+            style="@style/UIButtonInverse"
+            android:gravity="left|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".75" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/UIButtonInverse"
+            android:layout_gravity="center_vertical"
+            android:text="Delete"
+            android:id="@+id/delete_button" />
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/data_type_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/options_container"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="50dip"
+        android:paddingRight="0dip" >
+        <ListView
+            android:id="@+id/options_list_view"
+            android:visibility="visible"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="@dimen/list_horizontal_margin"
+            android:layout_marginLeft="@dimen/list_horizontal_margin" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/UIButtonInverse"
+            android:layout_gravity="center_vertical"
+            android:text="Add option"
+            android:id="@+id/add_option_button" />
+    </LinearLayout>
+
+</LinearLayout>

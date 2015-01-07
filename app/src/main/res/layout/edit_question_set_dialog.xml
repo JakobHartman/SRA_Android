@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:id="@+id/dialog"
-    android:background="@drawable/dialog_background"
+    android:background="@color/white"
+
     android:padding="10dp"
     android:orientation="vertical" >
 

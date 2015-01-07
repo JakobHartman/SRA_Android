@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:id="@+id/dialog"
-    android:background="@drawable/dialog_background"
+    android:background="@color/white"
     android:padding="10dp"
     android:orientation="vertical" >
 
@@ -48,7 +48,7 @@
         android:layout_height="fill_parent"
         android:layout_marginRight="@dimen/list_horizontal_margin"
         android:layout_marginLeft="@dimen/list_horizontal_margin"
-        android:paddingLeft="50dip"
+        android:paddingLeft="25dip"
         android:paddingRight="0dip" />
 
     <LinearLayout

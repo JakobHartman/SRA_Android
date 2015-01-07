@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,14 +39,16 @@ import java.util.Arrays;
 public class QuestionsFragment extends Fragment {
     //Views & Widgets
     private View parentView;
-    private UISwipableList listView;
-    private QuestionSetListAdapter mAdapter;
+    private UISwipableList questionSetListView;
+    private QuestionSetListAdapter questionSetListAdapter;
     private ResideMenu resideMenu;
 
     private ArrayList<QuestionSet> questionSets;
     private ArrayList<ListItem> listItems;
 
-    private QuestionListAdapter questionListAdapter;
+    private QuestionAdapter questionListAdapter;
+    private DataPointAdapter dataPointAdapter;
+    private OptionAdapter optionsListAdapter;
 
     //Vars
     private String PACKAGE = "IDENTIFY";
@@ -52,7 +56,7 @@ public class QuestionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_questions, container, false);
-        listView   = (UISwipableList) parentView.findViewById(R.id.listView);
+        questionSetListView = (UISwipableList) parentView.findViewById(R.id.listView);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
 
@@ -73,15 +77,14 @@ public class QuestionsFragment extends Fragment {
     }
 
     private void setupList() {
-        mAdapter = new QuestionSetListAdapter(getActivity(), listItems);
-        listView.setActionLayout(R.id.hidden_view1);
-        listView.setItemLayout(R.id.front_layout);
-        listView.setAdapter(mAdapter);
-        listView.setIgnoredViewHandler(resideMenu);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        questionSetListAdapter = new QuestionSetListAdapter(getActivity(), listItems);
+        questionSetListView.setActionLayout(R.id.hidden_view1);
+        questionSetListView.setItemLayout(R.id.front_layout);
+        questionSetListView.setAdapter(questionSetListAdapter);
+        questionSetListView.setIgnoredViewHandler(resideMenu);
+        questionSetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
-//                ListItem item = (ListItem) listView.getAdapter().getItem(i);
                 openQuestionSetDialog(questionSets.get(i));
             }
         });
@@ -98,7 +101,7 @@ public class QuestionsFragment extends Fragment {
         CRUDFlinger.saveQuestionSets();
         questionSets = CRUDFlinger.getQuestionSets();
         populateListItems();
-        mAdapter.notifyDataSetChanged();
+        questionSetListAdapter.notifyDataSetChanged();
     }
 
     private void addQuestionSet() {
@@ -123,6 +126,7 @@ public class QuestionsFragment extends Fragment {
         alert.setContentView(R.layout.edit_question_set_dialog);
 //        alert.setCancelable(false);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//        alert.getWindow().setGravity(Gravity.TOP);
 
         final EditText nameField = (EditText) alert.findViewById(R.id.name_field);
         nameField.setText(qSet.getName());
@@ -149,7 +153,7 @@ public class QuestionsFragment extends Fragment {
             @Override public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        questionListAdapter = new QuestionListAdapter(getActivity(), qSet);
+        questionListAdapter = new QuestionAdapter(getActivity(), qSet);
         final ListView questionList = (ListView) alert.findViewById(R.id.list_view);
         questionList.setAdapter(questionListAdapter);
         questionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -185,15 +189,12 @@ public class QuestionsFragment extends Fragment {
         alert.show();
     }
 
-    private void addQuestion() {
-
-    }
-
     private void openQuestionDialog(final Question q) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_dialog);
 //        alert.setCancelable(false);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//        alert.getWindow().setGravity(Gravity.TOP);
 
         final EditText nameField = (EditText) alert.findViewById(R.id.name_field);
         nameField.setText(q.getName());
@@ -206,10 +207,7 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
-        final ArrayList<String> dataPointListItems = new ArrayList<String>();
-        final ArrayList<Datapoint> points = q.getDataPoints();
-        for (Datapoint dp : points) { dataPointListItems.add(dp.getLabel()); }
-        final QuestionListAdapter dpAdapter = new QuestionListAdapter(getActivity(), null);
+        final DataPointAdapter dpAdapter = new DataPointAdapter(getActivity(), q);
         final ListView questionList = (ListView) alert.findViewById(R.id.list_view);
         questionList.setAdapter(dpAdapter);
 
@@ -229,15 +227,13 @@ public class QuestionsFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataPointListItems.add("");
+                q.addDataPoint(new Datapoint());
                 dpAdapter.notifyDataSetChanged();
             }
         });
 
         alert.show();
     }
-
-
 
     /*
      *
@@ -339,25 +335,23 @@ public class QuestionsFragment extends Fragment {
     /*
      *
      */
-    public class QuestionListAdapter extends BaseAdapter {
+    public class QuestionAdapter extends BaseAdapter {
         private final Context context;
         private final QuestionSet questionSet;
 
-        public QuestionListAdapter(Context context, QuestionSet questionSet) {
+        public QuestionAdapter(Context context, QuestionSet questionSet) {
             this.context = context;
             this.questionSet = questionSet;
         }
 
         @Override public long getItemId(int position) { return position;}
-        @Override
-        public Object getItem(int position) {
+        @Override public Object getItem(int position) {
             if (questionSet != null && questionSet.getQuestions() != null) {
                 return questionSet.getQuestions().get(position);
             }
             return null;
         }
-        @Override
-        public int getCount() {
+        @Override public int getCount() {
             if (questionSet != null && questionSet.getQuestions() != null) {
                 return questionSet.getQuestions().size();
             }
@@ -372,10 +366,9 @@ public class QuestionsFragment extends Fragment {
             final Question q = questionSet.getQuestions().get(position);
             textView.setText(q.getName());
 
-            final QuestionListAdapter theAdapter = this;
-
-            Button removeInterviewButton = (Button) itemView.findViewById(R.id.delete_button);
-            removeInterviewButton.setOnClickListener(new View.OnClickListener() {
+            final QuestionAdapter theAdapter = this;
+            Button delete = (Button) itemView.findViewById(R.id.delete_button);
+            delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     questionSet.deleteQuestion(q);
@@ -388,6 +381,164 @@ public class QuestionsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     openQuestionDialog(questionSet.getQuestions().get(position));
+                }
+            });
+
+            return itemView;
+        }
+    }
+
+    /*
+     *
+     */
+    public class DataPointAdapter extends BaseAdapter {
+        private final Context context;
+        private final Question question;
+
+        public DataPointAdapter(Context context, Question question) {
+            this.context = context;
+            this.question = question;
+        }
+
+        @Override public long getItemId(int position) { return position;}
+        @Override public Object getItem(int position) {
+            if (question != null && question.getDataPoints() != null) {
+                return question.getDataPoints().get(position);
+            }
+            return null;
+        }
+        @Override public int getCount() {
+            if (question != null && question.getDataPoints() != null) {
+                return question.getDataPoints().size();
+            }
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View itemView = inflater.inflate(R.layout.data_point_list_item, parent, false);
+            final Datapoint dp = question.getDataPoints().get(position);
+
+            final EditText label = (EditText) itemView.findViewById(R.id.label_field);
+            label.setText(dp.getLabel());
+            label.setSelection(label.length());
+            label.addTextChangedListener(new TextWatcher() {
+                public void afterTextChanged(Editable s) { }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    dp.setLabel(label.getText().toString());
+                }
+            });
+
+            final LinearLayout optionsContainer = (LinearLayout) itemView.findViewById(R.id.options_container);
+            final ListView optionsList = (ListView) itemView.findViewById(R.id.options_list_view);
+            optionsListAdapter = new OptionAdapter(getActivity(), dp);
+            optionsList.setAdapter(optionsListAdapter);
+
+            Button addOption = (Button) itemView.findViewById(R.id.add_option_button);
+            addOption.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dp.addOption("new option");
+                    optionsListAdapter.notifyDataSetChanged();
+                }
+            });
+
+            Spinner dataTypeSpinner = (Spinner) itemView.findViewById(R.id.data_type_spinner);
+            String[] types = getResources().getStringArray(R.array.data_point_types_array);
+            ArrayList<String> typesList = new ArrayList<String>(Arrays.asList(types));
+            ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(
+                    getActivity(), android.R.layout.simple_spinner_item, typesList);
+            dataTypeSpinner.setAdapter(typesAdapter);
+            if (!dp.getDataType().equals("")) {
+                dataTypeSpinner.setSelection(typesList.indexOf(dp.getDataType()));
+            }
+            else if (dp.getDataType().equals("Option List")) {
+                optionsContainer.setVisibility(View.VISIBLE);
+            }
+            dataTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    TextView typeView = (TextView) selectedItemView;
+                    String type = typeView.getText().toString();
+                    dp.setDataType(type);
+                    if (type.equals("Option List")) optionsContainer.setVisibility(View.VISIBLE);
+                    else optionsContainer.setVisibility(View.GONE);
+                }
+                @Override public void onNothingSelected(AdapterView<?> parentView) {
+                    optionsContainer.setVisibility(View.GONE);
+                }
+            });
+
+            final DataPointAdapter theAdapter = this;
+            Button delete = (Button) itemView.findViewById(R.id.delete_button);
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    question.deleteDataPoint(dp);
+                    theAdapter.notifyDataSetChanged();
+                    saveQuestionSets();
+                }
+            });
+
+            return itemView;
+        }
+    }
+
+    /*
+     *
+     */
+    public class OptionAdapter extends BaseAdapter {
+        private final Context context;
+        private final Datapoint dataPoint;
+
+        public OptionAdapter(Context context, Datapoint dataPoint) {
+            this.context = context;
+            this.dataPoint = dataPoint;
+            dataPoint.addOption("Poop");
+            System.out.println("NUM OPTIONS: " + dataPoint.getOptions().size());
+        }
+
+        @Override public long getItemId(int position) { return position;}
+        @Override public Object getItem(int position) {
+            if (dataPoint != null && dataPoint.getOptions() != null) {
+                return dataPoint.getOptions().get(position);
+            }
+            return null;
+        }
+        @Override public int getCount() {
+            if (dataPoint != null && dataPoint.getOptions() != null) {
+                return dataPoint.getOptions().size();
+            }
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View itemView = inflater.inflate(R.layout.option_list_item, parent, false);
+            final String option = dataPoint.getOptions().get(position);
+
+            final EditText label = (EditText) itemView.findViewById(R.id.option_field);
+            label.setText(option);
+            label.setSelection(label.length());
+            label.addTextChangedListener(new TextWatcher() {
+                public void afterTextChanged(Editable s) { }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    dataPoint.getOptions().set(position, label.getText().toString());
+                }
+            });
+
+            final OptionAdapter theAdapter = this;
+            Button delete = (Button) itemView.findViewById(R.id.delete_button);
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dataPoint.getOptions().remove(position);
+                    theAdapter.notifyDataSetChanged();
+                    saveQuestionSets();
                 }
             });
 
