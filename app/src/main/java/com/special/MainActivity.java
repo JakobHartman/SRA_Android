@@ -1,6 +1,9 @@
 package com.special;
 
+<<<<<<< Updated upstream:app/src/main/java/com/special/MainActivity.java
 
+=======
+>>>>>>> Stashed changes:app/src/main/java/com/special/MainActivity.java
 import com.special.menu.ResideMenu;
 import com.special.menu.ResideMenuItem;
 
@@ -24,7 +27,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< Updated upstream:app/src/main/java/com/special/MainActivity.java
         setContentView(R.layout.activity_dashboard);
+=======
+        setContentView(com.special.R.layout.activity_main);
+>>>>>>> Stashed changes:app/src/main/java/com/special/MainActivity.java
         setUpMenu();
         changeFragment(new DashboardFragment());
         
@@ -33,18 +40,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private void setUpMenu() {
     	
         resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.menu_background);
+        resideMenu.setBackground(com.special.R.drawable.menu_background);
         resideMenu.attachToActivity(this);
         resideMenu.setShadowVisible(true);
-        resideMenu.setHeaderView(findViewById(R.id.actionbar));
+        resideMenu.setHeaderView(findViewById(com.special.R.id.actionbar));
         resideMenu.setMenuListener(menuListener);
         //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip. 
         resideMenu.setScaleValue(0.6f);
 
-        itemHome     = new ResideMenuItem(this, R.drawable.ic_home,     "Home");
-        itemElements  = new ResideMenuItem(this, R.drawable.ic_elements_alternative,  "Elements");
-        itemList1 = new ResideMenuItem(this, R.drawable.ic_list_2, "List 1");
-        itemList2 = new ResideMenuItem(this, R.drawable.ic_list_1, "List 2");
+        itemHome     = new ResideMenuItem(this, com.special.R.drawable.ic_home,     "Home");
+        itemElements  = new ResideMenuItem(this, com.special.R.drawable.ic_elements_alternative,  "Elements");
+        itemList1 = new ResideMenuItem(this, com.special.R.drawable.ic_list_2, "List 1");
+        itemList2 = new ResideMenuItem(this, com.special.R.drawable.ic_list_1, "List 2");
 
         itemHome.setOnClickListener(this);
         itemElements.setOnClickListener(this);
@@ -56,7 +63,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         resideMenu.addMenuItem(itemList1);
         resideMenu.addMenuItem(itemList2);
         
-        findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
+        findViewById(com.special.R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resideMenu.openMenu();
@@ -99,7 +106,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         resideMenu.clearIgnoredViewList();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.main_fragment, targetFragment, "fragment")
+                .replace(com.special.R.id.main_fragment, targetFragment, "fragment")
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }

@@ -1,6 +1,9 @@
 package com.special;
 
+<<<<<<< Updated upstream:app/src/main/java/com/special/DetailActivity.java
 
+=======
+>>>>>>> Stashed changes:app/src/main/java/com/special/DetailActivity.java
 import com.special.utils.UIParallaxScroll;
 
 import android.app.Activity;
@@ -32,12 +35,12 @@ public class DetailActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_detail);
+		setContentView(com.special.R.layout.activity_detail);
 
-		((UIParallaxScroll) findViewById(R.id.scroller)).setOnScrollChangedListener(mOnScrollChangedListener);
+		((UIParallaxScroll) findViewById(com.special.R.id.scroller)).setOnScrollChangedListener(mOnScrollChangedListener);
 	
-	    topview = (LinearLayout) findViewById(R.id.layout_top);   
-	    titleBar = (TextView) findViewById(R.id.titleBar);
+	    topview = (LinearLayout) findViewById(com.special.R.id.layout_top);
+	    titleBar = (TextView) findViewById(com.special.R.id.titleBar);
 	    
 	    //Setting the titlebar background blank (initial state)
 	    topview.getBackground().setAlpha(0);
@@ -60,10 +63,10 @@ public class DetailActivity extends Activity {
 	    		+ "\n\n" +
 	    		"The image that you are seeing above is retrieved from flickr by 'Hotel du Vin and Bistro' and shared under the Create Commons NoDerivs 2.0 License.";
 	    		
-	    titleview = (TextView) findViewById(R.id.title);
-	    TextView mSum = (TextView) findViewById(R.id.sumary);
-	    TextView mDescr = (TextView) findViewById(R.id.description);
-	    mImg = (ImageView) findViewById(R.id.imageView);
+	    titleview = (TextView) findViewById(com.special.R.id.title);
+	    TextView mSum = (TextView) findViewById(com.special.R.id.sumary);
+	    TextView mDescr = (TextView) findViewById(com.special.R.id.description);
+	    mImg = (ImageView) findViewById(com.special.R.id.imageView);
 	    
 	    titleview.setText(title);
 	    mDescr.setText(descr);
@@ -72,7 +75,7 @@ public class DetailActivity extends Activity {
 	    
 	    titleBar.setText(title);
 	    
-	    Button btnback = (Button) findViewById(R.id.title_bar_left_menu);
+	    Button btnback = (Button) findViewById(com.special.R.id.title_bar_left_menu);
 	    btnback.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -93,14 +96,14 @@ public class DetailActivity extends Activity {
 	private UIParallaxScroll.OnScrollChangedListener mOnScrollChangedListener = new UIParallaxScroll.OnScrollChangedListener() {
         public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
         	//At this height, the title has to be fully visible
-        	final int headerHeight = (findViewById(R.id.imageView).getHeight() + titleview.getHeight()) - topview.getHeight();
+        	final int headerHeight = (findViewById(com.special.R.id.imageView).getHeight() + titleview.getHeight()) - topview.getHeight();
             final float ratio = (float) Math.min(Math.max(t, 0), headerHeight) / headerHeight;
             final int newAlpha = (int) (ratio * 255);
             topview.getBackground().setAlpha(newAlpha);
             topview.getBackground().setAlpha(newAlpha);
             
-            Animation animationFadeIn = AnimationUtils.loadAnimation(DetailActivity.this,R.anim.fadein);
-            Animation animationFadeOut = AnimationUtils.loadAnimation(DetailActivity.this,R.anim.fadeout);
+            Animation animationFadeIn = AnimationUtils.loadAnimation(DetailActivity.this, com.special.R.anim.fadein);
+            Animation animationFadeOut = AnimationUtils.loadAnimation(DetailActivity.this, com.special.R.anim.fadeout);
             
             if (newAlpha == 255 && titleBar.getVisibility() != View.VISIBLE && !animationFadeIn.hasStarted()){
             	titleBar.setVisibility(View.VISIBLE);

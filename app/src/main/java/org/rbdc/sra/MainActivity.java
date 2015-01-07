@@ -23,8 +23,12 @@ public class MainActivity extends Activity {
 
         if(CRUDFlinger.checkLocal("User")){
             loginObject login = CRUDFlinger.load("User",loginObject.class);
-            if(login.isLoggedIn()){
-                goToDashboard();
+            try{
+                if(login.isLoggedIn()){
+                    goToDashboard();
+                }
+            } catch (NullPointerException e){
+                
             }
         }
     }

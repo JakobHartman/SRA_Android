@@ -7,11 +7,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
               
-    <com.special.utils.UISwipableList
+    <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-    	android:layout_marginRight="@dimen/list_horizontal_margin"
-    	android:layout_marginLeft="@dimen/list_horizontal_margin"/>
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/list_horizontal_margin"
+    	android:layout_marginLeft="@dimen/list_horizontal_margin"
+        android:divider="@null" />
     
-</FrameLayout>
+</FrameLayout><!-- From: file:/Users/imac/Documents/SRA/Clear%20UI/src/main/res/layout/fragment_list.xml -->
