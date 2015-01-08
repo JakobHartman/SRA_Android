@@ -2,14 +2,13 @@ package org.rbdc.sra;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import org.rbdc.sra.helperClasses.CRUDFlinger;
-import org.rbdc.sra.objects.loginObject;
+import org.rbdc.sra.objects.LoginObject;
 
 
 public class MainActivity extends Activity {
@@ -22,13 +21,13 @@ public class MainActivity extends Activity {
         CRUDFlinger.setPreferences();
 
         if(CRUDFlinger.checkLocal("User")){
-            loginObject login = CRUDFlinger.load("User",loginObject.class);
+            LoginObject login = CRUDFlinger.load("User",LoginObject.class);
             try{
                 if(login.isLoggedIn()){
                     goToDashboard();
                 }
             } catch (NullPointerException e){
-                
+
             }
         }
     }

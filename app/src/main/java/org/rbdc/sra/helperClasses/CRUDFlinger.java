@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.rbdc.sra.objects.Areas;
+import org.rbdc.sra.objects.Country;
 import org.rbdc.sra.objects.Households;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
@@ -27,7 +28,7 @@ public class CRUDFlinger {
     private static CRUDFlinger instance = null;
     private static SharedPreferences loader = null;
     private static SharedPreferences.Editor saver = null;
-    private static Region region = null;
+    private static Country country = null;
     private static Application application = null;
 
     protected CRUDFlinger(){
@@ -75,26 +76,31 @@ public class CRUDFlinger {
         return (Any)object;
     }
 
-    private static void loadRegion(){
+    private static void loadCountry(){
         setPreferences();
         String json = loader.getString("Region",null);
         Gson gson = new GsonBuilder().create();
         Region region = gson.fromJson(json,Region.class);
-        CRUDFlinger.region = region;
+        CRUDFlinger.country = country;
     }
 
-    public static void saveRegion(){
+    public static void saveCountry(){
         setPreferences();
-        if(region == null){
-            loadRegion();
+        if(country == null){
+            loadCountry();
             return;
         }else{
             try{
-                saver.putString("Region",JSONUtilities.stringify(region));
+                saver.putString("Region",JSONUtilities.stringify(country));
                 saver.commit();
             }catch (JSONException e){}
         }
    }
+
+    public static int getRegionId(){
+        int i = 0;
+        return i;
+    }
 
     public static boolean checkLocal(String key){
         boolean check;
@@ -108,19 +114,19 @@ public class CRUDFlinger {
         return check;
     }
 
-    public static Region getRegion(){
-        if(region == null){
-            loadRegion();
+    public static Country getCountry(){
+        if(country == null){
+            loadCountry();
         }
-        return region;
+        return country;
     }
 
-    public static void addArea(Areas area){
-        region.addArea(area);
+    public static void addArea(int pos,Areas area){
+        country.getRegions().get(pos).addArea(area);
     }
 
-    public static void addHousehold(int pos,Households households){
-        region.getAreas().get(pos).addHousehold(households);
+    public static void addHousehold(int region,int area,Households households){
+        country.getRegions().get(region).getAreas().get(area).addHousehold(households);
     }
 
     public static void removeLocal(String key){

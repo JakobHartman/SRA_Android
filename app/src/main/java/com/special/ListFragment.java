@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
+import org.rbdc.sra.R;
+
 import java.util.ArrayList;
 
 public class ListFragment extends Fragment {
@@ -22,8 +24,8 @@ public class ListFragment extends Fragment {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentView = inflater.inflate(com.special.R.layout.fragment_list, container, false);
-        listView   = (ListView) parentView.findViewById(com.special.R.id.listView);
+        parentView = inflater.inflate(R.layout.fragment_list, container, false);
+        listView   = (ListView) parentView.findViewById(R.id.listView);
         initView();
         return parentView;
     }
@@ -61,18 +63,18 @@ public class ListFragment extends Fragment {
 
     private ArrayList<ListItem> getListData(){
         ArrayList<ListItem> listData = new ArrayList<ListItem>();
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Airport Hotel", "Large hotel located next to the Airport Terminal", "5", "Rooms Available"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Select Hotel", "Small hotel near the City", "3", "Rooms Available" ));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Beach Hotel", "Located next to a white sand beach", "3", "Stars"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Dance and Party Club", "Ideal for teens", "10+", "Rooms Available"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Royal City Resort", "Enjoy luxery in the City", "5", "Stars"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Safari Lodge", "Relax in the Wild", "4.5", "Guest Rating"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Central Park", "The famous Park Hotel","10+", "Rooms Available"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Tropical by WorldClub", "Located in South Africa", "4.8", "Guest Rating"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Ski Hotel", "Located next to the Lifts", "All", "Inclusive"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Relax by WorldClub", "Affordable Luxery", "3", "Rooms Available"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Road Motel", "Make a stop worth waiting", "No", "Reservation Needed"));
-        listData.add(new ListItem(com.special.R.drawable.ph_hotel, "Alpine Lodge", "Located in the Alps", "Full", "Pension"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Airport Hotel", "Large hotel located next to the Airport Terminal", "5", "Rooms Available"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Select Hotel", "Small hotel near the City", "3", "Rooms Available" ));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Beach Hotel", "Located next to a white sand beach", "3", "Stars"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Dance and Party Club", "Ideal for teens", "10+", "Rooms Available"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Royal City Resort", "Enjoy luxery in the City", "5", "Stars"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Safari Lodge", "Relax in the Wild", "4.5", "Guest Rating"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Central Park", "The famous Park Hotel","10+", "Rooms Available"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Tropical by WorldClub", "Located in South Africa", "4.8", "Guest Rating"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Ski Hotel", "Located next to the Lifts", "All", "Inclusive"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Relax by WorldClub", "Affordable Luxery", "3", "Rooms Available"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Road Motel", "Make a stop worth waiting", "No", "Reservation Needed"));
+        listData.add(new ListItem(R.drawable.ph_hotel, "Alpine Lodge", "Located in the Alps", "Full", "Pension"));
         return listData;
     }
 }

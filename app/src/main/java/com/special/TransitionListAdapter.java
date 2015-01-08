@@ -2,10 +2,7 @@ package com.special;
 
 import java.util.ArrayList;
 
-<<<<<<< Updated upstream:app/src/main/java/com/special/TransitionListAdapter.java
 import org.rbdc.sra.R;
-=======
->>>>>>> Stashed changes:app/src/main/java/com/special/TransitionListAdapter.java
 import com.special.utils.UICircularImage;
 
 import android.content.Context;
@@ -53,13 +50,13 @@ class TransitionListAdapter extends BaseAdapter {
                 // inflate the layout
             	LayoutInflater vi = (LayoutInflater) mContext
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(com.special.R.layout.fragment_list_item_transition, null);
+                v = vi.inflate(R.layout.fragment_list_item_transition, null);
                  
                 // well set up the ViewHolder
                 viewHolder = new ViewHolder();
-                viewHolder.title = (TextView) v.findViewById(com.special.R.id.item_title);
-                viewHolder.descr = (TextView) v.findViewById(com.special.R.id.item_description);
-                viewHolder.image = (UICircularImage) v.findViewById(com.special.R.id.item_image);
+                viewHolder.title = (TextView) v.findViewById(R.id.item_title);
+                viewHolder.descr = (TextView) v.findViewById(R.id.item_description);
+                viewHolder.image = (UICircularImage) v.findViewById(R.id.item_image);
  
                 // store the holder with the view.
                 v.setTag(viewHolder);
@@ -75,11 +72,7 @@ class TransitionListAdapter extends BaseAdapter {
             viewHolder.image.setImageResource(imageid);
             viewHolder.title.setText(item);
             viewHolder.descr.setText(desc);
-<<<<<<< Updated upstream:app/src/main/java/com/special/TransitionListAdapter.java
             TextView hiddenView = (TextView) v.findViewById(R.id.hidden_view1);
-=======
-            TextView hiddenView = (TextView) v.findViewById(com.special.R.id.hidden_view);
->>>>>>> Stashed changes:app/src/main/java/com/special/TransitionListAdapter.java
             hiddenView.setOnClickListener(new OnClickListener() {
 
                 @Override

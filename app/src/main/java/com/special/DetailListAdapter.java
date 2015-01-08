@@ -1,11 +1,8 @@
 package com.special;
 
-<<<<<<< Updated upstream:app/src/main/java/com/special/DetailListAdapter.java
-import org.rbdc.sra.R;
-=======
->>>>>>> Stashed changes:app/src/main/java/com/special/DetailListAdapter.java
-import com.special.utils.UICircularImage;
 
+import org.rbdc.sra.R;
+import com.special.utils.UICircularImage;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Html;
@@ -23,12 +20,12 @@ public class DetailListAdapter{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
  
             // 2. Get rowView from inflater
-            View rowView = inflater.inflate(com.special.R.layout.comment, null, false);
+            View rowView = inflater.inflate(R.layout.comment, null, false);
  
             // 3. Get the two text view from the rowView
-            TextView labelView = (TextView) rowView.findViewById(com.special.R.id.name);
-            TextView valueView = (TextView) rowView.findViewById(com.special.R.id.comment);
-            UICircularImage imageview = (UICircularImage) rowView.findViewById(com.special.R.id.profile);
+            TextView labelView = (TextView) rowView.findViewById(R.id.name);
+            TextView valueView = (TextView) rowView.findViewById(R.id.comment);
+            UICircularImage imageview = (UICircularImage) rowView.findViewById(R.id.profile);
  
             // 4. Set the text for textView 
             labelView.setText(item.getTitle());

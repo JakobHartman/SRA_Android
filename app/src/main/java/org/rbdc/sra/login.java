@@ -17,14 +17,18 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
+import org.rbdc.sra.objects.AreaLogin;
 import org.rbdc.sra.objects.Areas;
+import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.Datapoint;
 import org.rbdc.sra.objects.Households;
 import org.rbdc.sra.objects.Interviews;
+import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
-import org.rbdc.sra.objects.loginObject;
+import org.rbdc.sra.objects.RegionLogin;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
@@ -152,22 +156,30 @@ public class login extends Activity {
             String username = data.child("Email").getValue().toString();
             DataSnapshot ld = data.child("Organizations").child(organization);
             DataSnapshot role = ld.child("Roles");
-            DataSnapshot area = ld.child("Regions");
+            DataSnapshot country = ld.child("Countries");
 
             //create loginInfo Object
-            final loginObject info = new loginObject(username);
+            final LoginObject info = new LoginObject();
             info.setLoggedIn(true);
 
-            textview.setText("Loading User Areas");
 
-            for(DataSnapshot rs : area.getChildren()){
-                info.addRegion(rs.getName());
-                for(DataSnapshot as : rs.child("Areas").getChildren()){
-                    String areaName = as.child("Name").getValue().toString();
-                    System.out.println(areaName);
-                    info.addToAreas(areaName);
+
+            for(DataSnapshot rs : country.getChildren()){
+                CountryLogin countryLogin = new CountryLogin();
+                countryLogin.setName(rs.getName());
+                for(DataSnapshot as : rs.child("Regions").getChildren()){
+                    RegionLogin regionLogin = new RegionLogin();
+                    regionLogin.setName(as.getName());
+                    for(DataSnapshot a : as.child("Areas").getChildren()){
+                        AreaLogin areaLogin = new AreaLogin();
+                        areaLogin.setName(a.getName());
+                    }
+
                 }
+                info.setCountryLogin(countryLogin);
             }
+
+            textview.setText("Loading User Areas");
 
             //add roles to loginInfo
             for(DataSnapshot roles:role.getChildren()){
@@ -186,13 +198,13 @@ public class login extends Activity {
             //set status to download
             textview.setText("Downloading Region");
             final Region usersRegion = new Region();
-
-            for(final String rg : info.getRegions()) {
-                textview.setText("Downloading " + rg);
-                for (String ar : info.getAreaNames()) {
-                    textview.setText("Downloading area " + ar);
+            int i = 0;
+            for(final RegionLogin rg : info.getCountryLogin().getRegions()) {
+                textview.setText("Downloading " + rg.getName());
+                for (AreaLogin ar : info.getCountryLogin().getRegions().get(i).getAreas()) {
+                    textview.setText("Downloading area " + ar.getName());
                     //create reference to organization name
-                    String urlref = "https://intense-inferno-7741.firebaseio.com/Organizations/" + organization + "/Regions/" + rg + "/Areas/" + ar;
+                    String urlref = "https://intense-inferno-7741.firebaseio.com/Organizations/" + organization + "/Countries/" + info.getCountryLogin().getName() + "/Regions/" + rg.getName() + "/Areas/" + ar.getName();
                     Firebase areaData = new Firebase(urlref);
 
                     areaData.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -202,7 +214,7 @@ public class login extends Activity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Areas area = new Areas();
                                   area.setAreaName(dataSnapshot.getName());
-                                  area.setRegion(rg);
+                                  area.setRegion(rg.getName());
                                   area.setRef(dataSnapshot.getRef().toString());
                                   area.setRegion(dataSnapshot.child("Region").getValue().toString());
                             DataSnapshot resources = dataSnapshot.child("Resources");
@@ -241,7 +253,7 @@ public class login extends Activity {
                             }
                             usersRegion.addArea(area);
                             passes++;
-                            if(passes == info.getRegions().size()){
+                            if(passes == info.getCountryLogin().getRegions().size()){
                                     SharedPreferences.Editor saveRegion = getSharedPreferences("AppPrefs",MODE_PRIVATE).edit();
 
                                     try{

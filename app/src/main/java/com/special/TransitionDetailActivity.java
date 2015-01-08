@@ -24,11 +24,7 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
-<<<<<<< Updated upstream:app/src/main/java/com/special/TransitionDetailActivity.java
 import org.rbdc.sra.R;
-=======
-
->>>>>>> Stashed changes:app/src/main/java/com/special/TransitionDetailActivity.java
 import com.special.utils.UICircularImage;
 import com.special.utils.UIParallaxScroll;
 import com.special.utils.UITabs;
@@ -67,20 +63,20 @@ public class TransitionDetailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.special.R.layout.activity_detail_transition);
+        setContentView(R.layout.activity_detail_transition);
         
-        ((UIParallaxScroll) findViewById(com.special.R.id.scroller)).setOnScrollChangedListener(mOnScrollChangedListener);
+        ((UIParallaxScroll) findViewById(R.id.scroller)).setOnScrollChangedListener(mOnScrollChangedListener);
 
-        mImageView = (UICircularImage) findViewById(com.special.R.id.image_view);
-        mTextView = (TextView) findViewById(com.special.R.id.contact);
-	    mNavigationTop = (FrameLayout) findViewById(com.special.R.id.layout_top);
-	    mNavigationTitle = (TextView) findViewById(com.special.R.id.titleBar);
-        mLayoutContainer = (RelativeLayout) findViewById(com.special.R.id.bg_layout);
-	    mTitleView = (TextView) findViewById(com.special.R.id.title);
-	    mNavigationBackBtn = (Button) findViewById(com.special.R.id.title_bar_left_menu);
-	    TextView mSum = (TextView) findViewById(com.special.R.id.sumary);
-	    mShare = (UICircularImage) findViewById(com.special.R.id.action1);
-	    UITabs tab = (UITabs) findViewById(com.special.R.id.toggle);
+        mImageView = (UICircularImage) findViewById(R.id.image_view);
+        mTextView = (TextView) findViewById(R.id.contact);
+	    mNavigationTop = (FrameLayout) findViewById(R.id.layout_top);
+	    mNavigationTitle = (TextView) findViewById(R.id.titleBar);
+        mLayoutContainer = (RelativeLayout) findViewById(R.id.bg_layout);
+	    mTitleView = (TextView) findViewById(R.id.title);
+	    mNavigationBackBtn = (Button) findViewById(R.id.title_bar_left_menu);
+	    TextView mSum = (TextView) findViewById(R.id.sumary);
+	    mShare = (UICircularImage) findViewById(R.id.action1);
+	    UITabs tab = (UITabs) findViewById(R.id.toggle);
         
 	    mNavigationTop.getBackground().setAlpha(0);   
 	    mNavigationTitle.setVisibility(View.INVISIBLE);
@@ -120,7 +116,7 @@ public class TransitionDetailActivity extends Activity {
                 }
         });
         
-        final LinearLayout listView = (LinearLayout) findViewById(com.special.R.id.listView);
+        final LinearLayout listView = (LinearLayout) findViewById(R.id.listView);
         ArrayList<ListItem> data = generateData();
         for (int i = 0; i < data.size(); i++) {
         	 View v = DetailListAdapter.getView(data.get(i), this);
@@ -153,11 +149,11 @@ public class TransitionDetailActivity extends Activity {
 	        public void onCheckedChanged(RadioGroup group, int checkedId) {
 	        	switch (checkedId) {
 	        
-	        	case com.special.R.id.toggle1:
+	        	case R.id.toggle1:
 	        		mTextView.setVisibility(View.GONE);
 	        		listView.setVisibility(LinearLayout.VISIBLE);
 	        		return;
-	        	case com.special.R.id.toggle2:
+	        	case R.id.toggle2:
 	        		mTextView.setVisibility(View.VISIBLE);
 	        		listView.setVisibility(LinearLayout.GONE);
 	        		return;
@@ -189,15 +185,15 @@ public class TransitionDetailActivity extends Activity {
         ArrayList<ListItem> items = new ArrayList<ListItem>();
         items.add(new ListItem(imgId, title, lor2, null, null));
         items.add(new ListItem(imgId, title, lor1, null, null));
-        if (imgId != com.special.R.drawable.ph_1)
-        	items.add(new ListItem(com.special.R.drawable.ph_1, "Henry Smith", "<font color='"+ getResources().getColor(com.special.R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
+        if (imgId != R.drawable.ph_1)
+        	items.add(new ListItem(R.drawable.ph_1, "Henry Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
         else 
-        	items.add(new ListItem(com.special.R.drawable.ph_12, "Ella Smith", "<font color='"+ getResources().getColor(com.special.R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
+        	items.add(new ListItem(R.drawable.ph_12, "Ella Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
         items.add(new ListItem(imgId, title, lor2, null, null));
-        if (imgId != com.special.R.drawable.ph_3)
-        	items.add(new ListItem(com.special.R.drawable.ph_3, "Olivier Smith", "<font color='"+ getResources().getColor(com.special.R.color.theme_color) +"'>@" + title + "</font> " + lor4, null, null));
+        if (imgId != R.drawable.ph_3)
+        	items.add(new ListItem(R.drawable.ph_3, "Olivier Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor4, null, null));
         else 
-        	items.add(new ListItem(com.special.R.drawable.ph_12, "Ella Smith", "<font color='"+ getResources().getColor(com.special.R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
+        	items.add(new ListItem(R.drawable.ph_12, "Ella Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
         items.add(new ListItem(imgId, title, lor3, null, null));
         items.add(new ListItem(imgId, title, lor4, null, null));
  
@@ -271,8 +267,8 @@ public class TransitionDetailActivity extends Activity {
             final int newAlpha = (int) (ratio * 255);
             mNavigationTop.getBackground().setAlpha(newAlpha);
               
-            Animation animationFadeIn = AnimationUtils.loadAnimation(TransitionDetailActivity.this, com.special.R.anim.fadein);
-            Animation animationFadeOut = AnimationUtils.loadAnimation(TransitionDetailActivity.this, com.special.R.anim.fadeout);
+            Animation animationFadeIn = AnimationUtils.loadAnimation(TransitionDetailActivity.this, R.anim.fadein);
+            Animation animationFadeOut = AnimationUtils.loadAnimation(TransitionDetailActivity.this, R.anim.fadeout);
             
             if (newAlpha == 255 && mNavigationTitle.getVisibility() != View.VISIBLE && !animationFadeIn.hasStarted()){
             	mNavigationTitle.setVisibility(View.VISIBLE);

@@ -1,9 +1,5 @@
 package com.special;
 
-<<<<<<< Updated upstream:app/src/main/java/com/special/DetailActivity.java
-
-=======
->>>>>>> Stashed changes:app/src/main/java/com/special/DetailActivity.java
 import com.special.utils.UIParallaxScroll;
 
 import android.app.Activity;
@@ -22,35 +18,35 @@ import android.widget.TextView;
 import org.rbdc.sra.R;
 
 public class DetailActivity extends Activity {
-	
+
 	//Views
 	LinearLayout topview;
 	TextView titleview;
 	TextView titleBar;
 	ImageView mImg;
-	
+
 	//Layouts
 	String title;
-	 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(com.special.R.layout.activity_detail);
+		setContentView(R.layout.activity_detail);
 
-		((UIParallaxScroll) findViewById(com.special.R.id.scroller)).setOnScrollChangedListener(mOnScrollChangedListener);
-	
-	    topview = (LinearLayout) findViewById(com.special.R.id.layout_top);
-	    titleBar = (TextView) findViewById(com.special.R.id.titleBar);
-	    
+		((UIParallaxScroll) findViewById(R.id.scroller)).setOnScrollChangedListener(mOnScrollChangedListener);
+
+	    topview = (LinearLayout) findViewById(R.id.layout_top);
+	    titleBar = (TextView) findViewById(R.id.titleBar);
+
 	    //Setting the titlebar background blank (initial state)
 	    topview.getBackground().setAlpha(0);
 	    titleBar.setVisibility(View.INVISIBLE);
-	    
+
 	    Intent intent = getIntent();
 	    title = intent.getExtras().getString("title");
 	    String sum = intent.getExtras().getString("descr");
 	    int imgId = intent.getExtras().getInt("img");
-	    
+
 	    String descr = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras malesuada porta dignissim. Nam ut libero ullamcorper, molestie massa id, suscipit tellus. Morbi facilisis a augue non dapibus. Praesent turpis ligula, malesuada non laoreet et, tincidunt vel felis. Nam nec dui sollicitudin elit facilisis placerat in eget risus. Praesent venenatis mauris nec est ultricies, a iaculis odio fringilla. Nulla accumsan felis sed mi hendrerit, ut fringilla velit consequat."
                 + "\n\n" +
 	    		"Phasellus sagittis, enim ac blandit vestibulum, augue nisl malesuada dolor, nec eleifend lorem nibh imperdiet ante. In semper nunc non faucibus tristique. Nam convallis arcu imperdiet lectus aliquet elementum. Fusce convallis porta dolor vitae vehicula. Sed molestie urna quis lacus scelerisque, ac cursus nisl euismod. Vestibulum consectetur nunc ac euismod facilisis. Maecenas fringilla et dolor vitae aliquet. Proin commodo mattis fringilla. In malesuada urna sit amet eros bibendum, sed varius nisi fringilla. Proin condimentum varius tortor, scelerisque consectetur tellus suscipit eget. Nullam varius nulla eget fermentum tristique. Morbi ullamcorper ultricies semper. Etiam mollis ipsum tempus mi ultrices, nec lacinia urna convallis. Curabitur dignissim ipsum sit amet fermentum fermentum. Nunc sit amet nulla adipiscing, egestas mauris non, gravida dui. Aenean ullamcorper egestas interdum."
@@ -62,48 +58,48 @@ public class DetailActivity extends Activity {
 	    		"Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed aliquam consequat metus non iaculis. Mauris varius euismod faucibus. Nullam vitae odio vel est adipiscing elementum quis ac ipsum. Vestibulum sit amet fringilla mauris. Duis magna est, elementum sit amet arcu vel, tempor vehicula odio. Integer ultricies, magna non eleifend tristique, nunc ligula congue nisi, sit amet adipiscing enim augue et nibh. Integer mattis urna id dignissim pretium. Fusce mauris augue, varius tempor iaculis sed, bibendum nec augue. Praesent a venenatis tortor. Nullam eu tellus elit. Maecenas pharetra risus commodo, ullamcorper mi non, porta magna. Vestibulum augue libero, tempor vitae tellus vel, aliquam luctus mi."
 	    		+ "\n\n" +
 	    		"The image that you are seeing above is retrieved from flickr by 'Hotel du Vin and Bistro' and shared under the Create Commons NoDerivs 2.0 License.";
-	    		
-	    titleview = (TextView) findViewById(com.special.R.id.title);
-	    TextView mSum = (TextView) findViewById(com.special.R.id.sumary);
-	    TextView mDescr = (TextView) findViewById(com.special.R.id.description);
-	    mImg = (ImageView) findViewById(com.special.R.id.imageView);
-	    
+
+	    titleview = (TextView) findViewById(R.id.title);
+	    TextView mSum = (TextView) findViewById(R.id.sumary);
+	    TextView mDescr = (TextView) findViewById(R.id.description);
+	    mImg = (ImageView) findViewById(R.id.imageView);
+
 	    titleview.setText(title);
 	    mDescr.setText(descr);
 	    mSum.setText(sum);
 	    mImg.setImageResource(imgId);
-	    
+
 	    titleBar.setText(title);
-	    
-	    Button btnback = (Button) findViewById(com.special.R.id.title_bar_left_menu);
+
+	    Button btnback = (Button) findViewById(R.id.title_bar_left_menu);
 	    btnback.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
 				onBackPressed();
 			}
-	    	
+
 	    });
 	}
-	
+
 	@Override
 	public void onStop(){
 		super.onStop();
 		mImg.setImageResource(0);
 	}
-	
+
 	//performing changes to the titlebars visibility
 	private UIParallaxScroll.OnScrollChangedListener mOnScrollChangedListener = new UIParallaxScroll.OnScrollChangedListener() {
         public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
         	//At this height, the title has to be fully visible
-        	final int headerHeight = (findViewById(com.special.R.id.imageView).getHeight() + titleview.getHeight()) - topview.getHeight();
+        	final int headerHeight = (findViewById(R.id.imageView).getHeight() + titleview.getHeight()) - topview.getHeight();
             final float ratio = (float) Math.min(Math.max(t, 0), headerHeight) / headerHeight;
             final int newAlpha = (int) (ratio * 255);
             topview.getBackground().setAlpha(newAlpha);
             topview.getBackground().setAlpha(newAlpha);
-            
-            Animation animationFadeIn = AnimationUtils.loadAnimation(DetailActivity.this, com.special.R.anim.fadein);
-            Animation animationFadeOut = AnimationUtils.loadAnimation(DetailActivity.this, com.special.R.anim.fadeout);
+
+            Animation animationFadeIn = AnimationUtils.loadAnimation(DetailActivity.this, R.anim.fadein);
+            Animation animationFadeOut = AnimationUtils.loadAnimation(DetailActivity.this, R.anim.fadeout);
             
             if (newAlpha == 255 && titleBar.getVisibility() != View.VISIBLE && !animationFadeIn.hasStarted()){
             	titleBar.setVisibility(View.VISIBLE);

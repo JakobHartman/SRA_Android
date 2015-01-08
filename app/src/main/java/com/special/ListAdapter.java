@@ -2,11 +2,7 @@ package com.special;
 
 import java.util.ArrayList;
 
-<<<<<<< Updated upstream:app/src/main/java/com/special/ListAdapter.java
 import org.rbdc.sra.R;
-
-=======
->>>>>>> Stashed changes:app/src/main/java/com/special/ListAdapter.java
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -55,15 +51,15 @@ class ListAdapter extends BaseAdapter {
                 // inflate the layout
             	LayoutInflater vi = (LayoutInflater) mContext
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(com.special.R.layout.fragment_list_item, null);
+                v = vi.inflate(R.layout.fragment_list_item, null);
                  
                 // well set up the ViewHolder
                 viewHolder = new ViewHolder();
-                viewHolder.title = (TextView) v.findViewById(com.special.R.id.item_title);
-                viewHolder.descr = (TextView) v.findViewById(com.special.R.id.item_description);
-                viewHolder.image = (ImageView) v.findViewById(com.special.R.id.item_image);
-                viewHolder.number = (TextView) v.findViewById(com.special.R.id.item_number);
-                viewHolder.numbertxt = (TextView) v.findViewById(com.special.R.id.item_numbertext);
+                viewHolder.title = (TextView) v.findViewById(R.id.item_title);
+                viewHolder.descr = (TextView) v.findViewById(R.id.item_description);
+                viewHolder.image = (ImageView) v.findViewById(R.id.item_image);
+                viewHolder.number = (TextView) v.findViewById(R.id.item_number);
+                viewHolder.numbertxt = (TextView) v.findViewById(R.id.item_numbertext);
  
                 // store the holder with the view.
                 v.setTag(viewHolder);

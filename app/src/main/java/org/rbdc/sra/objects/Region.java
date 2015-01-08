@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Region implements Serializable {
     private String regionName;
     private ArrayList<Areas> areas;
+    private int regionId;
 
     public Region(){
         regionName = new String();
@@ -33,6 +34,14 @@ public class Region implements Serializable {
 
     public void addArea(Areas area){
         areas.add(area);
+    }
+
+    public int getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(int regionId) {
+        this.regionId = regionId;
     }
 
     public Areas getArea(String areaName) {
