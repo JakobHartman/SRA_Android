@@ -23,8 +23,13 @@ public class MainActivity extends Activity {
 
         if(CRUDFlinger.checkLocal("User")){
             loginObject login = CRUDFlinger.load("User",loginObject.class);
-            if(login.isLoggedIn()){
-                goToDashboard();
+            System.out.println(login);
+            try {
+                if (login.isLoggedIn()) {
+                    goToDashboard();
+                }
+            }catch (Exception e) {
+
             }
         }
     }

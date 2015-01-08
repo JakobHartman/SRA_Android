@@ -2,7 +2,10 @@
 <animated-rotate
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@drawable/loader"
+    android:duration="1600"
+    android:fromDegrees="0"
+    android:interpolator="@android:anim/linear_interpolator"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:duration="100"
-    android:toDegrees="1080"/>
+    android:repeatCount="infinite"
+    android:toDegrees="358" />
