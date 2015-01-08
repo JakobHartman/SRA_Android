@@ -99,8 +99,7 @@
         <item>Text</item>
         <item>Number</item>
         <item>Date</item>
-        <item>List - Single Answer</item>
-        <item>List - Multi Answer</item>
+        <item>Option List</item>
     </string-array>
     <string-array name="question_set_categories_array">
         <item>Area</item>

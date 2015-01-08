@@ -32,8 +32,7 @@
     <Spinner
         android:id="@+id/data_type_spinner"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/Base.V11.Theme.AppCompat.Light"/>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/options_container"
@@ -43,18 +42,13 @@
         android:layout_height="fill_parent"
         android:paddingLeft="50dip"
         android:paddingRight="0dip" >
-        <LinearLayout
+        <ListView
             android:id="@+id/options_list_view"
-            android:orientation="vertical"
+            android:visibility="visible"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-        <!--<ListView-->
-            <!--android:id="@+id/options_list_view"-->
-            <!--android:visibility="visible"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="fill_parent"-->
-            <!--android:layout_marginRight="@dimen/list_horizontal_margin"-->
-            <!--android:layout_marginLeft="@dimen/list_horizontal_margin" />-->
+            android:layout_height="fill_parent"
+            android:layout_marginRight="@dimen/list_horizontal_margin"
+            android:layout_marginLeft="@dimen/list_horizontal_margin" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
