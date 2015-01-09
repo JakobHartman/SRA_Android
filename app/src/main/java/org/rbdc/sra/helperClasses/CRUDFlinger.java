@@ -78,9 +78,9 @@ public class CRUDFlinger {
 
     private static void loadCountry(){
         setPreferences();
-        String json = loader.getString("Region",null);
+        String json = loader.getString("Country",null);
         Gson gson = new GsonBuilder().create();
-        Region region = gson.fromJson(json,Region.class);
+        Country country = gson.fromJson(json,Country.class);
         CRUDFlinger.country = country;
     }
 
@@ -91,16 +91,11 @@ public class CRUDFlinger {
             return;
         }else{
             try{
-                saver.putString("Region",JSONUtilities.stringify(country));
+                saver.putString("Country",JSONUtilities.stringify(country));
                 saver.commit();
             }catch (JSONException e){}
         }
    }
-
-    public static int getRegionId(){
-        int i = 0;
-        return i;
-    }
 
     public static boolean checkLocal(String key){
         boolean check;
@@ -110,7 +105,6 @@ public class CRUDFlinger {
         }catch (NullPointerException e){
             check = false;
         }
-        System.out.println(check);
         return check;
     }
 
@@ -121,12 +115,21 @@ public class CRUDFlinger {
         return country;
     }
 
-    public static void addArea(int pos,Areas area){
-        country.getRegions().get(pos).addArea(area);
+    public static void addArea(Areas area){
+        int i = 0;
+        for(Region regions : country.getRegions()){
+            System.out.println(regions.getRegionName() + " " + area.getRegion());
+            if(regions.getRegionName().equals(area.getRegion())){
+                country.getRegions().get(i).addArea(area);
+                System.out.println(country.getRegions().get(i).getRegionName());
+            }
+            i++;
+        }
+
     }
 
-    public static void addHousehold(int region,int area,Households households){
-        country.getRegions().get(region).getAreas().get(area).addHousehold(households);
+    public static void addHousehold(int area,Households households){
+        getAreas().get(area).addHousehold(households);
     }
 
     public static void removeLocal(String key){
@@ -221,5 +224,13 @@ public class CRUDFlinger {
         if (questionSets == null) { loadQuestionSets(); }
         questionSets.add(qs);
         saveQuestionSets();
+    }
+
+    public static ArrayList<Areas> getAreas(){
+        ArrayList<Areas> areas = new ArrayList<Areas>();
+        for(Region region : CRUDFlinger.getCountry().getRegions()){
+            areas.addAll(region.getAreas());
+        }
+        return areas;
     }
 }

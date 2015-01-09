@@ -12,16 +12,16 @@ public class Households implements Serializable {
     private long id;
     private String ref;
     private ArrayList<Interviews> interviews;
-    private ArrayList<String> members;
+    private ArrayList<Member> members;
 
     public Households(){
         householdName = "";
         id = 0;
         interviews = new ArrayList<Interviews>();
-        members = new ArrayList<String>();
+        members = new ArrayList<Member>();
     }
 
-    public void addMember(String name){
+    public void addMember(Member name){
         members.add(name);
     }
 
@@ -29,11 +29,11 @@ public class Households implements Serializable {
         interviews.add(interview);
     }
 
-    public void setMembers(ArrayList<String> members) {
+    public void setMembers(ArrayList<Member> members) {
         this.members = members;
     }
 
-    public ArrayList<String> getMembers() {
+    public ArrayList<Member> getMembers() {
         return members;
     }
 

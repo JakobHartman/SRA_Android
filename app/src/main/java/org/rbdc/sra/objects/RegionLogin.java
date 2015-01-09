@@ -12,6 +12,14 @@ public class RegionLogin implements Serializable {
     private String name;
     private ArrayList<AreaLogin> areas;
 
+    public RegionLogin(){
+        areas = new ArrayList<AreaLogin>();
+    }
+
+    public void addArea(AreaLogin area){
+        areas.add(area);
+    }
+
     public void setName(String name) {
         this.name = name;
     }

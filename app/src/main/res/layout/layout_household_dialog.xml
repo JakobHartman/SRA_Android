@@ -23,21 +23,6 @@
         android:layout_centerHorizontal="true">
     </EditText>
 
-    <EditText
-        android:id="@+id/editText1"
-        android:padding="8dp"
-        android:background="@drawable/tab_default"
-        android:textColor="@android:color/black"
-        android:layout_weight="1"
-        android:hint="Head of Household Name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-    </EditText>
-
     <Button
         android:id="@+id/btncancel"
         android:layout_width="wrap_content"
@@ -45,9 +30,9 @@
         android:text="Cancel"
         style="@style/UIButtonInverse"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/editText1"
-        android:layout_alignRight="@+id/editText1"
-        android:layout_alignEnd="@+id/editText1" />
+        android:layout_below="@+id/editText"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignEnd="@+id/editText" />
 
     <Button
         android:id="@+id/btn"
