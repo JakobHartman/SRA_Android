@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".login"
             android:label="@string/title_activity_login" >
         </activity>
