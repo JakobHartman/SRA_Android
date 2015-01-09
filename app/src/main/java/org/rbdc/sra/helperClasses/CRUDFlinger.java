@@ -51,7 +51,8 @@ public class CRUDFlinger {
         if(application == null){
             throw new NullPointerException();
         }
-        else if (loader == null || saver == null) {
+        if (loader == null || saver == null) {
+            System.out.println("hello crud" + application);
             CRUDFlinger.loader = application.getSharedPreferences("AppPrefs", application.MODE_PRIVATE);
             CRUDFlinger.saver = application.getSharedPreferences("AppPrefs", application.MODE_PRIVATE).edit();
         }
@@ -68,9 +69,11 @@ public class CRUDFlinger {
     }
 
     public static <Any> Any load(String key,Class className){
-        setPreferences();
+        //setPreferences();
         String json = loader.getString(key,null);
         Gson gson = new GsonBuilder().create();
+        System.out.print("Json" + loader);
+
         Object object = gson.fromJson(json,className);
 
         return (Any)object;
