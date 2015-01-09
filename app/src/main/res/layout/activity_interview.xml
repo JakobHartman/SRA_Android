@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.special.MenuActivity$CalendarFragment"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:orientation="horizontal"
+        android:background="#ffffff"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/UIButtonInverse"
+            android:text="Add Response Set"
+            android:textSize="@dimen/textsize_medium"
+            android:padding="12dp"
+            android:id="@+id/add_response_set_button"
+            android:layout_gravity="right|center_vertical"
+            android:layout_margin="4dp"
+            android:layout_weight=".5" />
+    </FrameLayout>
+
+    <com.special.utils.UISwipableList
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/list_horizontal_margin"
+        android:layout_marginLeft="@dimen/list_horizontal_margin" />
+
+</LinearLayout>

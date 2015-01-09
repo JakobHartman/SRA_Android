@@ -26,6 +26,10 @@
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard" >
         </activity>
+        <activity
+            android:name="com.special.InterviewActivity"
+            android:label="@string/title_activity_interview" >
+        </activity>
     </application>
 
 </manifest>
