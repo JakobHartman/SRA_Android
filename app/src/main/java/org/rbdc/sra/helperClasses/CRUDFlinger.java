@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.rbdc.sra.objects.Areas;
+import org.rbdc.sra.objects.Country;
 import org.rbdc.sra.objects.Households;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
@@ -27,7 +28,7 @@ public class CRUDFlinger {
     private static CRUDFlinger instance = null;
     private static SharedPreferences loader = null;
     private static SharedPreferences.Editor saver = null;
-    private static Region region = null;
+    private static Country country = null;
     private static Application application = null;
 
     protected CRUDFlinger(){
@@ -78,22 +79,22 @@ public class CRUDFlinger {
         return (Any)object;
     }
 
-    private static void loadRegion(){
+    private static void loadCountry(){
         setPreferences();
-        String json = loader.getString("Region",null);
+        String json = loader.getString("Country",null);
         Gson gson = new GsonBuilder().create();
-        Region region = gson.fromJson(json,Region.class);
-        CRUDFlinger.region = region;
+        Country country = gson.fromJson(json,Country.class);
+        CRUDFlinger.country = country;
     }
 
-    public static void saveRegion(){
+    public static void saveCountry(){
         setPreferences();
-        if(region == null){
-            loadRegion();
+        if(country == null){
+            loadCountry();
             return;
         }else{
             try{
-                saver.putString("Region",JSONUtilities.stringify(region));
+                saver.putString("Country",JSONUtilities.stringify(country));
                 saver.commit();
             }catch (JSONException e){}
         }
@@ -107,23 +108,31 @@ public class CRUDFlinger {
         }catch (NullPointerException e){
             check = false;
         }
-        System.out.println(check);
         return check;
     }
 
-    public static Region getRegion(){
-        if(region == null){
-            loadRegion();
+    public static Country getCountry(){
+        if(country == null){
+            loadCountry();
         }
-        return region;
+        return country;
     }
 
     public static void addArea(Areas area){
-        region.addArea(area);
+        int i = 0;
+        for(Region regions : country.getRegions()){
+            System.out.println(regions.getRegionName() + " " + area.getRegion());
+            if(regions.getRegionName().equals(area.getRegion())){
+                country.getRegions().get(i).addArea(area);
+                System.out.println(country.getRegions().get(i).getRegionName());
+            }
+            i++;
+        }
+
     }
 
-    public static void addHousehold(int pos,Households households){
-        region.getAreas().get(pos).addHousehold(households);
+    public static void addHousehold(int area,Households households){
+        getAreas().get(area).addHousehold(households);
     }
 
     public static void removeLocal(String key){
@@ -218,5 +227,13 @@ public class CRUDFlinger {
         if (questionSets == null) { loadQuestionSets(); }
         questionSets.add(qs);
         saveQuestionSets();
+    }
+
+    public static ArrayList<Areas> getAreas(){
+        ArrayList<Areas> areas = new ArrayList<Areas>();
+        for(Region region : CRUDFlinger.getCountry().getRegions()){
+            areas.addAll(region.getAreas());
+        }
+        return areas;
     }
 }

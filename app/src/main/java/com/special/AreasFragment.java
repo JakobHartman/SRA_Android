@@ -3,6 +3,7 @@ package com.special;
 
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
+import android.nfc.FormatException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.view.Window;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,8 +25,8 @@ import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.objects.Areas;
 import org.rbdc.sra.objects.Households;
+import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
-import org.rbdc.sra.objects.loginObject;
 
 import com.special.menu.ResideMenu;
 import com.special.utils.UISwipableList;
@@ -31,7 +34,6 @@ import com.special.utils.UITabs;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
-import quickconnectfamily.json.ParseException;
 
 public class AreasFragment extends Fragment {
 
@@ -44,6 +46,7 @@ public class AreasFragment extends Fragment {
     Button btn, btnCancel;
     Dialog dialog;
     private static String navigation;
+
     private static int areaId;
     private static int householdId;
 
@@ -122,10 +125,10 @@ public class AreasFragment extends Fragment {
 
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final Spinner regionText = (Spinner) dialog.findViewById(R.id.spinner);
-        final loginObject loginObject = CRUDFlinger.load("User",loginObject.class);
+        final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
         ArrayList<String> regions = new ArrayList<String>();
         regions.add("Select Region");
-        regions.addAll(loginObject.getRegions());
+        regions.addAll(loginObject.getCountryLogin().getRegionNames());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,regions);
         regionText.setAdapter(adapter);
 
@@ -143,12 +146,12 @@ public class AreasFragment extends Fragment {
                     toast.makeText(getActivity(),"Please Select A Valid Region", Toast.LENGTH_LONG).show();
                 }else{
                     newArea.setAreaName(areaText.getText().toString());
-                    newArea.setRegion(loginObject.getRegions().get(regionText.getSelectedItemPosition() - 1));
+                    newArea.setRegion(loginObject.getCountryLogin().getRegionNames().get(regionText.getSelectedItemPosition() - 1));
                     CRUDFlinger.addArea(newArea);
                     mAdapter = new TransitionListAdapter(getActivity(),listArea());
                     listView.setAdapter(mAdapter);
                     dialog.cancel();
-                    CRUDFlinger.saveRegion();
+                    CRUDFlinger.saveCountry();
                 }
             }
         });
@@ -177,11 +180,10 @@ public class AreasFragment extends Fragment {
         dialog.setContentView(R.layout.layout_household_dialog);
 
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
-        final EditText headText = (EditText) dialog.findViewById(R.id.editText1);
-        final loginObject loginObject = CRUDFlinger.load("User",loginObject.class);
+        final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
         ArrayList<String> regions = new ArrayList<String>();
         regions.add("Select Region");
-        regions.addAll(loginObject.getRegions());
+        regions.addAll(loginObject.getCountryLogin().getRegionNames());
 
         btn = (Button) dialog.findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -193,16 +195,13 @@ public class AreasFragment extends Fragment {
 
                 if(areaText.getText().toString().matches("")){
                     toast.makeText(getActivity(),"Please Enter A Valid Household Name", Toast.LENGTH_LONG).show();
-                }else if(headText.getText().toString().matches("")){
-                    toast.makeText(getActivity(),"Please Select A Valid Head Member Name", Toast.LENGTH_LONG).show();
                 }else{
                     newHousehold.setHouseholdName(areaText.getText().toString());
-                    newHousehold.addMember(headText.getText().toString());
                     CRUDFlinger.addHousehold(areaId,newHousehold);
                     mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(areaId));
                     listView.setAdapter(mAdapter);
                     dialog.cancel();
-                    CRUDFlinger.saveRegion();
+                    CRUDFlinger.saveCountry();
 
                 }
             }
@@ -244,7 +243,6 @@ public class AreasFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("GG");
                 Toast toast = new Toast(getActivity());
                 if (areaText.getText().toString().matches("")) {
                     toast.makeText(getActivity(),"Please Enter A Valid Name",Toast.LENGTH_LONG).show();
@@ -275,16 +273,14 @@ public class AreasFragment extends Fragment {
                             break;
                     }
                     member.setInSchool(isInSchool);
-                    member.setAreaName(CRUDFlinger.getRegion().getAreas().get(areaId).getAreaName());
-                    member.setHouseholdName(CRUDFlinger.getRegion().getAreas().get(areaId).getHouseholds().get(householdId).getHouseholdName());
+                    member.setAreaName(CRUDFlinger.getAreas().get(areaId).getAreaName());
+                    member.setHouseholdName(CRUDFlinger.getAreas().get(areaId).getHouseholds().get(householdId).getHouseholdName());
                     dialog.cancel();
 
-                    try{
-                        String string = JSONUtilities.stringify(member);
-                        System.out.println(string);
-                    }catch (JSONException e){
-
-                    }
+                    CRUDFlinger.getAreas().get(areaId).getHouseholds().get(householdId).addMember(member);
+                    mAdapter = new TransitionListAdapter(getActivity(),listMembers(areaId,householdId));
+                    listView.setAdapter(mAdapter);
+                    CRUDFlinger.saveCountry();
                 }
 
             }
@@ -308,16 +304,15 @@ public class AreasFragment extends Fragment {
 
     private ArrayList<ListItem> listArea(){
         ArrayList<ListItem> listData = new ArrayList<ListItem>();
-        for(Areas area : CRUDFlinger.getRegion().getAreas()){
+        for(Areas area : CRUDFlinger.getAreas()){
             listData.add(new ListItem(R.drawable.ic_like,area.getAreaName(),area.getHouseholds().size() + " Households",null,null));
         }
         return listData;
     }
 
-
     private ArrayList<ListItem> listHouseholds(int pos){
         ArrayList<ListItem>listData = new ArrayList<ListItem>();
-        for(Households households : CRUDFlinger.getRegion().getAreas().get(pos).getHouseholds()){
+        for(Households households : CRUDFlinger.getAreas().get(pos).getHouseholds()){
             listData.add(new ListItem(R.drawable.ic_like,households.getHouseholdName(),households.getMembers().size() + " Members",null,null));
         }
         return listData;
@@ -325,8 +320,8 @@ public class AreasFragment extends Fragment {
 
     private ArrayList<ListItem> listMembers(int areaPos,int householdPos){
         ArrayList<ListItem>listData = new ArrayList<ListItem>();
-        for(String member : CRUDFlinger.getRegion().getAreas().get(areaPos).getHouseholds().get(householdPos).getMembers()){
-            listData.add(new ListItem(R.drawable.ic_like,member,"",null,null));
+        for(Member member : CRUDFlinger.getAreas().get(areaPos).getHouseholds().get(householdPos).getMembers()){
+            listData.add(new ListItem(R.drawable.ic_like,member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(),member.getRelationship(),member.getGender()));
         }
         return listData;
     }
@@ -338,8 +333,27 @@ public class AreasFragment extends Fragment {
 
         String time = day + "/" + month + "/" + year;
 
+        return time;
+    }
 
+    public String getAge(String bday){
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+        String time;
+        time = new String();
+        try {
+            Date date = formatter.parse(bday);
+            Date current = new Date();
+            long diff = current.getTime() - date.getTime();
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(date.getTime());
+            int mYear = c.get(Calendar.YEAR);
+            c.setTimeInMillis(current.getTime());
+            int cYear = c.get(Calendar.YEAR);
 
+            time = cYear - mYear + "";
+        }catch (ParseException e){
+
+        }
         return time;
     }
 

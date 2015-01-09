@@ -69,14 +69,14 @@ public class TransitionDetailActivity extends Activity {
 
         mImageView = (UICircularImage) findViewById(R.id.image_view);
         mTextView = (TextView) findViewById(R.id.contact);
-	    mNavigationTop = (FrameLayout) findViewById(R.id.layout_top);   
+	    mNavigationTop = (FrameLayout) findViewById(R.id.layout_top);
 	    mNavigationTitle = (TextView) findViewById(R.id.titleBar);
         mLayoutContainer = (RelativeLayout) findViewById(R.id.bg_layout);
 	    mTitleView = (TextView) findViewById(R.id.title);
 	    mNavigationBackBtn = (Button) findViewById(R.id.title_bar_left_menu);
 	    TextView mSum = (TextView) findViewById(R.id.sumary);
 	    mShare = (UICircularImage) findViewById(R.id.action1);
-	    UITabs tab = (UITabs) findViewById(R.id.toggle);      
+	    UITabs tab = (UITabs) findViewById(R.id.toggle);
         
 	    mNavigationTop.getBackground().setAlpha(0);   
 	    mNavigationTitle.setVisibility(View.INVISIBLE);
@@ -267,8 +267,8 @@ public class TransitionDetailActivity extends Activity {
             final int newAlpha = (int) (ratio * 255);
             mNavigationTop.getBackground().setAlpha(newAlpha);
               
-            Animation animationFadeIn = AnimationUtils.loadAnimation(TransitionDetailActivity.this,R.anim.fadein);
-            Animation animationFadeOut = AnimationUtils.loadAnimation(TransitionDetailActivity.this,R.anim.fadeout);
+            Animation animationFadeIn = AnimationUtils.loadAnimation(TransitionDetailActivity.this, R.anim.fadein);
+            Animation animationFadeOut = AnimationUtils.loadAnimation(TransitionDetailActivity.this, R.anim.fadeout);
             
             if (newAlpha == 255 && mNavigationTitle.getVisibility() != View.VISIBLE && !animationFadeIn.hasStarted()){
             	mNavigationTitle.setVisibility(View.VISIBLE);

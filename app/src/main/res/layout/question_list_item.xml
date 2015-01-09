@@ -12,9 +12,6 @@
         android:text="New Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/list_item_name"
-        style="@style/UIButtonInverse"
-        android:layout_gravity="left|center_vertical"
-        android:gravity="left|center_vertical"
         android:clickable="true"
         android:layout_weight=".75" />
 

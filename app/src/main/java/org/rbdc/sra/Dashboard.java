@@ -1,6 +1,5 @@
 package org.rbdc.sra;
 
-
 import com.special.AreasFragment;
 import com.special.DashboardFragment;
 import com.special.LogoutFragment;
@@ -54,6 +53,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
         //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip. 
         resideMenu.setScaleValue(0.6f);
+
 
         itemDashboard = new ResideMenuItem(this, R.drawable.ic_dash, "Dashboard");
         itemAreas = new ResideMenuItem(this, R.drawable.ic_map,  "Areas");

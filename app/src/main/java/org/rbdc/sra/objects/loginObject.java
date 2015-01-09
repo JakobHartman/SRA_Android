@@ -6,25 +6,11 @@ import java.util.ArrayList;
 /**
  * Created by jakobhartman on 11/14/14.
  */
-public class loginObject implements Serializable {
+public class LoginObject implements Serializable {
     private String username;
     private ArrayList<String> permissions;
-    private ArrayList<String> areaNames;
-    private ArrayList<String> regions;
+    private CountryLogin countryLogin;
     private boolean loggedIn;
-
-    public ArrayList<String> getRegions() {
-        return regions;
-    }
-
-    public void setRegions(ArrayList<String> regions) {
-        this.regions = regions;
-    }
-
-    public void addRegion(String regionName){
-        regions.add(regionName);
-    }
-
 
     public String getUsername() {
         return username;
@@ -38,14 +24,6 @@ public class loginObject implements Serializable {
         permissions.add(addition);
     }
 
-    public void addToAreas(String area){
-        areaNames.add(area);
-    }
-
-    public ArrayList<String> getAreaNames() {
-        return areaNames;
-    }
-
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
@@ -54,11 +32,23 @@ public class loginObject implements Serializable {
         return loggedIn;
     }
 
-    public loginObject(String username){
-        this.loggedIn = false;
-        this.permissions = new ArrayList<String>();
+    public CountryLogin getCountryLogin() {
+        return countryLogin;
+    }
+
+    public void setCountryLogin(CountryLogin countryLogin) {
+        this.countryLogin = countryLogin;
+    }
+
+    public void setPermissions(ArrayList<String> permissions) {
+        this.permissions = permissions;
+    }
+
+    public void setUsername(String username) {
         this.username = username;
-        this.areaNames = new ArrayList<String>();
-        this.regions = new ArrayList<String>();
+    }
+
+    public LoginObject(){
+
     }
 }

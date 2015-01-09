@@ -3,7 +3,6 @@ package com.special;
 import java.util.ArrayList;
 
 import org.rbdc.sra.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
