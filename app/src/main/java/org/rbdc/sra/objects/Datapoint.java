@@ -20,7 +20,7 @@ public class Datapoint implements Serializable {
      */
     public Datapoint() {
         this.label = "";
-        this.dataType = "";
+        this.dataType = DatapointTypes.TEXT;
         this.answers = new ArrayList<String>();
 
         optionListType = "List";
@@ -32,7 +32,8 @@ public class Datapoint implements Serializable {
      */
     public void setLabel(String label) {
         this.label = label;
-        if (!label.equals("Option List")) options.clear();
+        if (!dataTypeIsAList())
+            options.clear();
     }
     public void setDataType(String dataType) { this.dataType = dataType; }
     public void addAnswer(String answer) { this.answers.add(answer); }
@@ -43,13 +44,18 @@ public class Datapoint implements Serializable {
     public void setAnswers(ArrayList<String> answers) { this.answers = answers; }
     public void setOptionsType(String type) { this.optionListType = type; }
     public void addOption(String option) { options.add(option); }
+    public void setOption(int index, String option) { options.set(index, option); }
     public void deleteOption(String option) { options.remove(option); }
+    public void deleteOption(int index) { options.remove(index); }
 
     /*
      * Accessors
      */
     public String getLabel() { return label; }
     public String getDataType() { return dataType; }
+    public boolean dataTypeIsAList() {
+        return dataType.equals(DatapointTypes.LIST_SINGLE_ANSWER) || dataType.equals(DatapointTypes.LIST_MULTI_ANSWER);
+    }
     public ArrayList<String> getAnswers() { return answers; }
     public String getSingleAnswer() {
         if (answers.isEmpty()) return "";

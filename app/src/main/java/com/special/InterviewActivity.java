@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class InterviewActivity extends ActionBarActivity {
     private UISwipableList questionSetListView;
-    private QuestionSetListAdapter questionSetListAdapter;
+//    private QuestionSetListAdapter questionSetListAdapter;
     private ResideMenu resideMenu;
 
     private ArrayList<QuestionSet> questionSets;
