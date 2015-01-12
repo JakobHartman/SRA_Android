@@ -67,7 +67,7 @@ public class AreasFragment extends Fragment {
 
     private void initView(){
         mAdapter = new TransitionListAdapter(getActivity(), listArea());
-        listView.setActionLayout(R.id.hidden_view2);
+        listView.setActionLayout(R.id.hidden);
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);
