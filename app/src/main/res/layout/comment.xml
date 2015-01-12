@@ -122,7 +122,7 @@
        				          android:layout_toRightOf="@+id/button1" >
 
        				          <ImageView
-       				              android:id="@+id/imageView1"
+       				              android:id="@+id/imageView12"
        				              android:layout_width="30dp"
        				              android:layout_height="25dp"
        				              android:adjustViewBounds="true"

@@ -44,7 +44,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     private void setUpMenu() {
 
         resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.grass_cut);
+
 
         resideMenu.attachToActivity(this);
         resideMenu.setShadowVisible(true);
