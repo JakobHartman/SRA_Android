@@ -49,6 +49,6 @@ public class LoginObject implements Serializable {
     }
 
     public LoginObject(){
-
+        permissions = new ArrayList<String>();
     }
 }
