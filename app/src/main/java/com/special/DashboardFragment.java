@@ -2,6 +2,8 @@ package com.special;
 
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.SyncUpload;
+
 import com.special.menu.ResideMenu;
 
 import android.content.Intent;
@@ -35,13 +37,17 @@ public class DashboardFragment extends Fragment {
             }
         });
         
-        parentView.findViewById(R.id.btn_open_site).setOnClickListener(new View.OnClickListener() {
+        parentView.findViewById(R.id.btn_sync).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SyncUpload syncUp = new SyncUpload();
+                syncUp.startUpload();
+                /* TEMPLATE STUFF
             	String url = "http://codecanyon.net/user/sherdleapps/portfolio?ref=sherdleapps";
             	Intent i = new Intent(Intent.ACTION_VIEW);
             	i.setData(Uri.parse(url));
-            	startActivity(i);
+            	startActivity(i); */
             }
         });
         
