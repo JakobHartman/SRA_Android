@@ -72,7 +72,7 @@ public class CRUDFlinger {
         //setPreferences();
         String json = loader.getString(key,null);
         Gson gson = new GsonBuilder().create();
-        System.out.print("Json" + loader);
+        System.out.print("Json" + loader+"\n");
 
         Object object = gson.fromJson(json,className);
 

@@ -27,7 +27,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setUpViews() {
-        Dashboard parentActivity = (Dashboard)getActivity();
+        final Dashboard parentActivity = (Dashboard)getActivity();
         resideMenu = parentActivity.getResideMenu();
 
         parentView.findViewById(R.id.btn_open_menu).setOnClickListener(new View.OnClickListener() {
@@ -41,7 +41,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                SyncUpload syncUp = new SyncUpload();
+                SyncUpload syncUp = new SyncUpload(parentActivity);
                 syncUp.startUpload();
                 /* TEMPLATE STUFF
             	String url = "http://codecanyon.net/user/sherdleapps/portfolio?ref=sherdleapps";
