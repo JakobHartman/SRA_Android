@@ -20,12 +20,12 @@ public class SyncUpload {
     }*/
 
     public void startUpload() {
-        //Firebase.setAndroidContext(activity.getApplication());
+        Firebase.setAndroidContext(activity.getApplication());
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
 
         System.out.println("LoginObject for Upload "+loginObject);
 
-        //Firebase database = new Firebase("https://intense-inferno-7741.firebaseio.com//Organizations");
+        //Firebase database = new Firebase("https://intense-inferno-7741.firebaseio.com/Organizations");
 
 
 

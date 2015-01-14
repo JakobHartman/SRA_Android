@@ -222,6 +222,7 @@ public class login extends Activity {
                             Areas area = new Areas();
                             area.setAreaName(dataSnapshot.child("Name").getValue().toString());
                             area.setRegion(rg.getName());
+                            area.setCountry(dataSnapshot.child("Country").getValue().toString());
                             area.setRef(dataSnapshot.getRef().toString());
                             area.setRegion(dataSnapshot.child("Region").getValue().toString());
                             DataSnapshot resources = dataSnapshot.child("Resources");
