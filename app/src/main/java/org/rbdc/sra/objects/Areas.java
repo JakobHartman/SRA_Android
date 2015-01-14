@@ -9,7 +9,6 @@ import java.util.ArrayList;
  */
 public class  Areas implements Serializable {
     private String AreaName;
-    private String ref;
     private ArrayList<Households> households;
     private String region;
     private String country;
@@ -24,14 +23,6 @@ public class  Areas implements Serializable {
 
     public Areas(){
         households = new ArrayList<Households>();
-    }
-
-    public String getRef() {
-        return ref;
-    }
-
-    public void setRef(String ref) {
-        this.ref = ref;
     }
 
     public String getAreaName() {

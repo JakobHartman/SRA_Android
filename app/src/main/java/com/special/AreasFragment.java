@@ -146,7 +146,6 @@ public class AreasFragment extends Fragment {
                     toast.makeText(getActivity(),"Please Select A Valid Region", Toast.LENGTH_LONG).show();
                 }else{
                     newArea.setAreaName(areaText.getText().toString());
-                    newArea.setRegion(loginObject.getCountryLogin().getRegionNames().get(regionText.getSelectedItemPosition() - 1));
                     CRUDFlinger.addArea(newArea);
                     mAdapter = new TransitionListAdapter(getActivity(),listArea());
                     listView.setAdapter(mAdapter);

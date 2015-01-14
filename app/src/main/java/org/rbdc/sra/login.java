@@ -223,13 +223,11 @@ public class login extends Activity {
                             area.setAreaName(dataSnapshot.child("Name").getValue().toString());
                             area.setRegion(rg.getName());
                             area.setCountry(dataSnapshot.child("Country").getValue().toString());
-                            area.setRef(dataSnapshot.getRef().toString());
                             area.setRegion(dataSnapshot.child("Region").getValue().toString());
                             DataSnapshot resources = dataSnapshot.child("Resources");
                             for(DataSnapshot household : resources.getChildren()){
                                 Households households = new Households();
                                 households.setHouseholdName(household.child("Name").getValue().toString());
-                                households.setRef(household.getRef().toString());
                                 for(DataSnapshot members : household.child("Members").getChildren() ){
                                     Member member = new Member();
                                     member.setHouseholdName(household.child("Name").getValue().toString());
