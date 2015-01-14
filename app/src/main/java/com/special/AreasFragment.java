@@ -23,6 +23,7 @@ import java.util.Date;
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.helperClasses.UrlBuilder;
 import org.rbdc.sra.objects.Areas;
 import org.rbdc.sra.objects.Households;
 import org.rbdc.sra.objects.LoginObject;
@@ -191,7 +192,7 @@ public class AreasFragment extends Fragment {
                 Toast toast = new Toast(getActivity());
 
                 Households newHousehold = new Households();
-
+                newHousehold.setId(UrlBuilder.buildUUID());
                 if(areaText.getText().toString().matches("")){
                     toast.makeText(getActivity(),"Please Enter A Valid Household Name", Toast.LENGTH_LONG).show();
                 }else{
@@ -254,6 +255,7 @@ public class AreasFragment extends Fragment {
                     member.setRelationship(relationship.getSelectedItem().toString());
                     member.setBirthday(getDateFromDatePicker(datePicker));
                     member.setEducationLevel(education.getSelectedItem().toString());
+                    member.setId(UrlBuilder.buildUUID());
                     int genderSelected = gender.getCheckedRadioButtonId();
                     RadioButton gSelected = (RadioButton)gender.findViewById(genderSelected);
                     member.setGender(gSelected.getText().toString());

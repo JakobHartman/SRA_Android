@@ -15,6 +15,15 @@ public class Member implements Serializable {
     private boolean inSchool;
     private String areaName;
     private String householdName;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setAreaName(String areaName) {
         this.areaName = areaName;
