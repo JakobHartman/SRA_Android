@@ -39,6 +39,12 @@ public class UrlBuilder {
         return url;
     }
 
+    public static String buildHouseholdUrl(){
+        String url;
+            url = "";
+        return url;
+    }
+
     public static String buildUUID(){
         String uuid;
         uuid = "";
