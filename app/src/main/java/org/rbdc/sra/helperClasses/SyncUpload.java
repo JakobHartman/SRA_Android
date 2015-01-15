@@ -11,11 +11,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.rbdc.sra.objects.Areas;
+import org.rbdc.sra.objects.Country;
 import org.rbdc.sra.objects.Households;
 import org.rbdc.sra.objects.LoginObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -38,7 +40,10 @@ public class SyncUpload {
             areas.add(myArea);
         }
 
-        testUpload();
+
+
+        //testUpload();
+        testCopy();
 
     }
 
@@ -46,7 +51,7 @@ public class SyncUpload {
         Firebase.setAndroidContext(activity.getApplicationContext());
         Firebase testBase = new Firebase("https://luminous-fire-7752.firebaseio.com/");
 
-    /************** Map Example ************/
+    /************** Map Example ************
         Map<String, String> alanisawesomeMap = new HashMap<String, String>();
         alanisawesomeMap.put("birthYear", "1912");
         alanisawesomeMap.put("fullName", "Alan Turing");
@@ -56,6 +61,7 @@ public class SyncUpload {
         Map<String, Map<String, String>> users = new HashMap<String, Map<String, String>>();
         users.put("alanisawesome", alanisawesomeMap);
         users.put("gracehop", gracehopMap);
+     ****************************************/
 
        // Map<String, Object> jsonMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {}.getType());
         GsonBuilder builder = new GsonBuilder();
@@ -80,10 +86,37 @@ public class SyncUpload {
             System.out.println("writing to " + areas.get(i).getAreaName());
         } */
 
+    }
+
+    public void testCopy() {
+        Firebase.setAndroidContext(activity.getApplicationContext());
+        Firebase testBase = new Firebase("https://luminous-fire-7752.firebaseio.com/");
+
+        Country highestLevel = CRUDFlinger.getCountry();
+
+        GsonBuilder builder = new GsonBuilder();
+        Gson obj = builder.create();
 
 
+        String countryJson = obj.toJson(highestLevel);
+        Map<String, Object> retMap = new Gson().fromJson(countryJson, new TypeToken<HashMap<String, Object>>() {}.getType());
+
+       // printMap(retMap);
+
+
+        testBase.setValue(retMap, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                } else {
+                    System.out.println("Data saved successfully.");
+                }
+            }
+        });
 
     }
+
 
     public void startUpload() {
         Firebase.setAndroidContext(activity.getApplicationContext());
