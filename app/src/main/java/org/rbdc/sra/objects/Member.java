@@ -1,91 +1,63 @@
 package org.rbdc.sra.objects;
 
 import java.io.Serializable;
-import java.util.PriorityQueue;
 
 /**
  * Created by imac on 1/5/15.
  */
 public class Member implements Serializable {
-    private String name;
-    private String relationship;
-    private String birthday;
-    private String educationLevel;
-    private String gender;
-    private boolean inSchool;
-    private String areaName;
-    private String householdName;
-    private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setAreaName(String areaName) {
-        this.areaName = areaName;
-    }
-
-    public void setHouseholdName(String householdName) {
-        this.householdName = householdName;
-    }
-
-    public String getAreaName() {
-        return areaName;
-    }
-
-    public String getHouseholdName() {
-        return householdName;
-    }
+    private String Name;
+    private String Relationship;
+    private String Birthday;
+    private String EducationLevel;
+    private String Gender;
+    private boolean Inschool;
 
     public String getBirthday() {
-        return birthday;
+        return Birthday;
     }
 
     public String getEducationLevel() {
-        return educationLevel;
+        return EducationLevel;
     }
 
     public String getGender() {
-        return gender;
+        return Gender;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public String getRelationship() {
-        return relationship;
+        return Relationship;
     }
 
-    public boolean isInSchool() {
-        return inSchool;
+    public boolean isInschool() {
+        return Inschool;
     }
 
     public void setBirthday(String birthday) {
-        this.birthday = birthday;
+        this.Birthday = birthday;
     }
 
     public void setEducationLevel(String educationLevel) {
-        this.educationLevel = educationLevel;
+        this.EducationLevel = educationLevel;
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        this.Gender = gender;
     }
 
-    public void setInSchool(boolean inSchool) {
-        this.inSchool = inSchool;
+    public void setInschool(boolean inschool) {
+        this.Inschool = inschool;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public void setRelationship(String relationship) {
-        this.relationship = relationship;
+        this.Relationship = relationship;
     }
 }

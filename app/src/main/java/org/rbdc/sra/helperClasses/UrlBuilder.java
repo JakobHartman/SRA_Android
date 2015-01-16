@@ -1,9 +1,6 @@
 package org.rbdc.sra.helperClasses;
 
-import com.firebase.client.Firebase;
-
-import org.rbdc.sra.objects.Areas;
-import org.rbdc.sra.objects.Households;
+import org.rbdc.sra.objects.Area;
 
 import java.util.Random;
 
@@ -33,9 +30,9 @@ public class UrlBuilder {
         return instance;
     }
 
-    public static String buildAreaUrl(Areas area){
+    public static String buildAreaUrl(Area area){
         String url;
-        url = "https://intense-inferno-7741.firebaseio.com/Organizations" + org + "/Countries/" + area.getCountry() + "/Regions/" + area.getRegion() + "/Areas/" + area.getAreaName();
+        url = "https://intense-inferno-7741.firebaseio.com/Organizations" + org + "/Countries/" + area.getCountry() + "/Regions/" + area.getRegion() + "/Areas/" + area.getName();
         return url;
     }
 

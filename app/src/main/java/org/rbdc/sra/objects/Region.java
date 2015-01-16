@@ -7,46 +7,46 @@ import java.util.ArrayList;
  * Created by jakobhartman on 11/15/14.
  */
 public class Region implements Serializable {
-    private String regionName;
-    private ArrayList<Areas> areas;
-    private int regionId;
+    private String Name;
+    private ArrayList<Area> Areas;
+    private String Country;
 
     public Region(){
-        regionName = new String();
-        areas = new ArrayList<Areas>();
+        Name = new String();
+        Areas = new ArrayList<Area>();
     }
 
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
+    public String getCountry() {
+        return Country;
     }
 
-    public String getRegionName() {
-        return regionName;
+    public void setCountry(String country) {
+        Country = country;
     }
 
-    public void setAreas(ArrayList<Areas> areas) {
-        this.areas = areas;
+    public void setName(String name) {
+        this.Name = name;
     }
 
-    public ArrayList<Areas> getAreas() {
-        return areas;
+    public String getName() {
+        return Name;
     }
 
-    public void addArea(Areas area){
-        areas.add(area);
+    public void setAreas(ArrayList<Area> areas) {
+        this.Areas = areas;
     }
 
-    public int getRegionId() {
-        return regionId;
+    public ArrayList<Area> getAreas() {
+        return Areas;
     }
 
-    public void setRegionId(int regionId) {
-        this.regionId = regionId;
+    public void addArea(Area area){
+        Areas.add(area);
     }
 
-    public Areas getArea(String areaName) {
-        for (Areas a : areas) {
-            if (a.getAreaName().equals(areaName))
+    public Area getArea(String areaName) {
+        for (Area a : Areas) {
+            if (a.getName().equals(areaName))
                 return a;
         }
         return null;

@@ -2,23 +2,25 @@ package org.rbdc.sra.helperClasses;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.rbdc.sra.objects.Areas;
-import org.rbdc.sra.objects.Country;
-import org.rbdc.sra.objects.Households;
+import org.rbdc.sra.objects.Area;
+import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
 import org.json.JSONArray;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 
 /**
  * Created by imac on 12/17/14.
@@ -28,7 +30,7 @@ public class CRUDFlinger {
     private static CRUDFlinger instance = null;
     private static SharedPreferences loader = null;
     private static SharedPreferences.Editor saver = null;
-    private static Country country = null;
+    private static Region region = null;
     private static Application application = null;
 
     protected CRUDFlinger(){
@@ -79,22 +81,22 @@ public class CRUDFlinger {
         return (Any)object;
     }
 
-    private static void loadCountry(){
+    private static void loadRegion(){
         setPreferences();
         String json = loader.getString("Country",null);
         Gson gson = new GsonBuilder().create();
-        Country country = gson.fromJson(json,Country.class);
-        CRUDFlinger.country = country;
+        Region country = gson.fromJson(json,Region.class);
+        CRUDFlinger.region = country;
     }
 
-    public static void saveCountry(){
+    public static void saveRegion(){
         setPreferences();
-        if(country == null){
-            loadCountry();
+        if(region == null){
+            loadRegion();
             return;
         }else{
             try{
-                saver.putString("Country",JSONUtilities.stringify(country));
+                saver.putString("Country",JSONUtilities.stringify(region));
                 saver.commit();
             }catch (JSONException e){}
         }
@@ -111,27 +113,18 @@ public class CRUDFlinger {
         return check;
     }
 
-    public static Country getCountry(){
-        if(country == null){
-            loadCountry();
+    public static Region getRegion(){
+        if(region == null){
+            loadRegion();
         }
-        return country;
+        return region;
     }
 
-    public static void addArea(Areas area){
-        int i = 0;
-        for(Region regions : country.getRegions()){
-            System.out.println(regions.getRegionName() + " " + area.getRegion());
-            if(regions.getRegionName().equals(area.getRegion())){
-                country.getRegions().get(i).addArea(area);
-                System.out.println(country.getRegions().get(i).getRegionName());
-            }
-            i++;
-        }
-
+    public static void addArea(Area area){
+        region.addArea(area);
     }
 
-    public static void addHousehold(int area,Households households){
+    public static void addHousehold(int area,Household households){
         getAreas().get(area).addHousehold(households);
     }
 
@@ -140,7 +133,12 @@ public class CRUDFlinger {
         saver.remove(key);
     }
 
-
+    public static <Any> Any combine(Object one,Object two) throws InstantiationException, IllegalAccessException,BeansException{
+        Object object = one.getClass().newInstance();
+            BeanUtils.copyProperties(one,object);
+            BeanUtils.copyProperties(two,object);
+        return (Any)object;
+    }
 
 
     /*
@@ -229,11 +227,7 @@ public class CRUDFlinger {
         saveQuestionSets();
     }
 
-    public static ArrayList<Areas> getAreas(){
-        ArrayList<Areas> areas = new ArrayList<Areas>();
-        for(Region region : CRUDFlinger.getCountry().getRegions()){
-            areas.addAll(region.getAreas());
-        }
-        return areas;
+    public static ArrayList<Area> getAreas(){
+        return region.getAreas();
     }
 }

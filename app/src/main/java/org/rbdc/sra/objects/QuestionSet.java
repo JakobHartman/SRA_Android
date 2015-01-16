@@ -10,39 +10,35 @@ import java.util.ArrayList;
 public class QuestionSet implements Serializable {
 
     private String name;
-    private String refUrl;
     private String type;
-    private ArrayList<Question> questions;
+    private ArrayList<Question> Questions;
 
     /*
      * Constructor
      */
     public QuestionSet(String name, String url) {
         this.name = name;
-        this.refUrl = url;
         this.type = "Household";
-        this.questions = new ArrayList<Question>();
+        this.Questions = new ArrayList<Question>();
     }
 
     /*
      * Modifiers
      */
     public void setName(String name) { this.name = name; }
-    public void setRefUrl(String refUrl) { this.refUrl = refUrl; }
     public void setType(String type) { this.type = type; }
-    public void addQuestion(Question qs) { questions.add(qs); }
-    public void setQuestions(ArrayList<Question> questions) { this.questions = questions; }
+    public void addQuestion(Question qs) { Questions.add(qs); }
+    public void setQuestions(ArrayList<Question> questions) { this.Questions = questions; }
 
     /*
      * Accessors
      */
     public String getName() { return name; }
-    public String getRefUrl() { return refUrl; }
     public String getType() { return type; }
-    public void deleteQuestion(Question qs) { questions.remove(qs); }
-    public ArrayList<Question> getQuestions() { return questions; }
+    public void deleteQuestion(Question qs) { Questions.remove(qs); }
+    public ArrayList<Question> getQuestions() { return Questions; }
     public Question getQuestion(String questionName) {
-        for (Question q : questions) {
+        for (Question q : Questions) {
             if (q.getName().equals(questionName)) {
                 return q;
             }

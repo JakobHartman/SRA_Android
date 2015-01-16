@@ -199,7 +199,7 @@ public class QuestionsFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int index = optionsList.indexOfChild(optionListItem);
-                dp.setOption(index, optionView.getText().toString());
+               // dp.setOption(index, optionView.getText().toString());
             }
         });
 
@@ -208,7 +208,7 @@ public class QuestionsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int index = optionsList.indexOfChild(optionListItem);
-                dp.deleteOption(index);
+               // dp.deleteOption(index);
                 optionsList.removeView(optionListItem);
             }
         });
@@ -233,20 +233,20 @@ public class QuestionsFragment extends Fragment {
 
         final LinearLayout optionsContainer = (LinearLayout) dpItemView.findViewById(R.id.options_container);
         final LinearLayout optionsList = (LinearLayout) dpItemView.findViewById(R.id.options_list_view);
-        ArrayList<String> options = dp.getOptions();
-        for (int i = 0; i < options.size(); i++) {
-            addOption(options.get(i), optionsList, dp);
-        }
-
-        Button addOption = (Button) dpItemView.findViewById(R.id.add_option_button);
-        addOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String option = "";
-                dp.addOption(option);
-                addOption(option, optionsList, dp);
-            }
-        });
+//        ArrayList<String> options = dp.getOptions();
+//        for (int i = 0; i < options.size(); i++) {
+//            addOption(options.get(i), optionsList, dp);
+//        }
+//
+//        Button addOption = (Button) dpItemView.findViewById(R.id.add_option_button);
+//        addOption.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String option = "";
+//                dp.addOption(option);
+//                addOption(option, optionsList, dp);
+//            }
+//        });
 
         Spinner dataTypeSpinner = (Spinner) dpItemView.findViewById(R.id.data_type_spinner);
         String[] types = getResources().getStringArray(R.array.data_point_types_array);
@@ -254,18 +254,18 @@ public class QuestionsFragment extends Fragment {
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(
                 getActivity(), android.R.layout.simple_spinner_item, typesList);
         dataTypeSpinner.setAdapter(typesAdapter);
-        dataTypeSpinner.setSelection(DatapointTypes.getTypeIndex(dp.getDataType()));
+        dataTypeSpinner.setSelection(DatapointTypes.getTypeIndex(dp.getType()));
         if (dp.dataTypeIsAList()) {
             optionsContainer.setVisibility(View.VISIBLE);
         }
         dataTypeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                dp.setDataType(DatapointTypes.getTypeFromIndex(position));
+                dp.setType(DatapointTypes.getTypeFromIndex(position));
                 if (dp.dataTypeIsAList()) optionsContainer.setVisibility(View.VISIBLE);
                 else {
                     optionsContainer.setVisibility(View.GONE);
-                    dp.getOptions().clear();
+//                    dp.getOptions().clear();
                     optionsList.removeAllViews();
                 }
             }

@@ -8,41 +8,38 @@ import java.util.ArrayList;
  */
 public class Question implements Serializable {
 
-    private String name;
-    private String refUrl;
-    private Boolean isMultiUse;
-    private ArrayList<Datapoint> dataPoints;
+    private String Name;
+    private Boolean IsMultiUse;
+    private ArrayList<Datapoint> DataPoints;
 
     /*
      * Constructor
      */
     public Question(String refUrl) {
-        this.name = "";
-        this.refUrl = refUrl;
-        this.isMultiUse = false;
-        this.dataPoints = new ArrayList<Datapoint>();
+        this.Name = "";
+        this.IsMultiUse = false;
+        this.DataPoints = new ArrayList<Datapoint>();
     }
 
     /*
      * Modifiers
      */
-    public void setName(String name) { this.name = name; }
-    public void setRefUrl(String refUrl) { this.refUrl = refUrl; }
-    public void setMultiUse(Boolean isMultiUse) { this.isMultiUse = isMultiUse; }
-    public void setDataPoints(ArrayList<Datapoint> dataPoints) { this.dataPoints = dataPoints; }
+    public void setName(String name) { this.Name = name; }
+    public void setMultiUse(Boolean isMultiUse) { this.IsMultiUse = isMultiUse; }
+    public void setDataPoints(ArrayList<Datapoint> dataPoints) { this.DataPoints = dataPoints; }
     public void addDataPoint(Datapoint datapoint) {
-        for (Datapoint dp : dataPoints) {
+        for (Datapoint dp : DataPoints) {
             if (dp == datapoint) {
                 return;
             }
         }
-        dataPoints.add(datapoint);
+        DataPoints.add(datapoint);
     }
-    public void deleteDataPoint(Datapoint dp) { dataPoints.remove(dp); }
+    public void deleteDataPoint(Datapoint dp) { DataPoints.remove(dp); }
     public void deleteDataPoint(String label) {
-        for (Datapoint dp : dataPoints) {
+        for (Datapoint dp : DataPoints) {
             if (dp.getLabel().equals(label)) {
-                dataPoints.remove(dp);
+                DataPoints.remove(dp);
                 return;
             }
         }
@@ -51,12 +48,11 @@ public class Question implements Serializable {
     /*
      * Accessors
      */
-    public String getName() { return name; }
-    public String getReferenceUrl() { return refUrl; }
-    public Boolean getMultiUse() { return isMultiUse; }
-    public ArrayList<Datapoint> getDataPoints() { return dataPoints; }
+    public String getName() { return Name; }
+    public Boolean getMultiUse() { return IsMultiUse; }
+    public ArrayList<Datapoint> getDataPoints() { return DataPoints; }
     public Datapoint getDataPoint(String label) {
-        for (Datapoint dp : dataPoints) {
+        for (Datapoint dp : DataPoints) {
             if (dp.getLabel().equals(label)) {
                 return dp;
             }

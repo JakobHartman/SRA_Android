@@ -4,7 +4,7 @@
     <string name="title_activity_detail_view">DetailView</string>
     <string name="button_placeholder_text">Button</string>
     <string name="checkbox">CheckBox</string>
-    <string name="dashed_area_text">Cool information you might would like to know, that is why it is in this dashed area!</string>
+    <string name="dashed_area_text">Cool information you might would like to know, that is why it is in this dashed areas!</string>
     <string name="show">Show</string>
     <string name="show_dialog_text">Show a Custom Dialog and Loader</string>
     <string name="text_input_hint">text input</string>

@@ -2,65 +2,51 @@ package org.rbdc.sra.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by jakobhartman on 11/10/14.
  */
 
 public class Datapoint implements Serializable {
-    private String label;
-    private String dataType;
-    private ArrayList<String> answers;
-
-    private String optionListType;
-    private ArrayList<String> options;
+    private String Label;
+    private String Type;
+    private ArrayList<String> Answers;
 
     /*
      * Constructor
      */
     public Datapoint() {
-        this.label = "";
-        this.dataType = DatapointTypes.TEXT;
-        this.answers = new ArrayList<String>();
-
-        optionListType = "List";
-        options = new ArrayList<String>();
+        this.Label = "";
+        this.Type = DatapointTypes.TEXT;
+        this.Answers = new ArrayList<String>();
     }
 
     /*
      * Modifiers
      */
     public void setLabel(String label) {
-        this.label = label;
-        if (!dataTypeIsAList())
-            options.clear();
+        this.Label = label;
     }
-    public void setDataType(String dataType) { this.dataType = dataType; }
-    public void addAnswer(String answer) { this.answers.add(answer); }
+    public void setType(String type) { this.Type = type; }
+    public void addAnswer(String answer) { this.Answers.add(answer); }
     public void setSingleAnswer(String answer) {
-        if (this.answers.isEmpty()) this.answers.add(answer);
-        else this.answers.set(0, answer);
+        if (this.Answers.isEmpty()) this.Answers.add(answer);
+        else this.Answers.set(0, answer);
     }
-    public void setAnswers(ArrayList<String> answers) { this.answers = answers; }
-    public void setOptionsType(String type) { this.optionListType = type; }
-    public void addOption(String option) { options.add(option); }
-    public void setOption(int index, String option) { options.set(index, option); }
-    public void deleteOption(String option) { options.remove(option); }
-    public void deleteOption(int index) { options.remove(index); }
+    public void setAnswers(ArrayList<String> answers) { this.Answers = answers; }
 
     /*
      * Accessors
      */
-    public String getLabel() { return label; }
-    public String getDataType() { return dataType; }
+    public String getLabel() { return Label; }
+    public String getType() { return Type; }
     public boolean dataTypeIsAList() {
-        return dataType.equals(DatapointTypes.LIST_SINGLE_ANSWER) || dataType.equals(DatapointTypes.LIST_MULTI_ANSWER);
+        return Type.equals(DatapointTypes.LIST_SINGLE_ANSWER) || Type.equals(DatapointTypes.LIST_MULTI_ANSWER);
     }
-    public ArrayList<String> getAnswers() { return answers; }
+    public ArrayList<String> getAnswers() { return Answers; }
     public String getSingleAnswer() {
-        if (answers.isEmpty()) return "";
-        return answers.get(0);
+        if (Answers.isEmpty()) return "";
+        return Answers.get(0);
     }
-    public String getOptionListType() { return optionListType; }
-    public ArrayList<String> getOptions() { return options; }
 }
