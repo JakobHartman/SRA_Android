@@ -7,22 +7,22 @@ import java.util.ArrayList;
 /**
  * Created by jakobhartman on 11/15/14.
  */
-public class Areas implements Serializable {
+public class  Areas implements Serializable {
     private String AreaName;
-    private String ref;
     private ArrayList<Households> households;
     private String region;
+    private String country;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public Areas(){
         households = new ArrayList<Households>();
-    }
-
-    public String getRef() {
-        return ref;
-    }
-
-    public void setRef(String ref) {
-        this.ref = ref;
     }
 
     public String getAreaName() {

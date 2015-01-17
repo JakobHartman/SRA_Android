@@ -9,14 +9,13 @@ import java.util.ArrayList;
  */
 public class Households implements Serializable {
     private String householdName;
-    private long id;
-    private String ref;
+    private String id;
     private ArrayList<Interviews> interviews;
     private ArrayList<Member> members;
 
     public Households(){
         householdName = "";
-        id = 0;
+        id = null;
         interviews = new ArrayList<Interviews>();
         members = new ArrayList<Member>();
     }
@@ -68,24 +67,16 @@ public class Households implements Serializable {
         this.householdName = householdName;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
     public String getHouseholdName() {
         return householdName;
-    }
-
-    public void setRef(String ref) {
-        this.ref = ref;
-    }
-
-    public String getRef() {
-        return ref;
     }
 }
 

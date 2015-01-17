@@ -23,6 +23,7 @@ import java.util.Date;
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.helperClasses.UrlBuilder;
 import org.rbdc.sra.objects.Areas;
 import org.rbdc.sra.objects.Households;
 import org.rbdc.sra.objects.LoginObject;
@@ -67,7 +68,7 @@ public class AreasFragment extends Fragment {
 
     private void initView(){
         mAdapter = new TransitionListAdapter(getActivity(), listArea());
-        listView.setActionLayout(R.id.hidden_view2);
+        listView.setActionLayout(R.id.hidden);
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);
@@ -146,7 +147,6 @@ public class AreasFragment extends Fragment {
                     toast.makeText(getActivity(),"Please Select A Valid Region", Toast.LENGTH_LONG).show();
                 }else{
                     newArea.setAreaName(areaText.getText().toString());
-                    newArea.setRegion(loginObject.getCountryLogin().getRegionNames().get(regionText.getSelectedItemPosition() - 1));
                     CRUDFlinger.addArea(newArea);
                     mAdapter = new TransitionListAdapter(getActivity(),listArea());
                     listView.setAdapter(mAdapter);
@@ -192,7 +192,7 @@ public class AreasFragment extends Fragment {
                 Toast toast = new Toast(getActivity());
 
                 Households newHousehold = new Households();
-
+                newHousehold.setId(UrlBuilder.buildUUID());
                 if(areaText.getText().toString().matches("")){
                     toast.makeText(getActivity(),"Please Enter A Valid Household Name", Toast.LENGTH_LONG).show();
                 }else{
@@ -255,6 +255,7 @@ public class AreasFragment extends Fragment {
                     member.setRelationship(relationship.getSelectedItem().toString());
                     member.setBirthday(getDateFromDatePicker(datePicker));
                     member.setEducationLevel(education.getSelectedItem().toString());
+                    member.setId(UrlBuilder.buildUUID());
                     int genderSelected = gender.getCheckedRadioButtonId();
                     RadioButton gSelected = (RadioButton)gender.findViewById(genderSelected);
                     member.setGender(gSelected.getText().toString());

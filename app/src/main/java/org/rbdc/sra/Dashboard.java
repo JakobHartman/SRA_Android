@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.helperClasses.UrlBuilder;
 
 public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
@@ -29,12 +30,14 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     private ResideMenuItem itemNotes;
     private ResideMenuItem itemStats;
     private ResideMenuItem itemLogout;
+    private ResideMenuItem itemSync;
     private TextView title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        UrlBuilder.setOrg("SRA");
         setUpMenu();
         changeFragment(new DashboardFragment());
         title = (TextView)findViewById(R.id.title);
@@ -44,7 +47,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     private void setUpMenu() {
 
         resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.drawable.grass_cut);
+        resideMenu.setBackground(R.color.theme_color);
+
 
         resideMenu.attachToActivity(this);
         resideMenu.setShadowVisible(true);
@@ -60,6 +64,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         itemQuestions = new ResideMenuItem(this, R.drawable.ic_question, "Question Sets");
         itemNotes = new ResideMenuItem(this, R.drawable.ic_notes, "Notes");
         itemStats = new ResideMenuItem(this,R.drawable.ic_stats,"Stats");
+        itemSync = new ResideMenuItem(this,R.drawable.ic_sync,"Sync");
         itemLogout = new ResideMenuItem(this,R.drawable.ic_logout,"Logout");
 
         itemDashboard.setOnClickListener(this);
@@ -67,6 +72,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         itemQuestions.setOnClickListener(this);
         itemNotes.setOnClickListener(this);
         itemStats.setOnClickListener(this);
+        itemSync.setOnClickListener(this);
         itemLogout.setOnClickListener(this);
 
         resideMenu.addMenuItem(itemDashboard);
@@ -74,6 +80,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         resideMenu.addMenuItem(itemQuestions);
         resideMenu.addMenuItem(itemNotes);
         resideMenu.addMenuItem(itemStats);
+        resideMenu.addMenuItem(itemSync);
         resideMenu.addMenuItem(itemLogout);
 
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
@@ -110,6 +117,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
             title.setText("Statistics");
         }else if(view == itemLogout){
             changeFragment(new LogoutFragment());
+        }else if(view == itemSync){
+
         }
 
         resideMenu.closeMenu();
