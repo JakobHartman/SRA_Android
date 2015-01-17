@@ -2,6 +2,7 @@ package com.special;
 
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.ExpandableListAdapter;
 import org.rbdc.sra.helperClasses.SyncUpload;
 
 import com.special.menu.ResideMenu;
@@ -13,19 +14,73 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class DashboardFragment extends Fragment {
 
     private View parentView;
     private ResideMenu resideMenu;
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+    private List<String> listDataHeader;
+    private HashMap<String, List<String>> listDataChild;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        setUpViews();
+
+        // get the listview
+        expListView = (ExpandableListView) parentView.findViewById(R.id.lvExp);
+
+        // preparing list data
+        prepareListData();
+
+
+        listAdapter = new ExpandableListAdapter(parentView.getContext(), listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+        //setUpViews();
         return parentView;
     }
 
+    private void prepareListData() {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+
+        // Adding child data
+        listDataHeader.add("Area 1");
+        listDataHeader.add("Area 2");
+        listDataHeader.add("Area 3");
+
+        // Fill child list 1
+        List<String> area1 = new ArrayList<String>();
+        area1.add("Household 1");
+        area1.add("Household 2");
+
+
+        // Fill Child list 2
+        List<String> area2 = new ArrayList<String>();
+        area2.add("Household 1");
+        area2.add("Household 2");
+
+
+        // Fill child list 3
+        List<String> area3 = new ArrayList<String>();
+        area3.add("Household 1");
+        area3.add("Household 2");
+        area3.add("Household 3");
+
+
+        listDataChild.put(listDataHeader.get(0), area1); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), area2);
+        listDataChild.put(listDataHeader.get(2), area3);
+    }
+/*
     private void setUpViews() {
         Dashboard parentActivity = (Dashboard)getActivity();
         resideMenu = parentActivity.getResideMenu();
@@ -47,11 +102,12 @@ public class DashboardFragment extends Fragment {
             	String url = "http://codecanyon.net/user/sherdleapps/portfolio?ref=sherdleapps";
             	Intent i = new Intent(Intent.ACTION_VIEW);
             	i.setData(Uri.parse(url));
-            	startActivity(i); */
+            	startActivity(i);
             }
         });
         
         
     }
+                */
 
 }
