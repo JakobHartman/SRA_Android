@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:padding="7dp"
                     android:fontFamily="sans-serif-light"
-                    android:text="Response Sets"
+                    android:text="Data Collect"
                     android:textSize="@dimen/textsize_large"
                     android:textColor="@android:color/white"
                     android:layout_gravity="center"
@@ -48,24 +48,40 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:orientation="horizontal"
-            android:background="#ffffff"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin" >
 
-            <Button
+            <TextView
+                android:id="@+id/question_header_view"
+                android:text="Question Set"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/UIButtonInverse"
-                android:text="Add Response Set"
-                android:textSize="@dimen/textsize_medium"
-                android:padding="12dp"
-                android:id="@+id/add_response_set_button"
-                android:layout_gravity="right|center_vertical"
-                android:layout_margin="4dp"
-                android:layout_weight=".5" />
-        </FrameLayout>
+                android:layout_alignParentLeft="true"
+                />
+
+            <TextView
+                android:id="@+id/question_progress_view"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/question_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@id/question_progress_view"
+                />
+
+        </RelativeLayout>
+
 
         <com.special.utils.UISwipableList
             android:id="@+id/list_view"
