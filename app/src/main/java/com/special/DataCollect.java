@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.rbdc.sra.R;
@@ -27,6 +27,7 @@ public class DataCollect extends FragmentActivity {
     private int numQuestions;
     private QuestionSet questionSet;
 
+    private TextView questionNameView;
     private TextView progressView;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -59,8 +60,10 @@ public class DataCollect extends FragmentActivity {
         questionSet = responseSets.get(responseSetIndex);
         numQuestions = questionSet.getQuestions().size();
 
+        questionNameView = (TextView) findViewById(R.id.question_header_view);
         progressView = (TextView) findViewById(R.id.question_progress_view);
-        TextView pageTitle = (TextView) findViewById(R.id.question_header_view);
+
+        TextView pageTitle = (TextView) findViewById(R.id.title);
         pageTitle.setText(questionSet.getName());
 
         // Instantiate a ViewPager and a PagerAdapter.
@@ -75,29 +78,35 @@ public class DataCollect extends FragmentActivity {
                 sliderChanged(position);
             }
         });
-
         sliderChanged(0);
+
+        Button finishButton = (Button) findViewById(R.id.finish_button);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CRUDFlinger.saveCountry();
+                finish();
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
-//            CRUDFlinger.saveRegion();
             super.onBackPressed();
+            CRUDFlinger.saveCountry();
         } else {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
-    }
-
-    public void done(MenuItem mi) {
-//        CRUDFlinger.saveRegion();
-        finish();
     }
 
     public void sliderChanged(int position) {
         String newLabel = "" + (position + 1) + "/" + numQuestions;
         if (numQuestions == 0) newLabel = "0/0";
         progressView.setText(newLabel);
+
+        if (!questionSet.getQuestions().isEmpty())
+            questionNameView.setText(questionSet.getQuestions().get(position).getName());
     }
 
     public Question getQuestion(int position) {

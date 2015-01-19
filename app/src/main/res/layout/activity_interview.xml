@@ -2,7 +2,6 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:fitsSystemWindows="true"
-    android:background="@color/theme_color"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -21,6 +20,7 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:background="@color/white"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/layout_top">
@@ -36,9 +36,20 @@
                     android:fontFamily="sans-serif-light"
                     android:text="Response Sets"
                     android:textSize="@dimen/textsize_large"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:layout_gravity="center"
                     android:id="@+id/title"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/UIButtonInverse"
+                    android:text="Add"
+                    android:textSize="@dimen/textsize_medium"
+                    android:padding="12dp"
+                    android:id="@+id/add_response_set_button"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_margin="4dp" />
 
             </FrameLayout>
 
@@ -50,24 +61,6 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:orientation="horizontal"
-            android:background="#ffffff"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/UIButtonInverse"
-                android:text="Add Response Set"
-                android:textSize="@dimen/textsize_medium"
-                android:padding="12dp"
-                android:id="@+id/add_response_set_button"
-                android:layout_gravity="right|center_vertical"
-                android:layout_margin="4dp"
-                android:layout_weight=".5" />
-        </FrameLayout>
 
         <com.special.utils.UISwipableList
             android:id="@+id/list_view"

@@ -399,6 +399,7 @@ public class QuestionsFragment extends Fragment {
 
             TextView edit = (TextView) v.findViewById(R.id.hidden_view2);
             edit.setClickable(true);
+            edit.setEnabled(true);
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -408,6 +409,7 @@ public class QuestionsFragment extends Fragment {
 
             TextView delete = (TextView) v.findViewById(R.id.hidden_view1);
             delete.setClickable(true);
+            delete.setEnabled(true);
             delete.setText(R.string.delete_question_set_text);
             delete.setOnClickListener(new View.OnClickListener() {
 

@@ -20,6 +20,7 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:background="@color/white"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/layout_top">
@@ -35,10 +36,20 @@
                     android:fontFamily="sans-serif-light"
                     android:text="Data Collect"
                     android:textSize="@dimen/textsize_large"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:layout_gravity="center"
                     android:id="@+id/title"/>
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/UIButtonInverse"
+                    android:text="Finish"
+                    android:textSize="@dimen/textsize_medium"
+                    android:padding="12dp"
+                    android:id="@+id/finish_button"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_margin="4dp" />
             </FrameLayout>
 
             <ImageView
@@ -55,17 +66,17 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/UIButtonInverse"
-                android:text="Add Response Set"
-                android:textSize="@dimen/textsize_medium"
-                android:padding="12dp"
-                android:id="@+id/add_response_set_button"
-                android:layout_gravity="right|center_vertical"
-                android:layout_margin="4dp"
-                android:layout_weight=".5" />
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--style="@style/UIButtonInverse"-->
+                <!--android:text="Finish"-->
+                <!--android:textSize="@dimen/textsize_medium"-->
+                <!--android:padding="12dp"-->
+                <!--android:id="@+id/finish_button"-->
+                <!--android:layout_gravity="right|center_vertical"-->
+                <!--android:layout_margin="4dp"-->
+                <!--android:layout_weight=".5" />-->
         </FrameLayout>
 
 
@@ -79,7 +90,7 @@
 
             <TextView
                 android:id="@+id/question_header_view"
-                android:text="Question Set"
+                android:text="Question"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
