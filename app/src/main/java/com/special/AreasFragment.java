@@ -75,14 +75,14 @@ public class AreasFragment extends Fragment {
                 if(navigation == "area"){
                     addArea();
                 }else if(navigation == "household"){
-
+                    addHousehold();
                 }
             }
         });
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa,final int i, long l) {
-
+            navigation = "household";
             mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(i));
             listView.setAdapter(mAdapter);
             listView.setOnItemClickListener(new OnItemClickListener() {
