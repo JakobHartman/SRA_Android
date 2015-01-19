@@ -17,12 +17,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -47,123 +47,200 @@ public class DataCollectQuestionFragment extends Fragment {
 
     private int questionIndex;
     private Question question;
+    private LinearLayout table;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_data_collect_question,container, false);
+                R.layout.fragment_data_collect_question, container, false);
 
         final DataCollect activity = (DataCollect) getActivity();
         Bundle args = getArguments();
         questionIndex = args.getInt("questionIndex");
         question = activity.getQuestion(questionIndex);
 
-
-        TableLayout table = (TableLayout) rootView.findViewById(R.id.question_fragment_data_point_table);
-        table.setStretchAllColumns(true);
-
-        ArrayList<Datapoint> points = question.getDataPoints();
-        for (final Datapoint dp : points) {
-            TableRow row = new TableRow(getActivity());
-
-            TextView label = new TextView(getActivity());
-            label.setText(dp.getLabel());
-            label.setTextAppearance(getActivity(), R.style.TextAppearance_AppCompat_Large);
-            row.addView(label);
-
-            String dataType = dp.getDataType();
-            if (dataType.equals(DatapointTypes.TEXT)) {
-                final EditText input = new EditText(getActivity());
-                input.setText(dp.getSingleAnswer());
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.addTextChangedListener(new TextWatcher() {
-                    public void afterTextChanged(Editable s) {}
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        dp.setSingleAnswer(input.getText().toString());
+        Button addButton = (Button) rootView.findViewById(R.id.add_button);
+        if (question.getMultiUse()) {
+            addButton.setVisibility(View.VISIBLE);
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<Datapoint> dps = question.getDataPoints();
+                    for (Datapoint dp : dps) {
+                        dp.addAnswer("");
                     }
-                });
-                row.addView(input);
-            }
-            else if (dataType.equals(DatapointTypes.NUMBER)) {
-                final EditText input = new EditText(getActivity());
-                input.setText(dp.getSingleAnswer());
-                input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                input.addTextChangedListener(new TextWatcher() {
-                    public void afterTextChanged(Editable s) {}
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        dp.setSingleAnswer(input.getText().toString());
-                    }
-                });
-                row.addView(input);
-            }
-            else if (dataType.equals(DatapointTypes.DATE)) {
-                Calendar calendar = Calendar.getInstance();
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePicker datePicker = new DatePicker(getActivity());
-                DatePicker.OnDateChangedListener listener = new DatePicker.OnDateChangedListener() {
-                    @Override
-                    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar c = Calendar.getInstance();
-                        c.set(year, monthOfYear, dayOfMonth);
-                        dp.setSingleAnswer("" + c.getTimeInMillis());
-                    }
-                };
-                if (!dp.getSingleAnswer().equals("")) {
-                    long ms = Long.parseLong(dp.getSingleAnswer());
-                    calendar.setTimeInMillis(ms);
-                    month = calendar.get(Calendar.MONTH);
-                    year = calendar.get(Calendar.YEAR);
-                    day = calendar.get(Calendar.DAY_OF_MONTH);
+                    populateTable();
                 }
-                datePicker.init(year, month, day, listener);
-                datePicker.setCalendarViewShown(false);
-
-                row.addView(datePicker);
-            }
-            else if (dataType.equals(DatapointTypes.LIST_SINGLE_ANSWER)) {
-                final Spinner options = new Spinner(getActivity());
-                ArrayList<String> list = dp.getOptions();
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_spinner_item, list);
-                options.setAdapter(adapter);
-                options.setSelection(list.indexOf(dp.getSingleAnswer()));
-                options.setOnItemSelectedListener(new OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                        dp.setSingleAnswer((String) options.getSelectedItem());
-                    }
-                    @Override public void onNothingSelected(AdapterView<?> parentView) {}
-                });
-                row.addView(options);
-            }
-            else if (dataType.equals(DatapointTypes.LIST_MULTI_ANSWER)) {
-                final MultiSelectionSpinner options = new MultiSelectionSpinner(getActivity());
-                options.setItems(dp.getOptions());
-                String json = dp.getSingleAnswer();
-                Gson gson = new GsonBuilder().create();
-                System.out.println("BAM: " + json);
-                List<String> answers = (List<String>) gson.fromJson(json, new TypeToken<List<String>>(){}.getType());
-                if (answers != null) options.setSelection(answers);
-                options.setOnHoverListener(new View.OnHoverListener() {
-                    @Override
-                    public boolean onHover(View v, MotionEvent event) {
-                        List<String> items = options.getSelectedStrings();
-                        Gson gson = new GsonBuilder().create();
-                        String json = gson.toJson(items);
-                        dp.setSingleAnswer(json);
-                        return false;
-                    }
-                });
-                row.addView(options);
-            }
-            table.addView(row);
+            });
         }
+
+        table = (LinearLayout) rootView.findViewById(R.id.layout);
+        populateTable();
+
         return rootView;
     }
+
+    private void removeAnswers(int index) {
+        ArrayList<Datapoint> points = question.getDataPoints();
+        for (Datapoint dp : points) {
+            dp.getAnswers().remove(index);
+        }
+    }
+
+    private void populateTable() {
+        table.removeAllViews();
+        ArrayList<Datapoint> points = question.getDataPoints();
+        int numAnswers = 1;
+        if (question.getMultiUse() && !points.isEmpty()) {
+            numAnswers = points.get(0).getAnswers().size();
+        }
+
+        for (int i = 0; i < numAnswers; i++) {
+            final int answerPosition = i;
+            final LinearLayout questionContainer = new LinearLayout(getActivity());
+            questionContainer.setOrientation(LinearLayout.VERTICAL);
+            table.addView(questionContainer);
+
+            for (final Datapoint dp : points) {
+                final ArrayList<String> answers = dp.getAnswers();
+                final LinearLayout row = new LinearLayout(getActivity());
+                questionContainer.addView(row);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                String answer = "";
+                if (answerPosition < answers.size()) {
+                    answer = answers.get(i);
+                }
+
+                TextView label = new TextView(getActivity());
+                label.setText(dp.getLabel());
+                row.addView(label);
+
+                String dataType = dp.getDataType();
+                if (dataType.equals(DatapointTypes.TEXT)) {
+                    final EditText input = new EditText(getActivity());
+                    input.setText(answer);
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    input.addTextChangedListener(new TextWatcher() {
+                        public void afterTextChanged(Editable s) {}
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (answers.isEmpty())
+                                answers.add(answerPosition, input.getText().toString());
+                            else
+                                answers.set(answerPosition, input.getText().toString());
+                        }
+                    });
+                    row.addView(input);
+                }
+                else if (dataType.equals(DatapointTypes.NUMBER)) {
+                    final EditText input = new EditText(getActivity());
+                    input.setText(answer);
+                    input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    input.addTextChangedListener(new TextWatcher() {
+                        public void afterTextChanged(Editable s) {}
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (answers.isEmpty())
+                                answers.add(answerPosition, input.getText().toString());
+                            else
+                                answers.set(answerPosition, input.getText().toString());
+                        }
+                    });
+                    row.addView(input);
+                }
+                else if (dataType.equals(DatapointTypes.DATE)) {
+                    Calendar calendar = Calendar.getInstance();
+                    int month = calendar.get(Calendar.MONTH);
+                    int year = calendar.get(Calendar.YEAR);
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                    DatePicker datePicker = new DatePicker(getActivity());
+                    DatePicker.OnDateChangedListener listener = new DatePicker.OnDateChangedListener() {
+                        @Override
+                        public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            Calendar c = Calendar.getInstance();
+                            c.set(year, monthOfYear, dayOfMonth);
+                            if (answers.isEmpty())
+                                answers.add(answerPosition, "" + c.getTimeInMillis());
+                            else
+                                answers.set(answerPosition, "" + c.getTimeInMillis());
+                        }
+                    };
+                    if (!dp.getSingleAnswer().equals("")) {
+                        long ms = Long.parseLong(answer);
+                        calendar.setTimeInMillis(ms);
+                        month = calendar.get(Calendar.MONTH);
+                        year = calendar.get(Calendar.YEAR);
+                        day = calendar.get(Calendar.DAY_OF_MONTH);
+                    }
+                    datePicker.init(year, month, day, listener);
+                    datePicker.setCalendarViewShown(false);
+
+                    row.addView(datePicker);
+                }
+                else if (dataType.equals(DatapointTypes.LIST_SINGLE_ANSWER)) {
+                    final Spinner options = new Spinner(getActivity());
+                    ArrayList<String> list = dp.getOptions();
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                            android.R.layout.simple_spinner_item, list);
+                    options.setAdapter(adapter);
+                    options.setSelection(list.indexOf(answer));
+                    options.setOnItemSelectedListener(new OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                            if (answers.isEmpty())
+                                answers.add(answerPosition, (String) options.getSelectedItem());
+                            else
+                                answers.set(answerPosition, (String) options.getSelectedItem());
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parentView) {}
+                    });
+                    row.addView(options);
+                }
+                else if (dataType.equals(DatapointTypes.LIST_MULTI_ANSWER)) {
+                    final MultiSelectionSpinner options = new MultiSelectionSpinner(getActivity());
+                    options.setItems(dp.getOptions());
+                    String json = answer;
+                    Gson gson = new GsonBuilder().create();
+                    List<String> selected = (List<String>) gson.fromJson(json, new TypeToken<List<String>>() {}.getType());
+                    if (answers != null) options.setSelection(selected);
+                    options.setOnHoverListener(new View.OnHoverListener() {
+                        @Override
+                        public boolean onHover(View v, MotionEvent event) {
+                            List<String> items = options.getSelectedStrings();
+                            Gson gson = new GsonBuilder().create();
+                            String json = gson.toJson(items);
+                            if (answers.isEmpty())
+                                answers.add(answerPosition, json);
+                            else
+                                answers.set(answerPosition, json);
+
+                            return false;
+                        }
+                    });
+                    row.addView(options);
+                }
+            }
+
+            if (question.getMultiUse()) {
+                Button deleteDataPoint = new Button(getActivity());
+                deleteDataPoint.setText("Delete");
+                deleteDataPoint.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        table.removeView(questionContainer);
+                        removeAnswers(answerPosition);
+                        populateTable();
+                    }
+                });
+                questionContainer.addView(deleteDataPoint);
+            }
+        }
+    }
+
+
+
+
 
     public class MultiSelectionSpinner extends Spinner implements
             OnMultiChoiceClickListener {

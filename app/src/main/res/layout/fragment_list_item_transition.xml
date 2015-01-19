@@ -24,6 +24,8 @@
             android:text="Edit"
             android:layout_toLeftOf="@+id/hidden_view1"
             android:textColor="@android:color/white"
+            android:onClick="onClick"
+            android:clickable="true"
             android:alpha="1" />
 
         <TextView
@@ -36,6 +38,8 @@
             android:text="delete"
             android:textColor="@android:color/white"
             android:visibility="visible"
+            android:onClick="onClick"
+            android:clickable="true"
             android:alpha="1" />
     </LinearLayout>
 

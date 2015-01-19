@@ -24,6 +24,7 @@ import com.special.utils.UISwipableList;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.objects.Households;
+import org.rbdc.sra.objects.Interviews;
 import org.rbdc.sra.objects.QuestionSet;
 
 import java.util.ArrayList;
@@ -36,11 +37,10 @@ public class InterviewActivity extends Activity {
     private ArrayList<QuestionSet> responseSets;
     private ArrayList<ListItem> listItems;
 
+    private Interviews interview;
     private int areaID;
     private int householdID;
     private String interviewType;
-
-    private Households household;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +51,22 @@ public class InterviewActivity extends Activity {
         areaID = intent.getIntExtra("areaID", -1);
         householdID = intent.getIntExtra("householdID", -1);
         interviewType = intent.getStringExtra("interviewType");
-        if (householdID < 0) {
+        if (areaID < 0) {
+            System.out.println("areaID was either not passed from AreasFragment or is invalid");
             return;
         }
+        if (householdID < 0) {
+            System.out.println("householdID was either not passed from AreasFragment or is invalid");
+            return;
+        }
+        Households household = CRUDFlinger.getAreas().get(areaID).getHouseholds().get(householdID);
+        ArrayList<Interviews> interviews = household.getInterviews();
+        if (interviews.isEmpty()) interviews.add(new Interviews());
+        interview = interviews.get(0);
+        responseSets = interview.getQuestionSets();
 
-        household = CRUDFlinger.getAreas().get(areaID).getHouseholds().get(householdID);
-        responseSets = new ArrayList<QuestionSet>(); //household.getResponseSets();
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText(household.getHouseholdName() + " household -> Response Sets");
 
         responseSetList = (UISwipableList) findViewById(R.id.list_view);
         listItems = new ArrayList<ListItem>();
@@ -81,7 +91,7 @@ public class InterviewActivity extends Activity {
         responseSetList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
-                goToDataCollect();
+                goToDataCollect(i);
             }
         });
     }
@@ -93,13 +103,14 @@ public class InterviewActivity extends Activity {
         }
     }
 
-    private void addResponseSet(QuestionSet qs) {
+    private QuestionSet addResponseSet(QuestionSet qs) {
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(qs);
         QuestionSet clonedQS = gson.fromJson(json, QuestionSet.class);
         responseSets.add(clonedQS);
         populateListItems();
         responseSetAdapter.notifyDataSetChanged();
+        return clonedQS;
     }
 
     private void openResponseSetSelectDialog() {
@@ -116,9 +127,9 @@ public class InterviewActivity extends Activity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
-                addResponseSet(sets.get(i));
+                QuestionSet clonedSet = addResponseSet(sets.get(i));
                 alert.dismiss();
-                goToDataCollect();
+                goToDataCollect(responseSets.indexOf(clonedSet));
             }
         });
 
@@ -133,11 +144,11 @@ public class InterviewActivity extends Activity {
         alert.show();
     }
 
-    private void goToDataCollect() {
+    private void goToDataCollect(int responseSetIndex) {
         Intent intent = new Intent(this, DataCollect.class);
-//        intent.putExtra("areaID", areaId);
-//        intent.putExtra("householdID", householdId);
-//        intent.putExtra("interviewType", "area");
+        intent.putExtra("areaID", areaID);
+        intent.putExtra("householdID", householdID);
+        intent.putExtra("responseSetIndex", responseSetIndex);
         startActivity(intent);
     }
 

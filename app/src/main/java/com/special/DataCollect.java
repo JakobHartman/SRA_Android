@@ -15,8 +15,12 @@ import android.widget.TextView;
 
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.objects.Households;
+import org.rbdc.sra.objects.Interviews;
 import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.QuestionSet;
+
+import java.util.ArrayList;
 
 public class DataCollect extends FragmentActivity {
 
@@ -33,19 +37,26 @@ public class DataCollect extends FragmentActivity {
         setContentView(R.layout.activity_data_collect);
 
         Intent intent = getIntent();
-//        int area = intent.getIntExtra("area", 0);
-//        int house = intent.getIntExtra("household", 0);
-//        if (area < 0) System.out.println("Given area index (" + area + ") is less than 0");
-////        if (house < 0) System.out.println("Given household index (" + household + ") is less than 0");
-//        getRegion(area, house);
-//        String questionSetName = intent.getStringExtra("questionSetName");
-//        if (household != null) {
-//            questionSet = household.getQuestionSet(questionSetName);
-//            if (questionSet == null) {
-//                questionSet = CRUDFlinger.getQuestionSet(questionSetName);
-//            }
-//        }
-        questionSet = CRUDFlinger.getQuestionSets().get(0);
+        int areaID = intent.getIntExtra("areaID", -1);
+        int householdID = intent.getIntExtra("householdID", -1);
+        int responseSetIndex = intent.getIntExtra("responseSetIndex", -1);
+        if (areaID < 0) {
+            System.out.println("areaID was either not passed from DataCollect or is invalid");
+            return;
+        }
+        if (householdID < 0) {
+            System.out.println("householdID was either not passed from DataCollect or is invalid");
+            return;
+        }
+        if (responseSetIndex < 0) {
+            System.out.println("responseSetIndex was either not passed from DataCollect or is invalid");
+            return;
+        }
+        Households household = CRUDFlinger.getAreas().get(areaID).getHouseholds().get(householdID);
+        ArrayList<Interviews> interviews = household.getInterviews();
+        Interviews interview = interviews.get(0);
+        ArrayList<QuestionSet> responseSets = interview.getQuestionSets();
+        questionSet = responseSets.get(responseSetIndex);
         numQuestions = questionSet.getQuestions().size();
 
         progressView = (TextView) findViewById(R.id.question_progress_view);

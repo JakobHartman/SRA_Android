@@ -77,7 +77,7 @@ public class QuestionsFragment extends Fragment {
 
     private void setupList() {
         questionSetListAdapter = new QuestionSetListAdapter(getActivity(), listItems);
-        questionSetListView.setActionLayout(R.id.hidden_view1);
+        questionSetListView.setActionLayout(R.id.hidden);
         questionSetListView.setItemLayout(R.id.front_layout);
         questionSetListView.setAdapter(questionSetListAdapter);
         questionSetListView.setIgnoredViewHandler(resideMenu);
@@ -396,9 +396,20 @@ public class QuestionsFragment extends Fragment {
             viewHolder.image.setImageResource(imageid);
             viewHolder.title.setText(item);
             viewHolder.descr.setText(desc);
-            TextView hiddenView = (TextView) v.findViewById(R.id.hidden_view1);
-            hiddenView.setText(R.string.delete_question_set_text);
-            hiddenView.setOnClickListener(new View.OnClickListener() {
+
+            TextView edit = (TextView) v.findViewById(R.id.hidden_view2);
+            edit.setClickable(true);
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openQuestionSetDialog(questionSets.get(position));
+                }
+            });
+
+            TextView delete = (TextView) v.findViewById(R.id.hidden_view1);
+            delete.setClickable(true);
+            delete.setText(R.string.delete_question_set_text);
+            delete.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
