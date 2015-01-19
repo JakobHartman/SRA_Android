@@ -22,6 +22,10 @@ public class QuestionSet implements Serializable {
         this.Questions = new ArrayList<Question>();
     }
 
+    public QuestionSet(){
+
+    }
+
     /*
      * Modifiers
      */

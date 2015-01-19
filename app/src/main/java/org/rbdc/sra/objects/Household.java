@@ -79,7 +79,7 @@ public class Household implements Serializable {
     public QuestionSet getQuestionSet(String name) {
         if (Interviews.isEmpty()) return null;
         Interview i = Interviews.get(0);
-        ArrayList<QuestionSet> sets = i.getQuestionSets();
+        ArrayList<QuestionSet> sets = i.getQuestionsets();
         for (QuestionSet qs : sets) {
             if (qs.getName().equals(name))
                 return qs;

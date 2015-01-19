@@ -13,6 +13,10 @@ public class Member implements Serializable {
     private String Gender;
     private boolean Inschool;
 
+    public Member(){
+
+    }
+
     public String getBirthday() {
         return Birthday;
     }

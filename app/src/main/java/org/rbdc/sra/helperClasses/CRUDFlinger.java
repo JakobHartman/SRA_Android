@@ -8,12 +8,14 @@ import com.google.gson.GsonBuilder;
 
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
+import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
 import org.json.JSONArray;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
@@ -229,5 +231,28 @@ public class CRUDFlinger {
 
     public static ArrayList<Area> getAreas(){
         return region.getAreas();
+    }
+
+    public static Area buildObject(){
+        Area area = new Area();
+        area.setName("Bob");
+        area.setCountry("USA");
+        area.setRegion("Idaho");
+        Household household = new Household();
+        household.setRegion("Idaho");
+        household.setCountry("USA");
+        household.setArea("Bob");
+        Member member = new Member();
+        member.setName("John");
+        member.setBirthday("");
+        member.setRelationship("");
+        member.setGender("");
+        member.setEducationLevel("");
+        member.setInschool(true);
+        household.addMember(member);
+        area.addHousehold(household);
+
+        area.addHousehold(household);
+        return area;
     }
 }

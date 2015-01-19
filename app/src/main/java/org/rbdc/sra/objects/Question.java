@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Question implements Serializable {
 
     private String Name;
-    private Boolean IsMultiUse;
+    private Boolean multiUse;
     private ArrayList<Datapoint> DataPoints;
 
     /*
@@ -17,15 +17,18 @@ public class Question implements Serializable {
      */
     public Question(String refUrl) {
         this.Name = "";
-        this.IsMultiUse = false;
+        this.multiUse = false;
         this.DataPoints = new ArrayList<Datapoint>();
     }
+
+    public Question(){}
+
 
     /*
      * Modifiers
      */
     public void setName(String name) { this.Name = name; }
-    public void setMultiUse(Boolean isMultiUse) { this.IsMultiUse = isMultiUse; }
+    public void setMultiUse(Boolean isMultiUse) { this.multiUse = isMultiUse; }
     public void setDataPoints(ArrayList<Datapoint> dataPoints) { this.DataPoints = dataPoints; }
     public void addDataPoint(Datapoint datapoint) {
         for (Datapoint dp : DataPoints) {
@@ -49,7 +52,7 @@ public class Question implements Serializable {
      * Accessors
      */
     public String getName() { return Name; }
-    public Boolean getMultiUse() { return IsMultiUse; }
+    public Boolean getMultiUse() { return multiUse; }
     public ArrayList<Datapoint> getDataPoints() { return DataPoints; }
     public Datapoint getDataPoint(String label) {
         for (Datapoint dp : DataPoints) {

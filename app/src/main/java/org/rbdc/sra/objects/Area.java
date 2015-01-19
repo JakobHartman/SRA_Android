@@ -9,9 +9,10 @@ import java.util.ArrayList;
  */
 public class Area implements Serializable {
     private String Name;
+    private String Country;
     private ArrayList<Household> Resources;
     private String Region;
-    private String Country;
+
 
     public String getCountry() {
         return Country;

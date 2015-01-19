@@ -8,18 +8,18 @@ import java.util.ArrayList;
  */
 public class Interview implements Serializable {
     private String DateCreated;
-    private ArrayList<QuestionSet> QuestionSets;
+    private ArrayList<QuestionSet> questionsets;
 
     public void addQuestionSets(QuestionSet questionSet){
-        QuestionSets.add(questionSet);
+        questionsets.add(questionSet);
     }
 
     public Interview(){
-        this.QuestionSets = new ArrayList<QuestionSet>();
+
     }
 
-    public ArrayList<QuestionSet> getQuestionSets() {
-        return QuestionSets;
+    public ArrayList<QuestionSet> getQuestionsets() {
+        return questionsets;
     }
 
     public String getDateCreated() {
@@ -30,7 +30,7 @@ public class Interview implements Serializable {
         this.DateCreated = dateCreated;
     }
 
-    public void setQuestionSets(ArrayList<QuestionSet> questionSets) {
-        this.QuestionSets = questionSets;
+    public void setQuestionsets(ArrayList<QuestionSet> questionsets) {
+        this.questionsets = questionsets;
     }
 }

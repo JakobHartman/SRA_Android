@@ -34,7 +34,7 @@ public class login extends Activity {
     TextView textview;
     ProgressBar progress;
     int passes = 0;
-    private String organization = "SRA";
+    private String organization = "sra";
 
     public boolean getStatus(){
         return status;
@@ -98,7 +98,7 @@ public class login extends Activity {
             textview.setText("Logging In....");
 
         //Start a reference to the base firebase
-        Firebase ref = new Firebase("https://intense-inferno-7741.firebaseio.com/Organization");
+        Firebase ref = new Firebase("https://intense-inferno-7741.firebaseio.com");
                 //authenticate user using firebase.
                 ref.authWithPassword(username, password, new Firebase.AuthResultHandler() {
                     //Success
@@ -108,7 +108,7 @@ public class login extends Activity {
                         textview.setText("Authenticating....");
                         //Get reference to User Tree
                         final String Node = username.split("@")[0];
-                        Firebase users = new Firebase("https://intense-inferno-7741.firebaseio.com/Users/" + Node);
+                        Firebase users = new Firebase("https://intense-inferno-7741.firebaseio.com/users/" + Node.toLowerCase());
                         //Start download from firebase, once
                          users.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -118,19 +118,19 @@ public class login extends Activity {
                                  //loop through Users
                                  textview.setText("Saving User For Offline Use");
                                  System.out.println(dataSnapshot.getValue().toString());
-                                 String username = dataSnapshot.child("Email").getValue().toString();
-                                 DataSnapshot ld = dataSnapshot.child("Organizations").child(organization);
-                                 DataSnapshot role = ld.child("Roles");
-                                 DataSnapshot country = ld.child("Countries");
+                                 String username = dataSnapshot.child("email").getValue().toString();
+                                 DataSnapshot ld = dataSnapshot.child("organizations").child(organization);
+                                 DataSnapshot role = ld.child("roles");
+                                 DataSnapshot country = ld.child("countries");
                                  final LoginObject info = new LoginObject();
                                  info.setLoggedIn(true);
                                  for(DataSnapshot rs : country.getChildren()){
                                      CountryLogin countryLogin = new CountryLogin();
                                      countryLogin.setName(rs.getName());
-                                     for(DataSnapshot as : rs.child("Regions").getChildren()){
+                                     for(DataSnapshot as : rs.child("regions").getChildren()){
                                          RegionLogin regionLogin = new RegionLogin();
                                          regionLogin.setName(as.getName());
-                                         for(DataSnapshot a : as.child("Areas").getChildren()){
+                                         for(DataSnapshot a : as.child("areas").getChildren()){
                                              AreaLogin areaLogin = new AreaLogin();
                                              areaLogin.setName(a.getName());
                                              regionLogin.addArea(areaLogin);

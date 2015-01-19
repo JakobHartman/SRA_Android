@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         CRUDFlinger.setApplication(getApplication());
         CRUDFlinger.setPreferences();
         DownloadData.setApplication(getApplication());
-        DownloadData.setOrganization("SRA");
+        DownloadData.setOrganization("sra");
 
         if(CRUDFlinger.checkLocal("User")){
             LoginObject login = CRUDFlinger.load("User",LoginObject.class);
