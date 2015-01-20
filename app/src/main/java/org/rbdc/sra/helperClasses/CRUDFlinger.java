@@ -123,6 +123,10 @@ public class CRUDFlinger {
     }
 
     public static void addArea(Area area){
+        if(region == null){
+            region = new Region();
+            saveRegion();
+        }
         region.addArea(area);
     }
 
