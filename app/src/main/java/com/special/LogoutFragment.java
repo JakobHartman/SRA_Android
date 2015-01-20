@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.rbdc.sra.Login;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
-import org.rbdc.sra.login;
 import org.rbdc.sra.objects.LoginObject;
 
 public class LogoutFragment extends Fragment {
@@ -27,7 +27,7 @@ public class LogoutFragment extends Fragment {
         LoginObject login = CRUDFlinger.load("User", LoginObject.class);
         login.setLoggedIn(false);
         CRUDFlinger.save("User",login);
-        Intent intent = new Intent(parentView.getContext(),login.class);
+        Intent intent = new Intent(parentView.getContext(),Login.class);
         startActivity(intent);
         return parentView;
     }

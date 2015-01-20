@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
     public void goToLogin(View v) { goToLogin(); }
 
     public void goToLogin(){
-        Intent intent0 = new Intent(this, login.class);
+        Intent intent0 = new Intent(this, Login.class);
         startActivity(intent0);
     }
 

@@ -1,6 +1,9 @@
 package org.rbdc.sra.helperClasses;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -38,8 +41,6 @@ public class DownloadData {
 
     private static DownloadData instance = null;
     private static String organization = null;
-    private static Application application = null;
-    private static int passes = 0;
 
     public static void setOrganization(String organization) {
         DownloadData.organization = organization;
@@ -56,8 +57,30 @@ public class DownloadData {
         return instance;
     }
 
-    public static void setApplication(Application application) {
-        DownloadData.application = application;
+    public static void download(LoginObject info, final Context activity, final Class destination) {
+        Region region = new Region();
+        for(RegionLogin reg : info.getCountryLogin().getRegions()){
+            for(AreaLogin area : reg.getAreas()){
+                Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + info.getCountryLogin().getName() + "/regions/" + reg.getName() + "/areas/" + area.getName());
+                Log.i("base url: ","https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + info.getCountryLogin().getName() + "/regions/" + reg.getName() + "/areas/" + area.getName() );
+                base.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                            Area area = dataSnapshot.getValue(Area.class);
+                            CRUDFlinger.addArea(area);
+                            CRUDFlinger.saveRegion();
+                            Intent intent = new Intent(activity,destination);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            activity.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+            }
+        }
     }
 
     public static void download(LoginObject info) {
@@ -69,14 +92,9 @@ public class DownloadData {
                 base.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.i("JSON: ", dataSnapshot.getValue().toString());
-//                            Gson gson = new GsonBuilder().create();
-                            Area area = dataSnapshot.getValue(Area.class);
-                            Log.i("String: ", "" + area.getName());
-                            CRUDFlinger.addArea(area);
-                            CRUDFlinger.saveRegion();
-
-
+                        Area area = dataSnapshot.getValue(Area.class);
+                        CRUDFlinger.addArea(area);
+                        CRUDFlinger.saveRegion();
 
                     }
 
@@ -85,24 +103,32 @@ public class DownloadData {
 
                     }
                 });
-//                Firebase newBase = new Firebase("https://testrbdc.firebaseio.com");
-//                        try{
-//                            String json = JSONUtilities.stringify(CRUDFlinger.buildObject());
-//                            Log.i(" First: ",json);
-//                            Map<String, Object> son = (Map)testJackson(json);
-//                            newBase.setValue(son);
-//                            Gson gson = new GsonBuilder().create();
-//                            Area areas = gson.fromJson(json, Area.class);
-//                            Log.i(" Second: ",JSONUtilities.stringify(areas));
-//                        }catch (JSONException e){
-//
-//                        }catch (IOException e){}
-
             }
         }
     }
 
-    public static HashMap testJackson(String json) throws IOException {
+    public static void syncDownload(LoginObject info) {
+        for(RegionLogin reg : info.getCountryLogin().getRegions()){
+            for(AreaLogin area : reg.getAreas()){
+                Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + info.getCountryLogin().getName() + "/regions/" + reg.getName() + "/areas/" + area.getName());
+                Log.i("base url: ","https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + info.getCountryLogin().getName() + "/regions/" + reg.getName() + "/areas/" + area.getName() );
+                base.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Area area = dataSnapshot.getValue(Area.class);
+                        CRUDFlinger.getTempRegion().addArea(area);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+            }
+        }
+    }
+
+    public static HashMap buildMap(String json) throws IOException {
         JsonFactory factory = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper(factory);
 

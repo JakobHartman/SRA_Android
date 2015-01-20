@@ -26,14 +26,13 @@ import org.rbdc.sra.objects.RegionLogin;
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
 
-public class login extends Activity {
+public class Login extends Activity {
 
     EditText usernameET;
     EditText passwordET;
     private boolean status;
     TextView textview;
     ProgressBar progress;
-    int passes = 0;
     private String organization = "sra";
 
     public boolean getStatus(){
@@ -155,7 +154,7 @@ public class login extends Activity {
                                      user.putString("User", userString);
                                      user.commit();
                                  }catch (JSONException e){}
-                                 DownloadData.download(info);
+                                 DownloadData.download(info,getBaseContext(),Dashboard.class);
 
                              }
                              //Fail

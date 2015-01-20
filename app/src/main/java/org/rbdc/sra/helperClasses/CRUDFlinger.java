@@ -34,6 +34,7 @@ public class CRUDFlinger {
     private static SharedPreferences.Editor saver = null;
     private static Region region = null;
     private static Application application = null;
+    private static Region tempRegion = null;
 
     protected CRUDFlinger(){
 
@@ -45,6 +46,17 @@ public class CRUDFlinger {
             CRUDFlinger.instance = new CRUDFlinger();
         }
         return instance;
+    }
+
+    public static Region getTempRegion() {
+        if(tempRegion == null){
+            tempRegion = new Region();
+        }
+        return tempRegion;
+    }
+
+    public static void setTempRegion(Region tempRegion) {
+        CRUDFlinger.tempRegion = tempRegion;
     }
 
     public static void setApplication(Application applicationPassed){
