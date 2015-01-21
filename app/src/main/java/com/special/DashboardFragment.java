@@ -84,17 +84,6 @@ public class DashboardFragment extends Fragment {
         return parentView;
     }
 
-    private void changeFragment(){
-
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment, new AreasFragment());
-        fragmentTransaction.setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-    }
-
-
-
-
 
 
     private void prepareListData() throws JSONException{

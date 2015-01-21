@@ -142,13 +142,6 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
                 .commit();
     }
 
-    private void changeFragment(){
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment, new AreasFragment());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-    }
 
     //return the residemenu to fragments
     public ResideMenu getResideMenu(){
