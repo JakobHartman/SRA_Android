@@ -146,7 +146,7 @@ public class AreasFragment extends Fragment {
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
         ArrayList<String> regions = new ArrayList<String>();
         regions.add("Select Region");
-        regions.addAll(loginObject.getCountryLogin().getRegionNames());
+        regions.addAll(loginObject.getSiteLogin().getRegionNames());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,regions);
         regionText.setAdapter(adapter);
 
@@ -163,6 +163,8 @@ public class AreasFragment extends Fragment {
                 }else if(regionText.getSelectedItemPosition() == 0){
                     toast.makeText(getActivity(),"Please Select A Valid Region", Toast.LENGTH_LONG).show();
                 }else{
+                    newArea.setRegion(regionText.getSelectedItem().toString());
+                    newArea.setCountry(CRUDFlinger.getCountryName(regionText.getSelectedItem().toString()));
                     newArea.setName(areaText.getText().toString());
                     CRUDFlinger.addArea(newArea);
                     mAdapter = new TransitionListAdapter(getActivity(),listArea());
@@ -200,7 +202,7 @@ public class AreasFragment extends Fragment {
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
         ArrayList<String> regions = new ArrayList<String>();
         regions.add("Select Region");
-        regions.addAll(loginObject.getCountryLogin().getRegionNames());
+        regions.addAll(loginObject.getSiteLogin().getRegionNames());
 
         btn = (Button) dialog.findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {

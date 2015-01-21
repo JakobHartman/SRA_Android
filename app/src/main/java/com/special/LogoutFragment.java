@@ -26,7 +26,8 @@ public class LogoutFragment extends Fragment {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
         LoginObject login = CRUDFlinger.load("User", LoginObject.class);
         login.setLoggedIn(false);
-        CRUDFlinger.save("User",login);
+        //CRUDFlinger.save("User",login);
+        CRUDFlinger.removeLocal("User");
         Intent intent = new Intent(parentView.getContext(),Login.class);
         startActivity(intent);
         return parentView;

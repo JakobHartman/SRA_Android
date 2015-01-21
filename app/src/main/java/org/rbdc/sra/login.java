@@ -117,11 +117,14 @@ public class Login extends Activity {
                                  //loop through Users
                                  textview.setText("Saving User For Offline Use");
                                  System.out.println(dataSnapshot.getValue().toString());
+
                                  String username = dataSnapshot.child("email").getValue().toString();
+
                                  DataSnapshot ld = dataSnapshot.child("organizations").child(organization);
                                  DataSnapshot role = ld.child("roles");
                                  DataSnapshot country = ld.child("countries");
                                  final LoginObject info = new LoginObject();
+                                 info.setUsername(username);
                                  info.setLoggedIn(true);
                                  for(DataSnapshot rs : country.getChildren()){
                                      CountryLogin countryLogin = new CountryLogin();
@@ -137,7 +140,7 @@ public class Login extends Activity {
                                          countryLogin.addRegion(regionLogin);
 
                                      }
-                                     info.setCountryLogin(countryLogin);
+                                     info.getSiteLogin().addCountry(countryLogin);
                                  }
 
                                  textview.setText("Loading User Areas");
@@ -153,8 +156,9 @@ public class Login extends Activity {
                                      userString = JSONUtilities.stringify(info);
                                      user.putString("User", userString);
                                      user.commit();
+                                     DownloadData.download(info,getBaseContext(),Dashboard.class);
                                  }catch (JSONException e){}
-                                 DownloadData.download(info,getBaseContext(),Dashboard.class);
+
 
                              }
                              //Fail

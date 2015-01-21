@@ -13,20 +13,12 @@ public class CountryLogin implements Serializable {
 
     public CountryLogin(){
         regions = new ArrayList<RegionLogin>();
-        regionNames = new ArrayList<String>();
+
     }
 
     public void addRegion(RegionLogin region){
         regions.add(region);
     }
-
-    public ArrayList<String> getRegionNames() {
-        for(RegionLogin names : regions){
-            regionNames.add(names.getName());
-        }
-        return regionNames;
-    }
-
 
     public void setName(String name) {
         this.name = name;

@@ -9,6 +9,7 @@ import org.rbdc.sra.objects.Household;
 import com.special.menu.ResideMenu;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import quickconnectfamily.json.JSONException;
+import quickconnectfamily.json.JSONUtilities;
+
 public class DashboardFragment extends Fragment {
 
     private View parentView;
-    private ResideMenu resideMenu;
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
@@ -36,7 +39,12 @@ public class DashboardFragment extends Fragment {
         // Get Households
 
         // preparing list data
-        prepareListData();
+        try{
+            prepareListData();
+        } catch (JSONException e){
+
+        }
+
 
         System.out.println("After Preparing..."+listDataChild.get("Juja"));
         listAdapter = new ExpandableListAdapter(parentView.getContext(), listDataHeader, listDataChild);
@@ -47,12 +55,12 @@ public class DashboardFragment extends Fragment {
         return parentView;
     }
 
-    private void prepareListData() {
+    private void prepareListData() throws JSONException{
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
         List<String> area0 = new ArrayList<String>();
         List<Household> households = new ArrayList();
-        List<Area> areas = new ArrayList();
+        ArrayList<Area> areas = new ArrayList<Area>();
 
         // Get areas
         try {
@@ -74,15 +82,17 @@ public class DashboardFragment extends Fragment {
                 listDataHeader.add(a.getName());
                 //Get the households in area
                 households = a.getResources();
-                List<String> houseNames = new ArrayList();
+                Log.i("","" + households);
+                ArrayList<String> houseNames = new ArrayList<String>();
                 //For each household in the list of households
                 for (Household h : households) {
+                    Log.i("House : ", JSONUtilities.stringify(h));
                     //for each household add their name to the list
                     houseNames.add(h.getName());
                 }
                 //put the list of names with the area
                 listDataChild.put(a.getName(),houseNames);
-                System.out.println("listDataChild ="+a.getName()+" "+houseNames.get(0));
+                //System.out.println("listDataChild ="+a.getName()+" "+houseNames.get(0));
 
             }
 

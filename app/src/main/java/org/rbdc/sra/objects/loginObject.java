@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class LoginObject implements Serializable {
     private String username;
     private ArrayList<String> permissions;
-    private CountryLogin countryLogin;
+    private SiteLogin siteLogin;
     private boolean loggedIn;
 
     public String getUsername() {
@@ -32,12 +32,12 @@ public class LoginObject implements Serializable {
         return loggedIn;
     }
 
-    public CountryLogin getCountryLogin() {
-        return countryLogin;
+    public SiteLogin getSiteLogin() {
+        return siteLogin;
     }
 
-    public void setCountryLogin(CountryLogin countryLogin) {
-        this.countryLogin = countryLogin;
+    public void setSiteLogin(SiteLogin siteLogin) {
+        this.siteLogin = siteLogin;
     }
 
     public void setPermissions(ArrayList<String> permissions) {
@@ -49,6 +49,7 @@ public class LoginObject implements Serializable {
     }
 
     public LoginObject(){
+        siteLogin = new SiteLogin();
         permissions = new ArrayList<String>();
     }
 }

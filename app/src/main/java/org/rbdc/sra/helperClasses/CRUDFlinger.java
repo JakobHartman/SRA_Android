@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
+import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
@@ -88,8 +89,6 @@ public class CRUDFlinger {
         //setPreferences();
         String json = loader.getString(key,null);
         Gson gson = new GsonBuilder().create();
-        System.out.print("Json" + loader);
-
         Object object = gson.fromJson(json,className);
 
         return (Any)object;
@@ -149,6 +148,7 @@ public class CRUDFlinger {
     public static void removeLocal(String key){
         setPreferences();
         saver.remove(key);
+        saver.commit();
     }
 
     public static <Any> Any combine(Object one,Object two) throws InstantiationException, IllegalAccessException,BeansException{
@@ -246,6 +246,7 @@ public class CRUDFlinger {
     }
 
     public static ArrayList<Area> getAreas(){
+        loadRegion();
         return region.getAreas();
     }
 
@@ -270,5 +271,15 @@ public class CRUDFlinger {
 
         area.addHousehold(household);
         return area;
+    }
+
+    public static String getCountryName(String regionName){
+        String country = new String();
+        for(Area area : region.getAreas()){
+            if(regionName.matches(area.getRegion())){
+                country = area.getCountry();
+            }
+        }
+        return country;
     }
 }
