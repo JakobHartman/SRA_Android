@@ -1,5 +1,7 @@
 package org.rbdc.sra.objects;
 
+import com.shaded.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
@@ -13,6 +15,12 @@ public class Datapoint implements Serializable {
     private String Type;
     private ArrayList<String> Answers;
 
+    @JsonIgnore
+    private String optionListType;
+
+    @JsonIgnore
+    private ArrayList<String> options;
+
     /*
      * Constructor
      */
@@ -22,9 +30,25 @@ public class Datapoint implements Serializable {
         this.Answers = new ArrayList<String>();
     }
 
+    public ArrayList<String> getOptions() {
+        return options;
+    }
+
+    public String getOptionListType() {
+        return optionListType;
+    }
+
+    public void setOptionListType(String optionListType) {
+        this.optionListType = optionListType;
+    }
+
+    public void setOptions(ArrayList<String> options) {
+        this.options = options;
+    }
+
     /*
-     * Modifiers
-     */
+                     * Modifiers
+                     */
     public void setLabel(String label) {
         this.Label = label;
     }

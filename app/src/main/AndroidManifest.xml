@@ -30,6 +30,10 @@
             android:name="com.special.InterviewActivity"
             android:label="@string/title_activity_interview" >
         </activity>
+        <activity
+            android:name="com.special.DataCollect"
+            android:label="@string/title_activity_data_collect" >
+        </activity>
     </application>
 
 </manifest>

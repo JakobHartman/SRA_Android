@@ -20,7 +20,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         CRUDFlinger.setApplication(getApplication());
         CRUDFlinger.setPreferences();
-        DownloadData.setApplication(getApplication());
         DownloadData.setOrganization("sra");
 
         if(CRUDFlinger.checkLocal("User")){

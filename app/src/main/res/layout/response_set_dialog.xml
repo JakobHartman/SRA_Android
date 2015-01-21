@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_margin="20dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:id="@+id/dialog"
+    android:background="@color/white"
+    android:padding="10dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/black"
+        android:text="Select a Question Set"
+        android:id="@+id/dialog_title"
+        android:singleLine="false"
+        android:padding="10dp" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:layout_marginRight="@dimen/list_horizontal_margin"
+        android:layout_marginLeft="@dimen/list_horizontal_margin"
+        android:paddingLeft="50dip"
+        android:paddingRight="0dip" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/UIButtonInverse"
+            android:text="Cancel"
+            android:textSize="@dimen/textsize_medium"
+            android:padding="12dp"
+            android:id="@+id/cancel_button"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:layout_weight=".5" />
+
+    </LinearLayout>
+</LinearLayout>

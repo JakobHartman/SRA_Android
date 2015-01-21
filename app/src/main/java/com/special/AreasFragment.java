@@ -2,6 +2,7 @@ package com.special;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,8 +10,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.special.menu.ResideMenu;
+import com.special.utils.UISwipableList;
+import com.special.utils.UITabs;
+
+import org.rbdc.sra.Dashboard;
+import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.CRUDFlinger;
+
+import org.rbdc.sra.objects.Area;
+import org.rbdc.sra.objects.Household;
+import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Member;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,18 +40,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.rbdc.sra.Dashboard;
-import org.rbdc.sra.R;
-import org.rbdc.sra.helperClasses.CRUDFlinger;
-import org.rbdc.sra.helperClasses.UrlBuilder;
-import org.rbdc.sra.objects.Area;
-import org.rbdc.sra.objects.Household;
-import org.rbdc.sra.objects.LoginObject;
-import org.rbdc.sra.objects.Member;
-
-import com.special.menu.ResideMenu;
-import com.special.utils.UISwipableList;
-import com.special.utils.UITabs;
 
 public class AreasFragment extends Fragment {
 
@@ -108,6 +117,18 @@ public class AreasFragment extends Fragment {
                     addHousehold();
                 }
             });
+            }
+        });
+
+        Button interviewButton = (Button) parentView.findViewById(R.id.interview_button);
+        interviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), InterviewActivity.class);
+                intent.putExtra("areaID", areaId);
+                intent.putExtra("householdID", householdId);
+                intent.putExtra("interviewType", navigation);
+                startActivity(intent);
             }
         });
     }
@@ -349,5 +370,4 @@ public class AreasFragment extends Fragment {
         }
         return time;
     }
-
 }

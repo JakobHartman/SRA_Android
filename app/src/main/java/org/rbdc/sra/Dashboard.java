@@ -47,6 +47,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     private void setUpMenu() {
 
         resideMenu = new ResideMenu(this);
+        resideMenu.setBackground(R.color.theme_color);
 
 
         resideMenu.attachToActivity(this);

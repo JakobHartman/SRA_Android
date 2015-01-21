@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/UIButtonInverse"
-            android:text="New Question Set"
+            android:text="New"
             android:textSize="@dimen/textsize_medium"
             android:padding="12dp"
             android:id="@+id/new_question_set_button"
