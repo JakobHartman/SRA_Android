@@ -52,7 +52,7 @@ public class AreasFragment extends Fragment {
     Button btn, btnCancel;
     Dialog dialog;
     private static String navigation;
-    private Bundle args = getArguments();
+    private Bundle args;
     private static int areaId;
     private static int householdId;
 
@@ -62,11 +62,13 @@ public class AreasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
+        args = getArguments();
         listView   = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
         navigation = args.getString("Household");
+        System.out.println("This is the args"+navigation);
         if (navigation == null) {
             navigation = "area";
         }
@@ -75,10 +77,10 @@ public class AreasFragment extends Fragment {
     }
 
     private void initView(){
-      /*  switch (navigation) {
+        /*switch (navigation) {
             case "area": mAdapter = new TransitionListAdapter(getActivity(), listArea());
                 break;
-            case "household" : mAdapter = new TransitionListAdapter(getActivity(), listArea());
+            case "household" : mAdapter = new TransitionListAdapter(getActivity(), );
         }*/
         mAdapter = new TransitionListAdapter(getActivity(), listArea());
         listView.setActionLayout(R.id.hidden);
