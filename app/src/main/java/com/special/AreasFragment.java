@@ -52,7 +52,7 @@ public class AreasFragment extends Fragment {
     Button btn, btnCancel;
     Dialog dialog;
     private static String navigation;
-
+    private Bundle args = getArguments();
     private static int areaId;
     private static int householdId;
 
@@ -66,12 +66,20 @@ public class AreasFragment extends Fragment {
         button = (Button) parentView.findViewById(R.id.button3);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
-        navigation = "area";
+        navigation = args.getString("Household");
+        if (navigation == null) {
+            navigation = "area";
+        }
         initView();
         return parentView;
     }
 
     private void initView(){
+      /*  switch (navigation) {
+            case "area": mAdapter = new TransitionListAdapter(getActivity(), listArea());
+                break;
+            case "household" : mAdapter = new TransitionListAdapter(getActivity(), listArea());
+        }*/
         mAdapter = new TransitionListAdapter(getActivity(), listArea());
         listView.setActionLayout(R.id.hidden);
         listView.setItemLayout(R.id.front_layout);

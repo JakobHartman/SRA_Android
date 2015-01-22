@@ -5,8 +5,6 @@ import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.ExpandableListAdapter;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
-
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,11 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
 
@@ -57,9 +53,20 @@ public class DashboardFragment extends Fragment {
                                 childPosition), Toast.LENGTH_SHORT)
                         .show();
 
+
+                // Set up to change the fragment with a specific method called
+                // pass a bundle containing the household to the fragment
+                AreasFragment goToHouse = new AreasFragment();
+                Bundle args = new Bundle();
+                args.putString("Household",listDataChild.get(
+                        listDataHeader.get(groupPosition)).get(
+                        childPosition));
+                goToHouse.setArguments(args);
+
                 // Change the fragment
-                getFragmentManager().beginTransaction().replace(R.id.main_fragment,new AreasFragment())
-                .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse)
+                .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null).commit();
 
                 return false;
             }
