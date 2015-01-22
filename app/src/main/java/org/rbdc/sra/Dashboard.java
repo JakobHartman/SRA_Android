@@ -6,6 +6,7 @@ import com.special.LogoutFragment;
 import com.special.NotesFragment;
 import com.special.QuestionsFragment;
 import com.special.StatsFragment;
+import com.special.SyncFragment;
 import com.special.menu.ResideMenu;
 import com.special.menu.ResideMenuItem;
 
@@ -118,7 +119,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         }else if(view == itemLogout){
             changeFragment(new LogoutFragment());
         }else if(view == itemSync){
-
+            changeFragment(new SyncFragment());
+            title.setText("Sync");
         }
 
         resideMenu.closeMenu();

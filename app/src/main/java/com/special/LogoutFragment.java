@@ -12,6 +12,7 @@ import org.rbdc.sra.Login;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Region;
 
 public class LogoutFragment extends Fragment {
 
@@ -28,6 +29,7 @@ public class LogoutFragment extends Fragment {
         login.setLoggedIn(false);
         //CRUDFlinger.save("User",login);
         CRUDFlinger.removeLocal("User");
+        CRUDFlinger.setRegion(new Region());
         Intent intent = new Intent(parentView.getContext(),Login.class);
         startActivity(intent);
         return parentView;

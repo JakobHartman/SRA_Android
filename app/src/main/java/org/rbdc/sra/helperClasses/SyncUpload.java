@@ -10,7 +10,6 @@ import org.rbdc.sra.objects.LoginObject;
  * Created by chad on 1/12/15.
  */
 public class SyncUpload {
-    Activity activity;
     String databaseString;
 
 /*
@@ -19,16 +18,11 @@ public class SyncUpload {
 
     }*/
 
-    public void startUpload() {
+    public LoginObject startUpload(Activity activity) {
         Firebase.setAndroidContext(activity.getApplication());
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
-
-        System.out.println("LoginObject for Upload "+loginObject);
-
-        //Firebase database = new Firebase("https://intense-inferno-7741.firebaseio.com/Organizations");
-
-
-
+        System.out.println("LoginObject for Upload "+ loginObject);
+        return loginObject;
     }
 
 }

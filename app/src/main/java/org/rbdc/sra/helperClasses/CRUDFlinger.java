@@ -246,8 +246,14 @@ public class CRUDFlinger {
     }
 
     public static ArrayList<Area> getAreas(){
-        loadRegion();
+        if(region == null){
+            loadRegion();
+        }
         return region.getAreas();
+    }
+
+    public static void setRegion(Region region) {
+        CRUDFlinger.region = region;
     }
 
     public static Area buildObject(){
@@ -275,6 +281,7 @@ public class CRUDFlinger {
 
     public static String getCountryName(String regionName){
         String country = new String();
+        country = "";
         for(Area area : region.getAreas()){
             if(regionName.matches(area.getRegion())){
                 country = area.getCountry();

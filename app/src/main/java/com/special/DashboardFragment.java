@@ -7,6 +7,8 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 
 import com.special.menu.ResideMenu;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
