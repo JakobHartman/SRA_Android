@@ -58,9 +58,8 @@ public class DashboardFragment extends Fragment {
                 // pass a bundle containing the household to the fragment
                 AreasFragment goToHouse = new AreasFragment();
                 Bundle args = new Bundle();
-                args.putString("Household",listDataChild.get(
-                        listDataHeader.get(groupPosition)).get(
-                        childPosition));
+                args.putInt("Area Index",groupPosition);
+                args.putInt("Household Id", childPosition);
                 goToHouse.setArguments(args);
 
                 // Change the fragment

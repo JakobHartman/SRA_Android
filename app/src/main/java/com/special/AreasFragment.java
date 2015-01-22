@@ -62,27 +62,41 @@ public class AreasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
-        args = getArguments();
         listView   = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
-        navigation = args.getString("Household");
-        System.out.println("This is the args"+navigation);
-        if (navigation == null) {
-            navigation = "area";
-        }
+        navigation = "area";
+        //System.out.println("This is the args"+args.getInt("Area Index"));
+
+        // If the fragment is reached via menu, there will be no args
+        try {
+            args = getArguments();
+            if (!args.isEmpty()) {
+                navigation = "members";
+            }
+        } catch (Exception e) {}
         initView();
         return parentView;
     }
 
     private void initView(){
-        /*switch (navigation) {
-            case "area": mAdapter = new TransitionListAdapter(getActivity(), listArea());
-                break;
-            case "household" : mAdapter = new TransitionListAdapter(getActivity(), );
-        }*/
-        mAdapter = new TransitionListAdapter(getActivity(), listArea());
+        if (navigation == "household") {
+           mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(args.getInt("Area Index")) );
+        }
+        else if (navigation == "members") {
+            mAdapter = new TransitionListAdapter(getActivity(),listMembers(args.getInt("Area Index"),args.getInt("Household Id")));
+            listView.setAdapter(mAdapter);
+            button.setText("Add Member");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addMember();
+                }
+            });
+        } else  {
+            mAdapter = new TransitionListAdapter(getActivity(), listArea());
+        }
         listView.setActionLayout(R.id.hidden);
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
