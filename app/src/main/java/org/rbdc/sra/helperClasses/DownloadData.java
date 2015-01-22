@@ -20,6 +20,7 @@ import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import quickconnectfamily.json.JSONException;
@@ -69,13 +70,14 @@ public class DownloadData {
                             }catch (JSONException e){
 
                             }
-                            Log.i(" Count: ", CRUDFlinger.getAreas().size() + " " + number);
+                            Log.i(" Count: ", CRUDFlinger.getAreas().size() + " " + number + " " + passes);
                             passes++;
 
                             if (passes == number  && number == CRUDFlinger.getAreas().size() ) {
                                 Intent intent = new Intent(activity, destination);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 activity.startActivity(intent);
+                                passes = 0;
                             }
 
                         }
@@ -90,7 +92,7 @@ public class DownloadData {
     }
 
     public static void download(final LoginObject info) {
-        Region region = new Region();
+        final int number = info.getSiteLogin().getAreaCount();
         for(CountryLogin country : info.getSiteLogin().getCountries()) {
             for (RegionLogin reg : country.getRegions()) {
                 for (AreaLogin area : reg.getAreas()) {
@@ -103,8 +105,12 @@ public class DownloadData {
                             Area area = dataSnapshot.getValue(Area.class);
                             CRUDFlinger.addArea(area);
                             CRUDFlinger.saveRegion();
-                        }
+                            try{
+                                Log.i("Area :", JSONUtilities.stringify(area));
+                            }catch (JSONException e){
 
+                            }
+                        }
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
 
@@ -126,6 +132,7 @@ public class DownloadData {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Area area = dataSnapshot.getValue(Area.class);
                             CRUDFlinger.getTempRegion().addArea(area);
+
                         }
 
                         @Override
@@ -146,6 +153,7 @@ public class DownloadData {
                 = new TypeReference<HashMap<String,Object>>() {};
 
         HashMap<String,Object> o = mapper.readValue(json, typeRef);
+
         return o;
     }
 }

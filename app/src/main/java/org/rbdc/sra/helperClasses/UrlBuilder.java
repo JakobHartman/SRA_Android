@@ -30,29 +30,10 @@ public class UrlBuilder {
         return instance;
     }
 
-    public static String buildAreaUrl(Area area){
+    public static String buildAreaUrl(Area area) {
         String url;
-        url = "https://intense-inferno-7741.firebaseio.com/Organizations" + org + "/Countries/" + area.getCountry() + "/Regions/" + area.getRegion() + "/Areas/" + area.getName();
+        url = "https://testrbdc.firebaseio.com/Organizations/" + org + "/Countries/" + area.getCountry() + "/Regions/" + area.getRegion() + "/Areas/" + area.getName();
         return url;
-    }
-
-    public static String buildHouseholdUrl(){
-        String url;
-            url = "";
-        return url;
-    }
-
-    public static String buildUUID(){
-        String uuid;
-        uuid = "";
-        final String set = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        final int length = set.length();
-        Random r = new Random();
-        uuid += "-";
-        for(int i = 0; i < 19;i++){
-            uuid += set.charAt(r.nextInt(length));
-        }
-        return uuid;
     }
 
 }

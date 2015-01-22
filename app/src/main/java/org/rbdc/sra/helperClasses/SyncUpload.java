@@ -4,13 +4,16 @@ import android.app.Activity;
 
 import com.firebase.client.Firebase;
 
+import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Region;
+
+import quickconnectfamily.json.JSONUtilities;
 
 /**
  * Created by chad on 1/12/15.
  */
 public class SyncUpload {
-    Activity activity;
     String databaseString;
 
 /*
@@ -19,15 +22,20 @@ public class SyncUpload {
 
     }*/
 
-    public void startUpload() {
+    public LoginObject startUpload(Activity activity) {
         Firebase.setAndroidContext(activity.getApplication());
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
+        System.out.println("LoginObject for Upload "+ loginObject);
+        return loginObject;
+    }
 
-        System.out.println("LoginObject for Upload "+loginObject);
-
-        //Firebase database = new Firebase("https://intense-inferno-7741.firebaseio.com/Organizations");
-
-
+    public void uploadRegion() throws Exception{
+        Region region = CRUDFlinger.getRegion();
+        for(Area area : region.getAreas()){
+            String url = UrlBuilder.buildAreaUrl(area);
+            Firebase base = new Firebase(url);
+            base.setValue(DownloadData.buildMap(JSONUtilities.stringify(area)));
+        }
 
     }
 

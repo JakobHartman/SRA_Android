@@ -128,13 +128,13 @@ public class Login extends Activity {
                                  info.setLoggedIn(true);
                                  for(DataSnapshot rs : country.getChildren()){
                                      CountryLogin countryLogin = new CountryLogin();
-                                     countryLogin.setName(rs.getName());
+                                     countryLogin.setName(rs.child("name").getValue().toString());
                                      for(DataSnapshot as : rs.child("regions").getChildren()){
                                          RegionLogin regionLogin = new RegionLogin();
-                                         regionLogin.setName(as.getName());
+                                         regionLogin.setName(as.child("name").getValue().toString());
                                          for(DataSnapshot a : as.child("areas").getChildren()){
                                              AreaLogin areaLogin = new AreaLogin();
-                                             areaLogin.setName(a.getName());
+                                             areaLogin.setName(a.child("name").getValue().toString());
                                              regionLogin.addArea(areaLogin);
                                          }
                                          countryLogin.addRegion(regionLogin);

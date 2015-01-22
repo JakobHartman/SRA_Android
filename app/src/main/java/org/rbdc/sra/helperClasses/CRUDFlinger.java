@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.rbdc.sra.objects.Area;
+import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
@@ -14,9 +15,15 @@ import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
 import org.json.JSONArray;
+import org.rbdc.sra.objects.RegionLogin;
+import org.rbdc.sra.objects.SiteLogin;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
+
+import com.googlecode.openbeans.BeanInfo;
+import com.googlecode.openbeans.Introspector;
+import com.googlecode.openbeans.PropertyDescriptor;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
@@ -151,11 +158,27 @@ public class CRUDFlinger {
         saver.commit();
     }
 
-    public static <Any> Any combine(Object one,Object two) throws InstantiationException, IllegalAccessException,BeansException{
-        Object object = one.getClass().newInstance();
-            BeanUtils.copyProperties(one,object);
-            BeanUtils.copyProperties(two,object);
-        return (Any)object;
+    public static <M> Region merge(M target, M destination) throws Exception {
+        BeanInfo beanInfo = Introspector.getBeanInfo(target.getClass());
+
+        // Iterate over all the attributes
+        for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors()) {
+
+            // Only copy writable attributes
+            if (descriptor.getWriteMethod() != null) {
+                Object originalValue = descriptor.getReadMethod()
+                        .invoke(target);
+
+                // Only copy values values where the destination values is null
+                if (originalValue == null) {
+                    Object defaultValue = descriptor.getReadMethod().invoke(
+                            destination);
+                    descriptor.getWriteMethod().invoke(target, defaultValue);
+                }
+
+            }
+        }
+        return (Region)destination;
     }
 
 
@@ -246,8 +269,14 @@ public class CRUDFlinger {
     }
 
     public static ArrayList<Area> getAreas(){
-        loadRegion();
+        if(region == null){
+            loadRegion();
+        }
         return region.getAreas();
+    }
+
+    public static void setRegion(Region region) {
+        CRUDFlinger.region = region;
     }
 
     public static Area buildObject(){
@@ -274,12 +303,15 @@ public class CRUDFlinger {
     }
 
     public static String getCountryName(String regionName){
-        String country = new String();
-        for(Area area : region.getAreas()){
-            if(regionName.matches(area.getRegion())){
-                country = area.getCountry();
+        LoginObject login = CRUDFlinger.load("User",LoginObject.class);
+        String countryName = new String();
+        for(CountryLogin country : login.getSiteLogin().getCountries()){
+            for(RegionLogin region : country.getRegions()){
+                if(region.getName().matches(regionName)){
+                    countryName = country.getName();
+                }
             }
         }
-        return country;
+        return countryName;
     }
 }
