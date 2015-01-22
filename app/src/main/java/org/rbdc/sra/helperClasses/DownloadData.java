@@ -131,7 +131,7 @@ public class DownloadData {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Area area = dataSnapshot.getValue(Area.class);
                             CRUDFlinger.getTempRegion().addArea(area);
-                            
+
                         }
 
                         @Override

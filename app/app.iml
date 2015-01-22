@@ -83,19 +83,19 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="spring-beans-4.1.4.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="firebase-client-android-1.1.1" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="aopalliance-1.0" level="project" />
-    <orderEntry type="library" exported="" name="renderscript-v8" level="project" />
-    <orderEntry type="library" exported="" name="spring-expression-4.1.4.RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="spring-aop-4.1.4.RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="spring-context-4.1.4.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
+    <orderEntry type="library" exported="" name="spring-beans-4.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="spring-aop-4.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="spring-context-4.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="nineoldandroids-library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="spring-core-4.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="aopalliance-1.0" level="project" />
+    <orderEntry type="library" exported="" name="spring-expression-4.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="renderscript-v8" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="nineoldandroids-library-2.4.0" level="project" />
   </component>
 </module>
 

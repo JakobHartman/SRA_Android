@@ -144,6 +144,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
                 .commit();
     }
 
+
     //return the residemenu to fragments
     public ResideMenu getResideMenu(){
         return resideMenu;

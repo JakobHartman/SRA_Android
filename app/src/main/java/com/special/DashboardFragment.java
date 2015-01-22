@@ -6,9 +6,11 @@ import org.rbdc.sra.helperClasses.ExpandableListAdapter;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 
+
 import com.special.menu.ResideMenu;
 
 import android.app.Activity;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,6 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +33,7 @@ public class DashboardFragment extends Fragment {
     private View parentView;
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
+    private TextView listItem;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
 
@@ -37,7 +43,31 @@ public class DashboardFragment extends Fragment {
 
         // get the listview
         expListView = (ExpandableListView) parentView.findViewById(R.id.lvExp);
+        // get the listItem
+        listItem = (TextView) parentView.findViewById(R.id.lblListItem);
 
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                // Tell us what we clicked
+                Toast.makeText(
+                        parentView.getContext(),
+                        listDataHeader.get(groupPosition)
+                                + " : "
+                                + listDataChild.get(
+                                listDataHeader.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT)
+                        .show();
+
+                // Change the fragment
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment,new AreasFragment())
+                .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+
+                return false;
+            }
+        });
         // Get Households
 
         // preparing list data
@@ -48,6 +78,7 @@ public class DashboardFragment extends Fragment {
         }
 
 
+
         System.out.println("After Preparing..."+listDataChild.get("Juja"));
         listAdapter = new ExpandableListAdapter(parentView.getContext(), listDataHeader, listDataChild);
 
@@ -56,6 +87,8 @@ public class DashboardFragment extends Fragment {
         //setUpViews();
         return parentView;
     }
+
+
 
     private void prepareListData() throws JSONException{
         listDataHeader = new ArrayList<String>();
@@ -93,7 +126,7 @@ public class DashboardFragment extends Fragment {
                     houseNames.add(h.getName());
                 }
                 //put the list of names with the area
-                listDataChild.put(a.getName(),houseNames);
+                listDataChild.put(a.getName(), houseNames);
                 //System.out.println("listDataChild ="+a.getName()+" "+houseNames.get(0));
 
             }
@@ -103,7 +136,7 @@ public class DashboardFragment extends Fragment {
             listDataHeader.add("Area 1");
             listDataHeader.add("Area 2");
             listDataHeader.add("Area 3");
-            */
+
 
             // Fill child list 1
             List<String> area1 = new ArrayList<String>();
@@ -133,6 +166,13 @@ public class DashboardFragment extends Fragment {
 
 
     }
+
+
+
+
+
+
+
 /*
     private void setUpViews() {
         Dashboard parentActivity = (Dashboard)getActivity();
