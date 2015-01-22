@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.special.menu.ResideMenu;
 
 import org.rbdc.sra.R;
@@ -27,8 +30,12 @@ import org.rbdc.sra.helperClasses.DownloadData;
 import org.rbdc.sra.helperClasses.SyncUpload;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Region;
 
 import java.util.ArrayList;
+
+import quickconnectfamily.json.JSONException;
+import quickconnectfamily.json.JSONUtilities;
 
 /**
  * Created by imac on 1/14/15.
@@ -38,11 +45,11 @@ public class SyncFragment extends Fragment {
     //Layouts
     private ResideMenu resideMenu;
     Button btn, btnCancel;
-
+    Region region;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v =  (LinearLayout) inflater.inflate(R.layout.relogin_dialog, container, false);
-            SyncUpload syncUp = new SyncUpload();
+            final SyncUpload syncUp = new SyncUpload();
             final LoginObject login = syncUp.startUpload(getActivity());
 
 
@@ -59,7 +66,14 @@ public class SyncFragment extends Fragment {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         DownloadData.syncDownload(login);
-
+                        try{
+                            region = CRUDFlinger.merge(CRUDFlinger.getTempRegion(), CRUDFlinger.getRegion());
+                            String json = JSONUtilities.stringify(region);
+                            Gson gson = new GsonBuilder().create();
+                            Region newRegion = gson.fromJson(json,Region.class);
+                            CRUDFlinger.setRegion(newRegion);
+                            syncUp.uploadRegion();
+                        }catch (Exception e){}
                     }
 
                     @Override

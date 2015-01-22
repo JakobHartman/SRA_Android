@@ -20,6 +20,7 @@ import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import quickconnectfamily.json.JSONException;
@@ -152,6 +153,7 @@ public class DownloadData {
                 = new TypeReference<HashMap<String,Object>>() {};
 
         HashMap<String,Object> o = mapper.readValue(json, typeRef);
+
         return o;
     }
 }
