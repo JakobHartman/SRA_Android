@@ -20,19 +20,23 @@
         </activity>
         <activity
             android:name=".Login"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
             android:name=".Dashboard"
-            android:label="@string/title_activity_dashboard" >
+            android:label="@string/title_activity_dashboard"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
             android:name="com.special.InterviewActivity"
-            android:label="@string/title_activity_interview" >
+            android:label="@string/title_activity_interview"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
             android:name="com.special.DataCollect"
-            android:label="@string/title_activity_data_collect" >
+            android:label="@string/title_activity_data_collect"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

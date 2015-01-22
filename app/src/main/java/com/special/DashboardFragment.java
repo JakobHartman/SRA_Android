@@ -5,6 +5,8 @@ import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.ExpandableListAdapter;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,6 +25,7 @@ import quickconnectfamily.json.JSONUtilities;
 public class DashboardFragment extends Fragment {
 
     private View parentView;
+    private TextView title;
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private TextView listItem;
@@ -32,6 +35,8 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        final Activity parentActivity = getActivity();
 
         // get the listview
         expListView = (ExpandableListView) parentView.findViewById(R.id.lvExp);
@@ -44,6 +49,7 @@ public class DashboardFragment extends Fragment {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
                 // Tell us what we clicked
+
                 Toast.makeText(
                         parentView.getContext(),
                         listDataHeader.get(groupPosition)
@@ -61,6 +67,10 @@ public class DashboardFragment extends Fragment {
                 args.putInt("Area Index",groupPosition);
                 args.putInt("Household Id", childPosition);
                 goToHouse.setArguments(args);
+
+                // Set the Title to Area
+                title = (TextView)parentActivity.findViewById(R.id.title);
+                title.setText("Areas");
 
                 // Change the fragment
                 getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse)

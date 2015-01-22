@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.special.menu.ResideMenu;
@@ -55,6 +57,7 @@ public class AreasFragment extends Fragment {
     private Bundle args;
     private static int areaId;
     private static int householdId;
+    private TextView title;
 
     //Vars
     private String PACKAGE = "IDENTIFY";
@@ -62,11 +65,16 @@ public class AreasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
+
         listView   = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
         navigation = "area";
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         //System.out.println("This is the args"+args.getInt("Area Index"));
 
         // If the fragment is reached via menu, there will be no args
@@ -81,10 +89,10 @@ public class AreasFragment extends Fragment {
     }
 
     private void initView(){
-        if (navigation == "household") {
-           mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(args.getInt("Area Index")) );
-        }
-        else if (navigation == "members") {
+        if (navigation == "members") {
+
+            householdId = args.getInt("Household Id");
+            areaId = args.getInt("Area Index");
             mAdapter = new TransitionListAdapter(getActivity(),listMembers(args.getInt("Area Index"),args.getInt("Household Id")));
             listView.setAdapter(mAdapter);
             button.setText("Add Member");
@@ -112,6 +120,7 @@ public class AreasFragment extends Fragment {
                 }
             }
         });
+
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa,final int i, long l) {
@@ -164,6 +173,7 @@ public class AreasFragment extends Fragment {
 
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.layout_area_dialog);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final Spinner regionText = (Spinner) dialog.findViewById(R.id.spinner);
@@ -221,6 +231,7 @@ public class AreasFragment extends Fragment {
 
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.layout_household_dialog);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
@@ -272,6 +283,7 @@ public class AreasFragment extends Fragment {
 
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.layout_member_dialog);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final Spinner relationship = (Spinner)dialog.findViewById(R.id.spinner1);

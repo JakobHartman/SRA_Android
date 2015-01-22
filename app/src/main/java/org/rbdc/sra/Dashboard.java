@@ -43,6 +43,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         changeFragment(new DashboardFragment());
         title = (TextView)findViewById(R.id.title);
         title.setText("Dashboard");
+
     }
 
     private void setUpMenu() {
