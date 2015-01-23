@@ -71,9 +71,7 @@ public class AreasFragment extends Fragment {
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
         navigation = "area";
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         //System.out.println("This is the args"+args.getInt("Area Index"));
 
@@ -102,68 +100,72 @@ public class AreasFragment extends Fragment {
                     addMember();
                 }
             });
-        } else  {
+
+        } else {
             mAdapter = new TransitionListAdapter(getActivity(), listArea());
-        }
-        listView.setActionLayout(R.id.hidden);
-        listView.setItemLayout(R.id.front_layout);
-        listView.setAdapter(mAdapter);
-        listView.setIgnoredViewHandler(resideMenu);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(navigation == "area"){
-                    addArea();
-                }else if(navigation == "household"){
-                    addHousehold();
-                }
-            }
-        });
-
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View viewa,final int i, long l) {
-            navigation = "household";
-            mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(i));
+            listView.setActionLayout(R.id.hidden);
+            listView.setItemLayout(R.id.front_layout);
             listView.setAdapter(mAdapter);
-            listView.setOnItemClickListener(new OnItemClickListener() {
-                 @Override
-                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                     householdId = position;
-                     mAdapter = new TransitionListAdapter(getActivity(),listMembers(i,position));
-                     listView.setAdapter(mAdapter);
-                     button.setText("Add Member");
-                     button.setOnClickListener(new View.OnClickListener() {
-                         @Override
-                         public void onClick(View v) {
-                             addMember();
-                         }
-                     });
-                }
-             });
-            areaId = i;
-            button.setText("Add Household");
+            listView.setIgnoredViewHandler(resideMenu);
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addHousehold();
+                    if (navigation == "area") {
+                        addArea();
+                    } else if (navigation == "household") {
+                        addHousehold();
+                    }
                 }
             });
-            }
-        });
 
-        Button interviewButton = (Button) parentView.findViewById(R.id.interview_button);
-        interviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), InterviewActivity.class);
-                intent.putExtra("areaID", areaId);
-                intent.putExtra("householdID", householdId);
-                intent.putExtra("interviewType", navigation);
-                startActivity(intent);
-            }
-        });
+            listView.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View viewa, final int i, long l) {
+                    navigation = "household";
+                    mAdapter = new TransitionListAdapter(getActivity(), listHouseholds(i));
+                    listView.setAdapter(mAdapter);
+                    listView.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            householdId = position;
+                            mAdapter = new TransitionListAdapter(getActivity(), listMembers(i, position));
+                            listView.setAdapter(mAdapter);
+                            button.setText("Add Member");
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    addMember();
+                                }
+                            });
+                        }
+                    });
+                    areaId = i;
+                    button.setText("Add Household");
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            addHousehold();
+                        }
+                    });
+                }
+            });
+        }
+
+            Button interviewButton = (Button) parentView.findViewById(R.id.interview_button);
+            interviewButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), InterviewActivity.class);
+                    intent.putExtra("areaID", areaId);
+                    intent.putExtra("householdID", householdId);
+                    intent.putExtra("interviewType", navigation);
+                    startActivity(intent);
+                }
+            });
+
+        
     }
 
     private void addArea(){

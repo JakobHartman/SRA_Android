@@ -70,7 +70,7 @@ public class DashboardFragment extends Fragment {
 
                 // Set the Title to Area
                 title = (TextView)parentActivity.findViewById(R.id.title);
-                title.setText("Areas");
+                title.setText("Members");
 
                 // Change the fragment
                 getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse)
