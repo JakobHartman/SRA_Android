@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -53,7 +54,6 @@ public class Login extends Activity {
         usernameET = (EditText) findViewById(R.id.usernameET);
         passwordET = (EditText) findViewById(R.id.passwordET);
         Button loginButton = (Button) findViewById(R.id.loginButton);
-
         //set onclick for button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
