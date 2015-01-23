@@ -23,7 +23,7 @@
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add Area"
+                android:text="Add Community"
                 style="@style/UIButtonInverse"
                 android:layout_gravity="bottom"
                 android:layout_marginRight="3dp" />

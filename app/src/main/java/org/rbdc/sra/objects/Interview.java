@@ -15,7 +15,7 @@ public class Interview implements Serializable {
     }
 
     public Interview(){
-
+        questionsets = new ArrayList<QuestionSet>();
     }
 
 

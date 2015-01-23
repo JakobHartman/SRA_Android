@@ -12,6 +12,7 @@ public class Area implements Serializable {
     private String Country;
     private ArrayList<Household> Resources;
     private String Region;
+    private ArrayList<Interview> interviews;
 
 
     public String getCountry() {
@@ -24,6 +25,7 @@ public class Area implements Serializable {
 
     public Area(){
         Resources = new ArrayList<Household>();
+        interviews = new ArrayList<Interview>();
     }
 
     public String getName() {
@@ -60,5 +62,12 @@ public class Area implements Serializable {
 
     public String getRegion() {
         return Region;
+    }
+
+    public void setInterviews(ArrayList<Interview> interviews) {
+        this.interviews = interviews;
+    }
+    public ArrayList<Interview> getInterviews() {
+        return interviews;
     }
 }

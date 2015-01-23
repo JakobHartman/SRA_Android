@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.Interview;
 import org.rbdc.sra.objects.Question;
@@ -36,11 +37,13 @@ public class DataCollect extends FragmentActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_collect);
+        CRUDFlinger.setApplication(getApplication());
 
         Intent intent = getIntent();
         int areaID = intent.getIntExtra("areaID", -1);
         int householdID = intent.getIntExtra("householdID", -1);
         int responseSetIndex = intent.getIntExtra("responseSetIndex", -1);
+        String interviewType = intent.getStringExtra("interviewType");
         if (areaID < 0) {
             System.out.println("areaID was either not passed from DataCollect or is invalid");
             return;
@@ -53,12 +56,24 @@ public class DataCollect extends FragmentActivity {
             System.out.println("responseSetIndex was either not passed from DataCollect or is invalid");
             return;
         }
-        Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
-        ArrayList<Interview> interviews = household.getInterviews();
-        Interview interview = interviews.get(0);
-        ArrayList<QuestionSet> responseSets = interview.getQuestionsets();
-        questionSet = responseSets.get(responseSetIndex);
-        numQuestions = questionSet.getQuestions().size();
+        if (interviewType.equals("household")) {
+            Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
+            ArrayList<Interview> interviews = household.getInterviews();
+            if (interviews.isEmpty()) interviews.add(new Interview());
+            Interview interview = interviews.get(0);
+            ArrayList<QuestionSet> responseSets = interview.getQuestionsets();
+            questionSet = responseSets.get(responseSetIndex);
+            numQuestions = questionSet.getQuestions().size();
+        }
+        else if (interviewType.equals("area")) {
+            Area area = CRUDFlinger.getAreas().get(areaID);
+            ArrayList<Interview> interviews = area.getInterviews();
+            if (interviews.isEmpty()) interviews.add(new Interview());
+            Interview interview = interviews.get(0);
+            ArrayList<QuestionSet> responseSets = interview.getQuestionsets();
+            questionSet = responseSets.get(responseSetIndex);
+            numQuestions = questionSet.getQuestions().size();
+        }
 
         questionNameView = (TextView) findViewById(R.id.question_header_view);
         progressView = (TextView) findViewById(R.id.question_progress_view);

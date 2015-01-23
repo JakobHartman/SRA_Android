@@ -23,9 +23,11 @@ import com.special.utils.UISwipableList;
 
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.Interview;
 import org.rbdc.sra.objects.QuestionSet;
+import org.rbdc.sra.objects.QuestionSetTypes;
 
 import java.util.ArrayList;
 
@@ -46,11 +48,14 @@ public class InterviewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interview);
+        TextView title = (TextView) findViewById(R.id.title);
+        CRUDFlinger.setApplication(getApplication());
 
         Intent intent = getIntent();
         areaID = intent.getIntExtra("areaID", -1);
         householdID = intent.getIntExtra("householdID", -1);
         interviewType = intent.getStringExtra("interviewType");
+        System.out.println(interviewType);
         if (areaID < 0) {
             System.out.println("areaID was either not passed from AreasFragment or is invalid");
             return;
@@ -59,14 +64,22 @@ public class InterviewActivity extends Activity {
             System.out.println("householdID was either not passed from AreasFragment or is invalid");
             return;
         }
-        Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
-        ArrayList<Interview> interviews = household.getInterviews();
-        if (interviews.isEmpty()) interviews.add(new Interview());
-        interview = interviews.get(0);
-        responseSets = interview.getQuestionsets();
-
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText(household.getName() + " household -> Response Sets");
+        if (interviewType.equals("household")) {
+            Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
+            ArrayList<Interview> interviews = household.getInterviews();
+            if (interviews.isEmpty()) interviews.add(new Interview());
+            interview = interviews.get(0);
+            responseSets = interview.getQuestionsets();
+            title.setText(household.getName() + " -> Response Sets");
+        }
+        else if (interviewType.equals("area")) {
+            Area area = CRUDFlinger.getAreas().get(areaID);
+            ArrayList<Interview> interviews = area.getInterviews();
+            if (interviews.isEmpty()) interviews.add(new Interview());
+            interview = interviews.get(0);
+            responseSets = interview.getQuestionsets();
+            title.setText(area.getName() + " -> Response Sets");
+        }
 
         responseSetList = (UISwipableList) findViewById(R.id.list_view);
         listItems = new ArrayList<ListItem>();
@@ -84,7 +97,7 @@ public class InterviewActivity extends Activity {
 
     private void setupList() {
         responseSetAdapter = new ResponseSetAdapter(this, listItems);
-        responseSetList.setActionLayout(R.id.hidden_view1);
+        responseSetList.setActionLayout(R.id.hidden);
         responseSetList.setItemLayout(R.id.front_layout);
         responseSetList.setAdapter(responseSetAdapter);
         responseSetList.setIgnoredViewHandler(resideMenu);
@@ -98,8 +111,13 @@ public class InterviewActivity extends Activity {
 
     private void populateListItems() {
         listItems.clear();
+        String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
         for (QuestionSet qs : responseSets) {
-            listItems.add(new ListItem(R.drawable.ic_home, qs.getName(), qs.getType(), null, null));
+            listItems.add(new ListItem(
+                    R.drawable.ic_home,
+                    qs.getName(),
+                    typesArray[QuestionSetTypes.getTypeIndex(qs.getType())],
+                    null, null));
         }
     }
 
@@ -120,14 +138,17 @@ public class InterviewActivity extends Activity {
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         alert.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        final ArrayList<QuestionSet> sets = CRUDFlinger.getQuestionSets();
+        ArrayList<QuestionSet> sets = new ArrayList<QuestionSet>();
+        if (interviewType.equals("household")) sets = CRUDFlinger.getQuestionSets(QuestionSetTypes.HOUSEHOLD);
+        else if (interviewType.equals("area")) sets = CRUDFlinger.getQuestionSets(QuestionSetTypes.AREA);
+        final ArrayList<QuestionSet> finalSets = sets;
         QuestionSetSelectionAdapter adapter = new QuestionSetSelectionAdapter(this, sets);
         final ListView list = (ListView) alert.findViewById(R.id.list_view);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
-                QuestionSet clonedSet = addResponseSet(sets.get(i));
+                QuestionSet clonedSet = addResponseSet(finalSets.get(i));
                 alert.dismiss();
                 goToDataCollect(responseSets.indexOf(clonedSet));
             }
@@ -148,6 +169,7 @@ public class InterviewActivity extends Activity {
         Intent intent = new Intent(this, DataCollect.class);
         intent.putExtra("areaID", areaID);
         intent.putExtra("householdID", householdID);
+        intent.putExtra("interviewType", interviewType);
         intent.putExtra("responseSetIndex", responseSetIndex);
         startActivity(intent);
     }
@@ -198,9 +220,15 @@ public class InterviewActivity extends Activity {
             viewHolder.image.setImageResource(imageid);
             viewHolder.title.setText(item);
             viewHolder.descr.setText(desc);
-            TextView hiddenView = (TextView) v.findViewById(R.id.hidden_view1);
-            hiddenView.setText(R.string.delete_question_set_text);
-            hiddenView.setOnClickListener(new View.OnClickListener() {
+
+            TextView edit = (TextView) v.findViewById(R.id.hidden_view2);
+            edit.setVisibility(View.GONE);
+
+            TextView delete = (TextView) v.findViewById(R.id.hidden_view1);
+            delete.setClickable(true);
+            delete.setEnabled(true);
+            delete.setText(R.string.delete_question_set_text);
+            delete.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {

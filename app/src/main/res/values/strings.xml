@@ -97,10 +97,9 @@
         <item>List - Single Answer</item>
         <item>List - Multi Answer</item>
     </string-array>
-    <string-array name="question_set_categories_array">
-        <item>Area</item>
+    <string-array name="question_set_types_array">
         <item>Household</item>
-        <item>Individual</item>
+        <item>Community</item>
     </string-array>
 
     <string name="title_activity_question_set_list">QuestionSetList</string>

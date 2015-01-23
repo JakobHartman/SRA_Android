@@ -30,6 +30,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.objects.Datapoint;
 import org.rbdc.sra.objects.DatapointTypes;
 import org.rbdc.sra.objects.Question;
@@ -53,6 +54,7 @@ public class DataCollectQuestionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_data_collect_question, container, false);
+        CRUDFlinger.setApplication(getActivity().getApplication());
 
         final DataCollect activity = (DataCollect) getActivity();
         Bundle args = getArguments();
@@ -199,7 +201,8 @@ public class DataCollectQuestionFragment extends Fragment {
                 }
                 else if (dataType.equals(DatapointTypes.LIST_MULTI_ANSWER)) {
                     final MultiSelectionSpinner options = new MultiSelectionSpinner(getActivity());
-                    options.setItems(dp.getOptions());
+                    if (!dp.getOptions().isEmpty())
+                        options.setItems(dp.getOptions());
                     String json = answer;
                     Gson gson = new GsonBuilder().create();
                     List<String> selected = (List<String>) gson.fromJson(json, new TypeToken<List<String>>() {}.getType());
@@ -318,6 +321,7 @@ public class DataCollectQuestionFragment extends Fragment {
         }
 
         public void setSelection(List<String> selection) {
+            if (selection == null) return;
             for (int i = 0; i < mSelection.length; i++) {
                 mSelection[i] = false;
             }

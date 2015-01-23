@@ -36,6 +36,7 @@ import org.rbdc.sra.objects.Datapoint;
 import org.rbdc.sra.objects.DatapointTypes;
 import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.QuestionSet;
+import org.rbdc.sra.objects.QuestionSetTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,7 @@ public class QuestionsFragment extends Fragment {
         questionSetListView = (UISwipableList) parentView.findViewById(R.id.listView);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
+        CRUDFlinger.setApplication(getActivity().getApplication());
 
         questionSets = CRUDFlinger.getQuestionSets();
         listItems = new ArrayList<ListItem>();
@@ -91,8 +93,13 @@ public class QuestionsFragment extends Fragment {
 
     private void populateListItems() {
         listItems.clear();
+        String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
         for (QuestionSet qs : questionSets) {
-            listItems.add(new ListItem(R.drawable.ic_home, qs.getName(), qs.getType(), null, null));
+            listItems.add(new ListItem(
+                    R.drawable.ic_home,
+                    qs.getName(),
+                    typesArray[QuestionSetTypes.getTypeIndex(qs.getType())],
+                    null, null));
         }
     }
 
@@ -139,17 +146,18 @@ public class QuestionsFragment extends Fragment {
         });
 
         final Spinner type = (Spinner) alert.findViewById(R.id.type_spinner);
-        String[] typesArray = getResources().getStringArray(R.array.question_set_categories_array);
+        String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
         final ArrayList<String> typesArrayList = new ArrayList<String>(Arrays.asList(typesArray));
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(
                 getActivity(), android.R.layout.simple_spinner_item, typesArrayList);
         type.setAdapter(typesAdapter);
-        type.setSelection(typesArrayList.indexOf(qSet.getType()));
+        type.setSelection(QuestionSetTypes.getTypeIndex(qSet.getType()));
         type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                qSet.setType(typesArrayList.get(position));
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                qSet.setType(QuestionSetTypes.getTypeFromIndex(position));
             }
-            @Override public void onNothingSelected(AdapterView<?> parent) { }
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         questionListAdapter = new QuestionAdapter(getActivity(), qSet);
@@ -199,7 +207,7 @@ public class QuestionsFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int index = optionsList.indexOfChild(optionListItem);
-               // dp.setOption(index, optionView.getText().toString());
+                dp.getOptions().set(index, optionView.getText().toString());
             }
         });
 
@@ -208,7 +216,7 @@ public class QuestionsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int index = optionsList.indexOfChild(optionListItem);
-               // dp.deleteOption(index);
+                dp.getOptions().remove(index);
                 optionsList.removeView(optionListItem);
             }
         });
@@ -233,20 +241,20 @@ public class QuestionsFragment extends Fragment {
 
         final LinearLayout optionsContainer = (LinearLayout) dpItemView.findViewById(R.id.options_container);
         final LinearLayout optionsList = (LinearLayout) dpItemView.findViewById(R.id.options_list_view);
-//        ArrayList<String> options = dp.getOptions();
-//        for (int i = 0; i < options.size(); i++) {
-//            addOption(options.get(i), optionsList, dp);
-//        }
-//
-//        Button addOption = (Button) dpItemView.findViewById(R.id.add_option_button);
-//        addOption.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String option = "";
-//                dp.addOption(option);
-//                addOption(option, optionsList, dp);
-//            }
-//        });
+        final ArrayList<String> options = dp.getOptions();
+        for (int i = 0; i < options.size(); i++) {
+            addOption(options.get(i), optionsList, dp);
+        }
+
+        Button addOption = (Button) dpItemView.findViewById(R.id.add_option_button);
+        addOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String option = "";
+                options.add(option);
+                addOption(option, optionsList, dp);
+            }
+        });
 
         Spinner dataTypeSpinner = (Spinner) dpItemView.findViewById(R.id.data_type_spinner);
         String[] types = getResources().getStringArray(R.array.data_point_types_array);
@@ -265,7 +273,7 @@ public class QuestionsFragment extends Fragment {
                 if (dp.dataTypeIsAList()) optionsContainer.setVisibility(View.VISIBLE);
                 else {
                     optionsContainer.setVisibility(View.GONE);
-//                    dp.getOptions().clear();
+                    dp.getOptions().clear();
                     optionsList.removeAllViews();
                 }
             }
@@ -398,14 +406,7 @@ public class QuestionsFragment extends Fragment {
             viewHolder.descr.setText(desc);
 
             TextView edit = (TextView) v.findViewById(R.id.hidden_view2);
-            edit.setClickable(true);
-            edit.setEnabled(true);
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openQuestionSetDialog(questionSets.get(position));
-                }
-            });
+            edit.setVisibility(View.GONE);
 
             TextView delete = (TextView) v.findViewById(R.id.hidden_view1);
             delete.setClickable(true);

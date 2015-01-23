@@ -5,7 +5,11 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.googlecode.openbeans.BeanInfo;
+import com.googlecode.openbeans.Introspector;
+import com.googlecode.openbeans.PropertyDescriptor;
 
+import org.json.JSONArray;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.Household;
@@ -13,23 +17,13 @@ import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
-
-import org.json.JSONArray;
 import org.rbdc.sra.objects.RegionLogin;
-import org.rbdc.sra.objects.SiteLogin;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
-
-import com.googlecode.openbeans.BeanInfo;
-import com.googlecode.openbeans.Introspector;
-import com.googlecode.openbeans.PropertyDescriptor;
-
-import quickconnectfamily.json.JSONException;
-import quickconnectfamily.json.JSONUtilities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import quickconnectfamily.json.JSONException;
+import quickconnectfamily.json.JSONUtilities;
 
 
 /**
@@ -190,6 +184,14 @@ public class CRUDFlinger {
         if (questionSets == null) { loadQuestionSets(); }
         return questionSets;
     }
+    public static ArrayList<QuestionSet> getQuestionSets(String type) {
+        if (questionSets == null) { loadQuestionSets(); }
+        ArrayList<QuestionSet> sets = new ArrayList<QuestionSet>();
+        for (QuestionSet qs : questionSets) {
+            if (qs.getType().equals(type)) sets.add(qs);
+        }
+        return sets;
+    }
     private static void loadQuestionSets() {
         setPreferences();
         questionSets = new ArrayList<QuestionSet>();
@@ -224,7 +226,6 @@ public class CRUDFlinger {
             }
         }
     }
-
     public static void saveQuestionSets() {
         setPreferences();
         if (questionSets == null) {
@@ -242,7 +243,6 @@ public class CRUDFlinger {
             System.out.println("Exception: Couldn't store QuestionSet bank using KVStore.");
         }
     }
-
     public static QuestionSet getQuestionSet(String name) {
         setPreferences();
         if (questionSets == null) { loadQuestionSets(); }
@@ -253,20 +253,21 @@ public class CRUDFlinger {
         }
         return null;
     }
-
     public static void deleteQuestionSet(QuestionSet qs) {
         setPreferences();
         if (questionSets == null) { loadQuestionSets(); }
         questionSets.remove(qs);
         saveQuestionSets();
     }
-
     public static void addQuestionSet(QuestionSet qs) {
         setPreferences();
         if (questionSets == null) { loadQuestionSets(); }
         questionSets.add(qs);
         saveQuestionSets();
     }
+    /* END QUESTION SET STUFF */
+
+
 
     public static ArrayList<Area> getAreas(){
         if(region == null){
