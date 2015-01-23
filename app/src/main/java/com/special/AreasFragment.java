@@ -124,6 +124,8 @@ public class AreasFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View viewa, final int i, long l) {
                     navigation = "household";
+                    title = (TextView)getActivity().findViewById(R.id.title);
+                    title.setText("Households");
                     mAdapter = new TransitionListAdapter(getActivity(), listHouseholds(i));
                     listView.setAdapter(mAdapter);
                     listView.setOnItemClickListener(new OnItemClickListener() {
@@ -131,6 +133,8 @@ public class AreasFragment extends Fragment {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             householdId = position;
                             mAdapter = new TransitionListAdapter(getActivity(), listMembers(i, position));
+                            title = (TextView)getActivity().findViewById(R.id.title);
+                            title.setText("Members");
                             listView.setAdapter(mAdapter);
                             button.setText("Add Member");
                             button.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +169,7 @@ public class AreasFragment extends Fragment {
                 }
             });
 
-        
+
     }
 
     private void addArea(){
