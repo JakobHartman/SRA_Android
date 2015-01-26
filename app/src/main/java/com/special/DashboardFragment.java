@@ -1,5 +1,6 @@
 package com.special;
 
+import org.rbdc.sra.Login;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.ExpandableListAdapter;
@@ -7,6 +8,7 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -51,10 +53,10 @@ public class DashboardFragment extends Fragment {
                 // Tell us what we clicked
 
                 if (CRUDFlinger.getAreas() == null) {
-                    AreasFragment goSync = new AreasFragment();
-                    getFragmentManager().beginTransaction().replace(R.id.main_fragment,goSync)
-                            .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .addToBackStack(null).commit();
+                     // need to be taken to login activity
+                    Intent goToLogin = new Intent(getActivity().getBaseContext(), Login.class);
+                    startActivity(goToLogin);
+
                 } else {
                     Toast.makeText(
                             parentView.getContext(),
