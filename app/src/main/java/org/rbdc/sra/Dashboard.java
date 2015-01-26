@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.UrlBuilder;
@@ -25,6 +26,7 @@ import org.rbdc.sra.helperClasses.UrlBuilder;
 public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
     private ResideMenu resideMenu;
+    private AreasFragment areaFrag;
     private ResideMenuItem itemDashboard;
     private ResideMenuItem itemAreas;
     private ResideMenuItem itemQuestions;
@@ -40,9 +42,10 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         setContentView(R.layout.activity_dashboard);
         UrlBuilder.setOrg("SRA");
         setUpMenu();
-        changeFragment(new DashboardFragment());
+        changeFragment(new DashboardFragment(), "dashboard");
         title = (TextView)findViewById(R.id.title);
         title.setText("Dashboard");
+        areaFrag = (AreasFragment) getSupportFragmentManager().findFragmentByTag("areas");
 
     }
 
@@ -103,24 +106,24 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     public void onClick(View view) {
 
         if (view == itemDashboard){
-            changeFragment(new DashboardFragment());
+            changeFragment(new DashboardFragment(), "dashboard");
             title.setText("Dashboard");
         }else if (view == itemAreas){
-            changeFragment(new AreasFragment());
+            changeFragment(new AreasFragment(), "areas");
             title.setText("Areas");
         }else if (view == itemQuestions){
-            changeFragment(new QuestionsFragment());
+            changeFragment(new QuestionsFragment(), "questions");
             title.setText("Question Sets");
         }else if (view == itemNotes){
-            changeFragment(new NotesFragment());
+            changeFragment(new NotesFragment(), "notes");
             title.setText("Notes");
         }else if(view == itemStats){
-            changeFragment(new StatsFragment());
+            changeFragment(new StatsFragment(), "stats");
             title.setText("Statistics");
         }else if(view == itemLogout){
-            changeFragment(new LogoutFragment());
+            changeFragment(new LogoutFragment(), "logout");
         }else if(view == itemSync){
-            changeFragment(new SyncFragment());
+            changeFragment(new SyncFragment(), "sync");
             title.setText("Sync");
         }
 
@@ -136,11 +139,11 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         public void closeMenu() { }
     };
 
-    private void changeFragment(Fragment targetFragment){
+    private void changeFragment(Fragment targetFragment, String tag){
         resideMenu.clearIgnoredViewList();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.main_fragment, targetFragment, "fragment")
+                .replace(R.id.main_fragment, targetFragment, tag)
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
@@ -155,7 +158,11 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     public void onBackPressed() {
         if (resideMenu.isOpened()){
             resideMenu.closeMenu();
-        } else {
+        } else if (areaFrag.isVisible()) {
+            Toast toast = new Toast(this);
+            toast.makeText(this,"Back button pressed", Toast.LENGTH_SHORT).show();
+        }
+        else {
             resideMenu.openMenu();
         }
     }

@@ -50,33 +50,39 @@ public class DashboardFragment extends Fragment {
                                         int groupPosition, int childPosition, long id) {
                 // Tell us what we clicked
 
-                Toast.makeText(
-                        parentView.getContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
+                if (CRUDFlinger.getAreas() == null) {
+                    AreasFragment goSync = new AreasFragment();
+                    getFragmentManager().beginTransaction().replace(R.id.main_fragment,goSync)
+                            .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .addToBackStack(null).commit();
+                } else {
+                    Toast.makeText(
+                            parentView.getContext(),
+                            listDataHeader.get(groupPosition)
+                                    + " : "
+                                    + listDataChild.get(
+                                    listDataHeader.get(groupPosition)).get(
+                                    childPosition), Toast.LENGTH_SHORT)
+                            .show();
 
 
-                // Set up to change the fragment with a specific method called
-                // pass a bundle containing the household to the fragment
-                AreasFragment goToHouse = new AreasFragment();
-                Bundle args = new Bundle();
-                args.putInt("Area Index",groupPosition);
-                args.putInt("Household Id", childPosition);
-                goToHouse.setArguments(args);
+                    // Set up to change the fragment with a specific method called
+                    // pass a bundle containing the household to the fragment
+                    AreasFragment goToHouse = new AreasFragment();
+                    Bundle args = new Bundle();
+                    args.putInt("Area Index",groupPosition);
+                    args.putInt("Household Id", childPosition);
+                    goToHouse.setArguments(args);
 
-                // Set the Title to Area
-                title = (TextView)parentActivity.findViewById(R.id.title);
-                title.setText("Members");
+                    // Set the Title to Area
+                    title = (TextView)parentActivity.findViewById(R.id.title);
+                    title.setText("Members");
 
-                // Change the fragment
-                getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse)
-                .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(null).commit();
-
+                    // Change the fragment
+                    getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse)
+                            .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .addToBackStack(null).commit();
+                }
                 return false;
             }
         });
@@ -120,6 +126,9 @@ public class DashboardFragment extends Fragment {
             listDataHeader.add("Hello!");
             area0.add("You need to sync or add areas");
             listDataChild.put(listDataHeader.get(0), area0);
+
+
+
 
         } else {
 

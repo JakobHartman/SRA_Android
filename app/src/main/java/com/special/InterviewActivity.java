@@ -64,7 +64,7 @@ public class InterviewActivity extends Activity {
             System.out.println("householdID was either not passed from AreasFragment or is invalid");
             return;
         }
-        if (interviewType.equals("household")) {
+        if (interviewType.equals("household") || interviewType.equals("members")) {
             Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
             ArrayList<Interview> interviews = household.getInterviews();
             if (interviews.isEmpty()) interviews.add(new Interview());

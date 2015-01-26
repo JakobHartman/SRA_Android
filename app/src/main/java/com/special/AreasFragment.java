@@ -73,6 +73,8 @@ public class AreasFragment extends Fragment {
         navigation = "area";
 
 
+
+
         //System.out.println("This is the args"+args.getInt("Area Index"));
 
         // If the fragment is reached via menu, there will be no args
@@ -85,6 +87,8 @@ public class AreasFragment extends Fragment {
         initView();
         return parentView;
     }
+
+
 
     private void initView(){
         if (navigation == "members") {
@@ -171,6 +175,8 @@ public class AreasFragment extends Fragment {
 
 
     }
+
+
 
     private void addArea(){
         dialog = new Dialog(getActivity(),
@@ -414,4 +420,7 @@ public class AreasFragment extends Fragment {
         }
         return time;
     }
+
 }
+
+
