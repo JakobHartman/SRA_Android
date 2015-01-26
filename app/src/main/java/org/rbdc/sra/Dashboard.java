@@ -10,6 +10,7 @@ import com.special.SyncFragment;
 import com.special.menu.ResideMenu;
 import com.special.menu.ResideMenuItem;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,7 +27,6 @@ import org.rbdc.sra.helperClasses.UrlBuilder;
 public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
     private ResideMenu resideMenu;
-    private AreasFragment areaFrag;
     private ResideMenuItem itemDashboard;
     private ResideMenuItem itemAreas;
     private ResideMenuItem itemQuestions;
@@ -34,6 +34,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     private ResideMenuItem itemStats;
     private ResideMenuItem itemLogout;
     private ResideMenuItem itemSync;
+    private String name;
     private TextView title;
 
     @Override
@@ -45,8 +46,6 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         changeFragment(new DashboardFragment(), "dashboard");
         title = (TextView)findViewById(R.id.title);
         title.setText("Dashboard");
-        areaFrag = (AreasFragment) getSupportFragmentManager().findFragmentByTag("areas");
-
     }
 
     private void setUpMenu() {
@@ -108,9 +107,11 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         if (view == itemDashboard){
             changeFragment(new DashboardFragment(), "dashboard");
             title.setText("Dashboard");
+            name = "dashboard";
         }else if (view == itemAreas){
             changeFragment(new AreasFragment(), "areas");
             title.setText("Areas");
+            name = "areas";
         }else if (view == itemQuestions){
             changeFragment(new QuestionsFragment(), "questions");
             title.setText("Question Sets");
@@ -156,13 +157,29 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
     @Override
     public void onBackPressed() {
+        AreasFragment areaFrag = (AreasFragment)getSupportFragmentManager().findFragmentByTag("areas");
+
         if (resideMenu.isOpened()){
             resideMenu.closeMenu();
-        } else if (areaFrag.isVisible()) {
-            Toast toast = new Toast(this);
-            toast.makeText(this,"Back button pressed", Toast.LENGTH_SHORT).show();
-        }
-        else {
+
+        }  else if (areaFrag != null && areaFrag.isVisible()){
+            //Toast.makeText(getBaseContext(),"You are in the area frag",Toast.LENGTH_SHORT).show();
+            System.out.println("You are in the area frag");
+            if (areaFrag.navigation == "area") {
+                resideMenu.openMenu();
+                System.out.println("You are in the areas navigation");
+            } else if (areaFrag.navigation == "household") {
+                areaFrag.navigation = "area";
+                areaFrag.title.setText("Areas");
+                areaFrag.initView();
+                System.out.println("You are in the household navigation");
+            } else if (areaFrag.navigation == "members") {
+                areaFrag.navigation = "household";
+                areaFrag.title.setText("Households");
+                areaFrag.initView();
+                System.out.println("You are in the members navigation");
+            }
+        } else if (!resideMenu.isOpened()) {
             resideMenu.openMenu();
         }
     }

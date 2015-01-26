@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,11 +54,12 @@ public class AreasFragment extends Fragment {
     private Button button;
     Button btn, btnCancel;
     Dialog dialog;
-    private static String navigation;
+    public static String navigation;
     private Bundle args;
     private static int areaId;
     private static int householdId;
-    private TextView title;
+    public TextView title;
+    private Button interviewButton;
 
     //Vars
     private String PACKAGE = "IDENTIFY";
@@ -65,17 +67,16 @@ public class AreasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
-
+        title = (TextView)getActivity().findViewById(R.id.title);
         listView   = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
+        interviewButton = (Button) parentView.findViewById(R.id.interview_button);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
         navigation = "area";
 
 
-
-
-        //System.out.println("This is the args"+args.getInt("Area Index"));
+        //System.out.println("AreaFrag tag = "+this.getTag());
 
         // If the fragment is reached via menu, there will be no args
         try {
@@ -88,15 +89,14 @@ public class AreasFragment extends Fragment {
         return parentView;
     }
 
-
-
-    private void initView(){
+    public void initView(){
         if (navigation == "members") {
 
             householdId = args.getInt("Household Id");
             areaId = args.getInt("Area Index");
             mAdapter = new TransitionListAdapter(getActivity(),listMembers(args.getInt("Area Index"),args.getInt("Household Id")));
             listView.setAdapter(mAdapter);
+            interviewButton.setVisibility(View.INVISIBLE);
             button.setText("Add Member");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,74 +105,95 @@ public class AreasFragment extends Fragment {
                 }
             });
 
-        } else {
-            mAdapter = new TransitionListAdapter(getActivity(), listArea());
+        } else if (navigation == "household") {
+            householdView(areaId);
+        }
 
+        else if (navigation == "area") {
+            // Lists Areas
+            mAdapter = new TransitionListAdapter(getActivity(), listArea());
             listView.setActionLayout(R.id.hidden);
             listView.setItemLayout(R.id.front_layout);
             listView.setAdapter(mAdapter);
             listView.setIgnoredViewHandler(resideMenu);
+            interviewButton.setVisibility(View.INVISIBLE);
 
+            button.setText("Add Area");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (navigation == "area") {
-                        addArea();
-                    } else if (navigation == "household") {
-                        addHousehold();
-                    }
+                    addArea();
                 }
             });
 
             listView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View viewa, final int i, long l) {
-                    navigation = "household";
-                    title = (TextView)getActivity().findViewById(R.id.title);
-                    title.setText("Households");
-                    mAdapter = new TransitionListAdapter(getActivity(), listHouseholds(i));
-                    listView.setAdapter(mAdapter);
-                    listView.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            householdId = position;
-                            mAdapter = new TransitionListAdapter(getActivity(), listMembers(i, position));
-                            title = (TextView)getActivity().findViewById(R.id.title);
-                            title.setText("Members");
-                            listView.setAdapter(mAdapter);
-                            button.setText("Add Member");
-                            button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    addMember();
-                                }
-                            });
-                        }
-                    });
+
+                    // Lists the households
                     areaId = i;
-                    button.setText("Add Household");
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addHousehold();
-                        }
-                    });
+                    householdView(areaId);
                 }
             });
         }
 
-            Button interviewButton = (Button) parentView.findViewById(R.id.interview_button);
-            interviewButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), InterviewActivity.class);
-                    intent.putExtra("areaID", areaId);
-                    intent.putExtra("householdID", householdId);
-                    intent.putExtra("interviewType", navigation);
-                    startActivity(intent);
-                }
-            });
+    }
 
+    private void householdView(int pos) {
+        navigation = "household";
+        areaId = pos;
+        title.setText("Households");
+        mAdapter = new TransitionListAdapter(getActivity(), listHouseholds(areaId));
+        listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // lists members
+                householdId = position;
+                memberView(areaId, householdId);
+
+            }
+        });
+        button.setText("Add Household");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addHousehold();
+            }
+        });
+
+        // Questions button
+        interviewButton.setVisibility(View.VISIBLE);
+        interviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), InterviewActivity.class);
+                intent.putExtra("areaID", areaId);
+                intent.putExtra("householdID", householdId);
+                intent.putExtra("interviewType", navigation);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void memberView(int areaPos, int housePos) {
+        areaId = areaPos;
+        householdId = housePos;
+        navigation = "members";
+        title.setText("Members");
+        mAdapter = new TransitionListAdapter(getActivity(), listMembers(areaId, householdId));
+        listView.setAdapter(mAdapter);
+        button.setText("Add Member");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMember();
+            }
+        });
+        interviewButton.setVisibility(View.INVISIBLE);
 
     }
 
@@ -311,11 +332,11 @@ public class AreasFragment extends Fragment {
             public void onClick(View v) {
                 Toast toast = new Toast(getActivity());
                 if (areaText.getText().toString().matches("")) {
-                    toast.makeText(getActivity(),"Please Enter A Valid Name",Toast.LENGTH_LONG).show();
+                    toast.makeText(getActivity(),"Please Enter A Valid Name",Toast.LENGTH_SHORT).show();
                 } else if (relationship.getSelectedItemPosition() == 0) {
-                    toast.makeText(getActivity(),"Please Select A Valid Relationship",Toast.LENGTH_LONG).show();
+                    toast.makeText(getActivity(),"Please Select A Valid Relationship",Toast.LENGTH_SHORT).show();
                 } else if (education.getSelectedItemPosition() == 0) {
-                    toast.makeText(getActivity(),"Please Select A Valid Education Level",Toast.LENGTH_LONG).show();
+                    toast.makeText(getActivity(),"Please Select A Valid Education Level",Toast.LENGTH_SHORT).show();
                 } else {
                     member.setName(areaText.getText().toString());
                     member.setRelationship(relationship.getSelectedItem().toString());
@@ -420,6 +441,7 @@ public class AreasFragment extends Fragment {
         }
         return time;
     }
+
 
 }
 
