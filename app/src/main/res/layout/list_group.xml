@@ -10,6 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:textSize="17dp"
+        android:height="50dp"
         android:fontFamily="sans-serif-light"
         android:textColor="@color/black"
         android:gravity="center"
