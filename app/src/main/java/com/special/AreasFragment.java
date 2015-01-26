@@ -94,16 +94,7 @@ public class AreasFragment extends Fragment {
 
             householdId = args.getInt("Household Id");
             areaId = args.getInt("Area Index");
-            mAdapter = new TransitionListAdapter(getActivity(),listMembers(args.getInt("Area Index"),args.getInt("Household Id")));
-            listView.setAdapter(mAdapter);
-            interviewButton.setVisibility(View.INVISIBLE);
-            button.setText("Add Member");
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addMember();
-                }
-            });
+            memberView(areaId,householdId);
 
         } else if (navigation == "household") {
             householdView(areaId);
@@ -135,6 +126,8 @@ public class AreasFragment extends Fragment {
                     householdView(areaId);
                 }
             });
+
+
         }
 
     }
@@ -183,7 +176,7 @@ public class AreasFragment extends Fragment {
         areaId = areaPos;
         householdId = housePos;
         navigation = "members";
-        title.setText("Members");
+        title.setText(listHouseholds(areaId).get(householdId).getTitle());
         mAdapter = new TransitionListAdapter(getActivity(), listMembers(areaId, householdId));
         listView.setAdapter(mAdapter);
         button.setText("Add Member");
@@ -193,7 +186,19 @@ public class AreasFragment extends Fragment {
                 addMember();
             }
         });
-        interviewButton.setVisibility(View.INVISIBLE);
+
+        // Questions button
+        interviewButton.setVisibility(View.VISIBLE);
+        interviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), InterviewActivity.class);
+                intent.putExtra("areaID", areaId);
+                intent.putExtra("householdID", householdId);
+                intent.putExtra("interviewType", navigation);
+                startActivity(intent);
+            }
+        });
 
     }
 

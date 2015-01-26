@@ -74,10 +74,6 @@ public class DashboardFragment extends Fragment {
                     args.putInt("Household Id", childPosition);
                     goToHouse.setArguments(args);
 
-                    // Set the Title to Area
-                    title = (TextView)parentActivity.findViewById(R.id.title);
-                    title.setText("Members");
-
                     // Change the fragment
                     getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse, "areas")
                             .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
