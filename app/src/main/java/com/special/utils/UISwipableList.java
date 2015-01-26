@@ -248,18 +248,20 @@ public class UISwipableList extends ListView {
         }
     }
 
-    private void slideOutView(final View view, final int startPosition,
+    public void slideOutView(final View view, final int startPosition,
             final boolean slideLeft) {
         int toPosition = 0;
         if (slideLeft) {
             if (mHiddenView != null) {
                 toPosition = -1 * mHiddenView.getMeasuredWidth();
-                System.out.println(toPosition);
+
                 mHiddenView.setVisibility(View.VISIBLE);
                 Animation animFadeIn = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in);
                 mHiddenView.setAnimation(animFadeIn);
             }
         } else {
+            System.out.println(startPosition);
+            System.out.println(toPosition);
             toPosition = 0;
         }
         ObjectAnimator anim = ObjectAnimator.ofFloat(view, "translationX",

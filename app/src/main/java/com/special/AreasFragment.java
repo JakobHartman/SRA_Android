@@ -66,7 +66,7 @@ public class AreasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
 
-        listView   = (UISwipableList) parentView.findViewById(R.id.listView);
+        listView = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
@@ -83,6 +83,7 @@ public class AreasFragment extends Fragment {
             }
         } catch (Exception e) {}
         initView();
+
         return parentView;
     }
 
