@@ -35,6 +35,9 @@ public class DeleteRecord {
     }
 
     public static ArrayList<Area> getAreas() {
+        if(areas == null){
+            initData();
+        }
         return areas;
     }
 

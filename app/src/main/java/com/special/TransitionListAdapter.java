@@ -1,23 +1,28 @@
 package com.special;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
-import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.helperClasses.DeleteRecord;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Member;
 
 import com.special.utils.UICircularImage;
 import com.special.utils.UISwipableList;
+import com.special.utils.UITabs;
 
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,11 +33,15 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import quickconnectfamily.json.JSONException;
 
 class TransitionListAdapter extends BaseAdapter {
 	
@@ -89,9 +98,14 @@ class TransitionListAdapter extends BaseAdapter {
             final String desc = mItems.get(position).getDesc();
             final int imageid = mItems.get(position).getImageId();
             int id = 0;
+            int house = 0;
             if(mItems.get(position).getNr() != null){
                id  = Integer.parseInt(mItems.get(position).getNr());
             }
+            if(mItems.get(position).getNrTxt() != null){
+                house = Integer.parseInt(mItems.get(position).getNrTxt());
+            }
+            final int houseId = id;
             final int areaId = id;
             
             viewHolder.image.setImageResource(imageid);
@@ -112,9 +126,10 @@ class TransitionListAdapter extends BaseAdapter {
                         editListItemHousehold(areaId,position);
                         UISwipableList list = (UISwipableList)parent;
                         list.onTouchEvent(buildEvent());
-                    }else{
-
-
+                    }else {
+                        editListItemMember(areaId,houseId,position);
+                        UISwipableList list = (UISwipableList)parent;
+                        list.onTouchEvent(buildEvent());
                     }
 
                 }
@@ -162,7 +177,7 @@ class TransitionListAdapter extends BaseAdapter {
         }
 
         public void editListItemArea(final int position){
-            final Area area = CRUDFlinger.getAreas().get(position);
+            DeleteRecord.addArea(CRUDFlinger.getAreas().get(position));
             final Dialog dialog = new Dialog(mContext,
                     android.R.style.Theme_Translucent);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -172,10 +187,10 @@ class TransitionListAdapter extends BaseAdapter {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
             final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
-            areaText.setText(area.getName());
+            areaText.setText(CRUDFlinger.getAreas().get(position).getName());
 
             final Spinner regionText = (Spinner) dialog.findViewById(R.id.spinner);
-            regionText.setSelection(getIndex(regionText, area.getRegion()));
+            regionText.setSelection(getIndex(regionText, CRUDFlinger.getAreas().get(position).getRegion()));
 
             final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
             ArrayList<String> regions = new ArrayList<String>();
@@ -191,24 +206,18 @@ class TransitionListAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Toast toast = new Toast(mContext);
 
-                    Area newArea = new Area();
-                    newArea.setResources(area.getResources());
-                    newArea.setCountry(area.getCountry());
-                    newArea.setInterviews(area.getInterviews());
-
                     if(areaText.getText().toString().matches("")){
                         toast.makeText(mContext,"Please Enter A Valid Area Name", Toast.LENGTH_LONG).show();
                     }else if(regionText.getSelectedItemPosition() == 0){
                         toast.makeText(mContext,"Please Select A Valid Region", Toast.LENGTH_LONG).show();
                     }else{
 
-                        newArea.setRegion(regionText.getSelectedItem().toString());
-                        newArea.setCountry(CRUDFlinger.getCountryName(regionText.getSelectedItem().toString()));
-                        newArea.setName(areaText.getText().toString());
-                        CRUDFlinger.getAreas().set(position,newArea);
+                        CRUDFlinger.getAreas().get(position).setRegion(regionText.getSelectedItem().toString());
+                        CRUDFlinger.getAreas().get(position).setCountry(CRUDFlinger.getCountryName(regionText.getSelectedItem().toString()));
+                        CRUDFlinger.getAreas().get(position).setName(areaText.getText().toString());
                         dialog.cancel();
                         CRUDFlinger.saveRegion();
-                        updateArea(position);
+                        updateArea();
                     }
                 }
             });
@@ -229,7 +238,7 @@ class TransitionListAdapter extends BaseAdapter {
         }
 
         public void editListItemHousehold(final int position,final int house){
-            Household household = CRUDFlinger.getAreas().get(position).getResources().get(house);
+            DeleteRecord.addHousehold(CRUDFlinger.getAreas().get(position).getResources().get(house));
             final Dialog dialog = new Dialog(mContext,
                     android.R.style.Theme_Translucent);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -239,25 +248,101 @@ class TransitionListAdapter extends BaseAdapter {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
             final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
-                areaText.setText(household.getName());
+                areaText.setText(CRUDFlinger.getAreas().get(position).getResources().get(house).getName());
             Button btn = (Button) dialog.findViewById(R.id.btn);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast toast = new Toast(mContext);
-
-                    Household newHousehold = new Household();
                     if(areaText.getText().toString().matches("")){
                         toast.makeText(mContext,"Please Enter A Valid Household Name", Toast.LENGTH_LONG).show();
                     }else{
-                        newHousehold.setName(areaText.getText().toString());
-                        CRUDFlinger.getAreas().get(position).getResources().set(house,newHousehold);
+                        CRUDFlinger.getAreas().get(position).getResources().get(house).setName(areaText.getText().toString());
                         dialog.cancel();
                         CRUDFlinger.saveRegion();
                         updateHousehold(position);
                     }
                 }
             });
+
+            Button btnCancel = (Button) dialog.findViewById(R.id.btncancel);
+
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+
+            });
+
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
+            dialog.show();
+        }
+
+        public void editListItemMember(final int position,final int house,final int member){
+            DeleteRecord.addMember(CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member));
+            final Dialog dialog = new Dialog(mContext,
+                    android.R.style.Theme_Translucent);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+            dialog.setCancelable(true);
+            dialog.setContentView(R.layout.layout_member_dialog);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+            final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
+            areaText.setText(CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).getName());
+            final Spinner relationship = (Spinner)dialog.findViewById(R.id.spinner1);
+            relationship.setSelection(getIndex(relationship,CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).getRelationship()));
+            final DatePicker datePicker = (DatePicker)dialog.findViewById(R.id.datePicker);
+            final Spinner education = (Spinner)dialog.findViewById(R.id.spinner2);
+            education.setSelection(getIndex(education,CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).getEducationLevel()));
+            final UITabs gender = (UITabs)dialog.findViewById(R.id.toggle);
+            final UITabs school = (UITabs)dialog.findViewById(R.id.toggle3);
+
+
+            Button btn = (Button) dialog.findViewById(R.id.btn);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = new Toast(mContext);
+                    if (areaText.getText().toString().matches("")) {
+                        toast.makeText(mContext,"Please Enter A Valid Name",Toast.LENGTH_SHORT).show();
+                    } else if (relationship.getSelectedItemPosition() == 0) {
+                        toast.makeText(mContext,"Please Select A Valid Relationship",Toast.LENGTH_SHORT).show();
+                    } else if (education.getSelectedItemPosition() == 0) {
+                        toast.makeText(mContext,"Please Select A Valid Education Level",Toast.LENGTH_SHORT).show();
+                    } else {
+                        CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).setName(areaText.getText().toString());
+                        CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).setRelationship(relationship.getSelectedItem().toString());
+                        CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).setBirthday(getDateFromDatePicker(datePicker));
+                        CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).setEducationLevel(education.getSelectedItem().toString());
+                        int genderSelected = gender.getCheckedRadioButtonId();
+                        RadioButton gSelected = (RadioButton)gender.findViewById(genderSelected);
+                        CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).setGender(gSelected.getText().toString());
+                        int schoolSelected = school.getCheckedRadioButtonId();
+                        RadioButton sSelected = (RadioButton)school.findViewById(schoolSelected);
+                        boolean isInSchool;
+                        switch (sSelected.getText().toString()){
+                            case "Yes":
+                                isInSchool = true;
+                                break;
+                            case "No":
+                                isInSchool = false;
+                                break;
+                            default:
+                                isInSchool = false;
+                                break;
+                        }
+                        CRUDFlinger.getAreas().get(position).getResources().get(house).getMembers().get(member).setInschool(isInSchool);
+                        dialog.cancel();
+                        CRUDFlinger.saveRegion();
+                        updateMember(position,house);
+                    }
+
+                }
+            });
+
 
             Button btnCancel = (Button) dialog.findViewById(R.id.btncancel);
 
@@ -290,7 +375,15 @@ class TransitionListAdapter extends BaseAdapter {
             return listData;
         }
 
-        public void updateArea(int position){
+        private ArrayList<ListItem> listMembers(int areaPos,int householdPos){
+            ArrayList<ListItem>listData = new ArrayList<ListItem>();
+            for(Member member : CRUDFlinger.getAreas().get(areaPos).getResources().get(householdPos).getMembers()){
+                listData.add(new ListItem(R.drawable.ic_like,member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(),"" + areaPos,"" + householdPos));
+            }
+            return listData;
+        }
+
+        public void updateArea(){
             this.mItems = listArea();
             this.notifyDataSetChanged();
         }
@@ -298,6 +391,32 @@ class TransitionListAdapter extends BaseAdapter {
         public void updateHousehold(int position){
             this.mItems = listHouseholds(position);
             this.notifyDataSetChanged();
+        }
+
+        public void updateMember(int area,int house){
+            this.mItems = listMembers(area,house);
+            this.notifyDataSetChanged();
+        }
+
+        public String getAge(String bday){
+            DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+            String time;
+            time = new String();
+            try {
+                Date date = formatter.parse(bday);
+                Date current = new Date();
+                long diff = current.getTime() - date.getTime();
+                Calendar c = Calendar.getInstance();
+                c.setTimeInMillis(date.getTime());
+                int mYear = c.get(Calendar.YEAR);
+                c.setTimeInMillis(current.getTime());
+                int cYear = c.get(Calendar.YEAR);
+
+                time = cYear - mYear + "";
+            }catch (ParseException e){
+
+            }
+            return time;
         }
 
         private MotionEvent buildEvent(){
@@ -319,4 +438,14 @@ class TransitionListAdapter extends BaseAdapter {
             return motionEvent;
         }
 
-    }
+        public static String getDateFromDatePicker(DatePicker datePicker){
+            int day = datePicker.getDayOfMonth();
+            int month = datePicker.getMonth();
+            int year =  datePicker.getYear();
+
+            String time = day + "/" + month + "/" + year;
+
+            return time;
+        }
+
+}

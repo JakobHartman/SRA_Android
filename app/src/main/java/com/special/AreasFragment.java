@@ -413,7 +413,7 @@ public class AreasFragment extends Fragment {
     private ArrayList<ListItem> listMembers(int areaPos,int householdPos){
         ArrayList<ListItem>listData = new ArrayList<ListItem>();
         for(Member member : CRUDFlinger.getAreas().get(areaPos).getResources().get(householdPos).getMembers()){
-            listData.add(new ListItem(R.drawable.ic_like,member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(),null,null));
+            listData.add(new ListItem(R.drawable.ic_like,member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(),"" + areaId,"" + householdId));
         }
         return listData;
     }

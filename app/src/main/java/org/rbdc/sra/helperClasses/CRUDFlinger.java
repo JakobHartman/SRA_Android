@@ -2,6 +2,7 @@ package org.rbdc.sra.helperClasses;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -99,6 +100,7 @@ public class CRUDFlinger {
         setPreferences();
         String json = loader.getString("Country",null);
         Gson gson = new GsonBuilder().create();
+        Log.i("JSON: ",json);
         Region country = gson.fromJson(json,Region.class);
         CRUDFlinger.region = country;
     }
@@ -152,7 +154,7 @@ public class CRUDFlinger {
         saver.commit();
     }
 
-    public static <M> Region merge(M target, M destination) throws Exception {
+    public static <Any> Any merge(Any target, Any destination) throws Exception {
         BeanInfo beanInfo = Introspector.getBeanInfo(target.getClass());
 
         // Iterate over all the attributes
@@ -172,7 +174,7 @@ public class CRUDFlinger {
 
             }
         }
-        return (Region)destination;
+        return (Any)destination;
     }
 
 
