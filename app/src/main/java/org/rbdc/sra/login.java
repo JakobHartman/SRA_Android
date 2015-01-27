@@ -40,8 +40,6 @@ public class Login extends Activity {
         return status;
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
