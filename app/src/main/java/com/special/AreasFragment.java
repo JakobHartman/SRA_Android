@@ -68,7 +68,7 @@ public class AreasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
 
-
+        title = (TextView) getActivity().findViewById(R.id.title);
         listView = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
         interviewButton = (Button) parentView.findViewById(R.id.interview_button);
@@ -405,7 +405,7 @@ public class AreasFragment extends Fragment {
     private ArrayList<ListItem> listHouseholds(int pos){
         ArrayList<ListItem>listData = new ArrayList<ListItem>();
         for(Household households : CRUDFlinger.getAreas().get(pos).getResources()){
-            listData.add(new ListItem(R.drawable.ic_like,households.getName(),households.getMembers().size() + " Members",null,null));
+            listData.add(new ListItem(R.drawable.ic_like,households.getName(),households.getMembers().size() + " Members","" + areaId,null));
         }
         return listData;
     }
@@ -413,7 +413,7 @@ public class AreasFragment extends Fragment {
     private ArrayList<ListItem> listMembers(int areaPos,int householdPos){
         ArrayList<ListItem>listData = new ArrayList<ListItem>();
         for(Member member : CRUDFlinger.getAreas().get(areaPos).getResources().get(householdPos).getMembers()){
-            listData.add(new ListItem(R.drawable.ic_like,member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(),member.getRelationship(),member.getGender()));
+            listData.add(new ListItem(R.drawable.ic_like,member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(),null,null));
         }
         return listData;
     }

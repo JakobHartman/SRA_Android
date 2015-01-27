@@ -1,0 +1,61 @@
+package org.rbdc.sra.helperClasses;
+
+import org.rbdc.sra.objects.Area;
+import org.rbdc.sra.objects.Household;
+import org.rbdc.sra.objects.Member;
+import org.rbdc.sra.objects.Region;
+
+import java.util.ArrayList;
+
+/**
+ * Created by jakobhartman on 1/27/15.
+ */
+public class DeleteRecord {
+    private static DeleteRecord instance = null;
+    private static ArrayList<Area> areas = null;
+    private static ArrayList<Household> households = null;
+    private static ArrayList<Member> members = null;
+
+    public static void initData(){
+        areas = new ArrayList<Area>();
+        households = new ArrayList<Household>();
+        members = new ArrayList<Member>();
+    }
+
+    public static void addArea(Area area){
+        areas.add(area);
+    }
+
+    public static void addHousehold(Household household){
+        households.add(household);
+    }
+
+    public static void addMember(Member member){
+        members.add(member);
+    }
+
+    public static ArrayList<Area> getAreas() {
+        return areas;
+    }
+
+    public static ArrayList<Household> getHouseholds() {
+        return households;
+    }
+
+    public static ArrayList<Member> getMembers() {
+        return members;
+    }
+
+    protected DeleteRecord() {
+        // Exists only to defeat instantiation.
+    }
+
+    public static DeleteRecord getInstance() {
+        if(instance == null) {
+            instance = new DeleteRecord();
+        }
+        return instance;
+    }
+
+
+}

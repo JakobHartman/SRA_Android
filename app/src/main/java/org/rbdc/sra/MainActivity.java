@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.helperClasses.DeleteRecord;
 import org.rbdc.sra.helperClasses.DownloadData;
 import org.rbdc.sra.objects.LoginObject;
 
@@ -20,6 +21,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         CRUDFlinger.setApplication(getApplication());
         CRUDFlinger.setPreferences();
+        DeleteRecord.initData();
         DownloadData.setOrganization("sra");
 
         if(CRUDFlinger.checkLocal("User")){

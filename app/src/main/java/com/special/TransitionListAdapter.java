@@ -88,6 +88,11 @@ class TransitionListAdapter extends BaseAdapter {
             final String item = mItems.get(position).getTitle();
             final String desc = mItems.get(position).getDesc();
             final int imageid = mItems.get(position).getImageId();
+            int id = 0;
+            if(mItems.get(position).getNr() != null){
+               id  = Integer.parseInt(mItems.get(position).getNr());
+            }
+            final int areaId = id;
             
             viewHolder.image.setImageResource(imageid);
             viewHolder.title.setText(item);
@@ -104,7 +109,9 @@ class TransitionListAdapter extends BaseAdapter {
                         list.onTouchEvent(buildEvent());
 
                     }else if(text.matches("Members")){
-
+                        editListItemHousehold(areaId,position);
+                        UISwipableList list = (UISwipableList)parent;
+                        list.onTouchEvent(buildEvent());
                     }else{
 
 
@@ -155,7 +162,7 @@ class TransitionListAdapter extends BaseAdapter {
         }
 
         public void editListItemArea(final int position){
-            Area area = CRUDFlinger.getAreas().get(position);
+            final Area area = CRUDFlinger.getAreas().get(position);
             final Dialog dialog = new Dialog(mContext,
                     android.R.style.Theme_Translucent);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -185,6 +192,9 @@ class TransitionListAdapter extends BaseAdapter {
                     Toast toast = new Toast(mContext);
 
                     Area newArea = new Area();
+                    newArea.setResources(area.getResources());
+                    newArea.setCountry(area.getCountry());
+                    newArea.setInterviews(area.getInterviews());
 
                     if(areaText.getText().toString().matches("")){
                         toast.makeText(mContext,"Please Enter A Valid Area Name", Toast.LENGTH_LONG).show();
@@ -218,8 +228,9 @@ class TransitionListAdapter extends BaseAdapter {
             dialog.show();
         }
 
-        public void editListItemHousehold(final int position){
-           final Dialog dialog = new Dialog(mContext,
+        public void editListItemHousehold(final int position,final int house){
+            Household household = CRUDFlinger.getAreas().get(position).getResources().get(house);
+            final Dialog dialog = new Dialog(mContext,
                     android.R.style.Theme_Translucent);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -228,12 +239,7 @@ class TransitionListAdapter extends BaseAdapter {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
             final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
-            final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
-
-            ArrayList<String> regions = new ArrayList<String>();
-            regions.add("Select Region");
-            regions.addAll(loginObject.getSiteLogin().getRegionNames());
-
+                areaText.setText(household.getName());
             Button btn = (Button) dialog.findViewById(R.id.btn);
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -245,9 +251,10 @@ class TransitionListAdapter extends BaseAdapter {
                         toast.makeText(mContext,"Please Enter A Valid Household Name", Toast.LENGTH_LONG).show();
                     }else{
                         newHousehold.setName(areaText.getText().toString());
+                        CRUDFlinger.getAreas().get(position).getResources().set(house,newHousehold);
                         dialog.cancel();
                         CRUDFlinger.saveRegion();
-
+                        updateHousehold(position);
                     }
                 }
             });
@@ -275,8 +282,21 @@ class TransitionListAdapter extends BaseAdapter {
             return listData;
         }
 
+        private ArrayList<ListItem> listHouseholds(int pos){
+            ArrayList<ListItem>listData = new ArrayList<ListItem>();
+            for(Household households : CRUDFlinger.getAreas().get(pos).getResources()){
+                listData.add(new ListItem(R.drawable.ic_like,households.getName(),households.getMembers().size() + " Members","" + pos,null));
+            }
+            return listData;
+        }
+
         public void updateArea(int position){
             this.mItems = listArea();
+            this.notifyDataSetChanged();
+        }
+
+        public void updateHousehold(int position){
+            this.mItems = listHouseholds(position);
             this.notifyDataSetChanged();
         }
 
