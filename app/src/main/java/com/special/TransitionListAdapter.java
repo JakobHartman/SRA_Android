@@ -19,8 +19,10 @@ import com.special.utils.UICircularImage;
 import com.special.utils.UISwipableList;
 import com.special.utils.UITabs;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
@@ -139,10 +141,21 @@ class TransitionListAdapter extends BaseAdapter {
 
                 @Override
                 public void onClick(View v) {
+                    String text = desc.split("\\s++")[1];
+                    if(text.matches("Households")){
+                        deleteListItemArea(position);
+                        UISwipableList list = (UISwipableList)parent;
+                        list.onTouchEvent(buildEvent());
 
-                    Toast.makeText(mContext, item ,
-                            Toast.LENGTH_SHORT).show();
-
+                    }else if(text.matches("Members")){
+                        deleteListItemHousehold(areaId, position);
+                        UISwipableList list = (UISwipableList)parent;
+                        list.onTouchEvent(buildEvent());
+                    }else {
+                        deleteListItemMember(areaId, houseId, position);
+                        UISwipableList list = (UISwipableList)parent;
+                        list.onTouchEvent(buildEvent());
+                    }
                 }
             });
             viewHolder.image.setOnClickListener(new OnClickListener() {
@@ -174,6 +187,73 @@ class TransitionListAdapter extends BaseAdapter {
                 }
             }
             return index;
+        }
+
+        private void deleteListItemArea(final int position){
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setTitle("Delete Community: " + CRUDFlinger.getAreas().get(position).getName());
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    DeleteRecord.addArea(CRUDFlinger.getAreas().get(position));
+                    CRUDFlinger.getAreas().remove(position);
+                    updateArea();
+                    dialog.dismiss();
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+        private void deleteListItemHousehold(final int area,final int position){
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setTitle("Delete household: " + CRUDFlinger.getAreas().get(area).getResources().get(position).getName());
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    DeleteRecord.addHousehold(CRUDFlinger.getAreas().get(area).getResources().get(position));
+                    CRUDFlinger.getAreas().get(area).getResources().remove(position);
+                    updateHousehold(area);
+                    dialog.dismiss();
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
+
+        private void deleteListItemMember(final int area,final int house,final int position){
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setTitle("Delete member: " + CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(position).getName());
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    DeleteRecord.addMember(CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(position));
+                    CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().remove(position);
+                    updateMember(area,house);
+                    dialog.dismiss();
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         public void editListItemArea(final int position){
