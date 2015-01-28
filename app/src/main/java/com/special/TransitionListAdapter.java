@@ -37,6 +37,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -113,8 +114,8 @@ class TransitionListAdapter extends BaseAdapter {
             viewHolder.image.setImageResource(imageid);
             viewHolder.title.setText(item);
             viewHolder.descr.setText(desc);
-            final TextView hiddenView = (TextView) v.findViewById(R.id.hidden_view1);
-            final TextView hiddenViewEdit = (TextView) v.findViewById(R.id.hidden_view2);
+            final ImageButton hiddenView = (ImageButton) v.findViewById(R.id.hidden_view1);
+            final ImageButton hiddenViewEdit = (ImageButton) v.findViewById(R.id.hidden_view2);
             hiddenViewEdit.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

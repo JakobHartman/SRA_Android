@@ -222,13 +222,13 @@ public class InterviewActivity extends Activity {
             viewHolder.title.setText(item);
             viewHolder.descr.setText(desc);
 
-            TextView edit = (TextView) v.findViewById(R.id.hidden_view2);
+            ImageButton edit = (ImageButton) v.findViewById(R.id.hidden_view2);
             edit.setVisibility(View.GONE);
 
-            TextView delete = (TextView) v.findViewById(R.id.hidden_view1);
+            ImageButton delete = (ImageButton) v.findViewById(R.id.hidden_view1);
             delete.setClickable(true);
             delete.setEnabled(true);
-            delete.setText(R.string.delete_question_set_text);
+            //delete.setText(R.string.delete_question_set_text);
             delete.setOnClickListener(new View.OnClickListener() {
 
                 @Override
