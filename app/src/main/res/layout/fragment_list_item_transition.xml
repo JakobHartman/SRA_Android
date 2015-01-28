@@ -12,12 +12,11 @@
         android:visibility="gone"
         android:layout_gravity="right">
 
-        <ImageButton
+        <TextView
             android:id="@+id/hidden_view2"
             android:layout_width="100dp"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:background="#7d6d71"
             android:enabled="false"
             android:visibility="visible"
             android:gravity="center"
@@ -27,11 +26,10 @@
             android:clickable="true"
             android:alpha="1" />
 
-        <ImageButton
+        <TextView
             android:id="@+id/hidden_view1"
             android:layout_width="100dp"
             android:layout_height="fill_parent"
-            android:background="@color/red"
             android:enabled="false"
             android:gravity="center"
             android:src="@drawable/ic_trash"
