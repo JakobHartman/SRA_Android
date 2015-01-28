@@ -75,7 +75,6 @@ public class AreasFragment extends Fragment {
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
         // Questions button
-        interviewButton.setVisibility(View.VISIBLE);
         interviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +167,7 @@ public class AreasFragment extends Fragment {
 
             }
         });
+        interviewButton.setVisibility(View.VISIBLE);
         button.setText("Add Household");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +193,7 @@ public class AreasFragment extends Fragment {
                 addMember();
             }
         });
+        interviewButton.setVisibility(View.VISIBLE);
 
 
 
