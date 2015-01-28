@@ -63,9 +63,6 @@ public class DataCollect extends FragmentActivity {
             Interview interview = interviews.get(0);
             ArrayList<QuestionSet> responseSets = interview.getQuestionsets();
             questionSet = responseSets.get(responseSetIndex);
-            System.out.println("poop " + questionSet.getName());
-            System.out.println("index " + responseSetIndex);
-
             numQuestions = questionSet.getQuestions().size();
         }
         else if (interviewType.equals("area")) {
