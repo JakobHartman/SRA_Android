@@ -74,13 +74,15 @@ public class SyncFragment extends Fragment {
                         DownloadData.syncDownload(login);
                         try{
                             region = CRUDFlinger.merge(CRUDFlinger.getTempRegion(), CRUDFlinger.getRegion());
-                            String json = JSONUtilities.stringify(region);
-                            Gson gson = new GsonBuilder().create();
-                            Region newRegion = gson.fromJson(json,Region.class);
-                            CRUDFlinger.setRegion(newRegion);
+                            CRUDFlinger.setRegion(region);
                             syncUp.removeFromDeleteRecord();
-                            syncUp.uploadRegion();
-                            CRUDFlinger.saveRegion();
+                            try{
+                                Log.i("Being Pushed",JSONUtilities.stringify(CRUDFlinger.getAreas().get(0)));
+                                syncUp.uploadRegion();
+                                CRUDFlinger.saveRegion();
+                            }catch (JSONException e){}
+
+
                         }catch (Exception e){}
                         getFragmentManager().beginTransaction().replace(R.id.main_fragment,new DashboardFragment(), "dashboard")
                                 .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
