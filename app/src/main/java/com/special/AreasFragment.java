@@ -74,6 +74,23 @@ public class AreasFragment extends Fragment {
         interviewButton = (Button) parentView.findViewById(R.id.interview_button);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
+        // Questions button
+        interviewButton.setVisibility(View.VISIBLE);
+        interviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), InterviewActivity.class);
+                intent.putExtra("areaID", areaId);
+                intent.putExtra("householdID", householdId);
+                if (navigation.equals("household")) {
+                    intent.putExtra("interviewType", "area");
+                } else if (navigation.equals("members")) {
+                    intent.putExtra("interviewType", "household");
+                } else return;
+                startActivity(intent);
+            }
+        });
+
         navigation = "area";
 
 
@@ -159,18 +176,6 @@ public class AreasFragment extends Fragment {
             }
         });
 
-        // Questions button
-        interviewButton.setVisibility(View.VISIBLE);
-        interviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), InterviewActivity.class);
-                intent.putExtra("areaID", areaId);
-                intent.putExtra("householdID", householdId);
-                intent.putExtra("interviewType", navigation);
-                startActivity(intent);
-            }
-        });
 
     }
 
@@ -189,18 +194,7 @@ public class AreasFragment extends Fragment {
             }
         });
 
-        // Questions button
-        interviewButton.setVisibility(View.VISIBLE);
-        interviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), InterviewActivity.class);
-                intent.putExtra("areaID", areaId);
-                intent.putExtra("householdID", householdId);
-                intent.putExtra("interviewType", navigation);
-                startActivity(intent);
-            }
-        });
+
 
     }
 

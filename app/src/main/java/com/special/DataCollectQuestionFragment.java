@@ -241,10 +241,6 @@ public class DataCollectQuestionFragment extends Fragment {
         }
     }
 
-
-
-
-
     public class MultiSelectionSpinner extends Spinner implements
             OnMultiChoiceClickListener {
         String[] _items = null;
