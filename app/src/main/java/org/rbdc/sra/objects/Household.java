@@ -8,77 +8,77 @@ import java.util.ArrayList;
  * Created by jakobhartman on 11/15/14.
  */
 public class Household implements Serializable {
-    private String Name;
-    private ArrayList<Interview> Interviews;
-    private ArrayList<Member> Members;
-    private String Region;
-    private String Country;
-    private String Area;
+    private String name;
+    private ArrayList<Interview> interviews;
+    private ArrayList<Member> members;
+    private String region;
+    private String country;
+    private String area;
 
     public Household(){
-        Interviews = new ArrayList<Interview>();
-        Members = new ArrayList<Member>();
+        interviews = new ArrayList<Interview>();
+        members = new ArrayList<Member>();
     }
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public String getRegion() {
-        return Region;
+        return region;
     }
 
     public String getArea() {
-        return Area;
+        return area;
     }
 
     public void setCountry(String country) {
-        Country = country;
+        this.country = country;
     }
 
     public void setRegion(String region) {
-        Region = region;
+        this.region = region;
     }
 
     public void setArea(String area) {
-        Area = area;
+        this.area = area;
     }
 
     public void addMember(Member name){
-        Members.add(name);
+        members.add(name);
     }
 
     public void addInterview(Interview interview){
-        Interviews.add(interview);
+        interviews.add(interview);
     }
 
     public void setMembers(ArrayList<Member> members) {
-        this.Members = members;
+        this.members = members;
     }
 
     public ArrayList<Member> getMembers() {
-        return Members;
+        return members;
     }
 
     public void setInterviews(ArrayList<Interview> interviews) {
-        this.Interviews = interviews;
+        this.interviews = interviews;
     }
 
     public ArrayList<Interview> getInterviews() {
-        return Interviews;
+        return interviews;
     }
 
     public void addQuestionSet(QuestionSet qs) {
-        if (Interviews.isEmpty()) {
-            Interviews.add(new Interview());
+        if (interviews.isEmpty()) {
+            interviews.add(new Interview());
         }
-        Interview i = Interviews.get(0);
+        Interview i = interviews.get(0);
         i.addQuestionSets(qs);
     }
 
     public QuestionSet getQuestionSet(String name) {
-        if (Interviews.isEmpty()) return null;
-        Interview i = Interviews.get(0);
+        if (interviews.isEmpty()) return null;
+        Interview i = interviews.get(0);
         ArrayList<QuestionSet> sets = i.getQuestionsets();
         for (QuestionSet qs : sets) {
             if (qs.getName().equals(name))
@@ -88,11 +88,11 @@ public class Household implements Serializable {
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 }
 

@@ -1,6 +1,8 @@
 package org.rbdc.sra.helperClasses;
 
 import org.rbdc.sra.objects.Area;
+import org.rbdc.sra.objects.Household;
+import org.rbdc.sra.objects.Member;
 
 import java.util.Random;
 
@@ -32,8 +34,7 @@ public class UrlBuilder {
 
     public static String buildAreaUrl(Area area) {
         String url;
-        url = "https://testrbdc.firebaseio.com/Organizations/" + org + "/Countries/" + area.getCountry() + "/Regions/" + area.getRegion() + "/Areas/" + area.getName();
+        url = "https://testrbdc.firebaseio.com/organizations/" + org + "/countries/" + area.getCountry().toLowerCase() + "/regions/" + area.getRegion().toLowerCase() + "/areas/" + area.getName().toLowerCase();
         return url;
     }
-
 }

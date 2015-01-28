@@ -1,12 +1,17 @@
 package org.rbdc.sra.helperClasses;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.firebase.client.Firebase;
 
 import org.rbdc.sra.objects.Area;
+import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.Region;
+
+import java.lang.reflect.Field;
 
 import quickconnectfamily.json.JSONUtilities;
 
@@ -37,6 +42,31 @@ public class SyncUpload {
             base.setValue(DownloadData.buildMap(JSONUtilities.stringify(area)));
         }
 
+    }
+
+    public void removeFromDeleteRecord(){
+        for(Area area : DeleteRecord.getAreas()){
+            for(Area area1 : CRUDFlinger.getAreas()){
+                CRUDFlinger.getAreas().remove(area1);
+            }
+        }
+        for(Area area : CRUDFlinger.getAreas()){
+            for(Household household : area.getResources()){
+                for (Household household1 : DeleteRecord.getHouseholds()){
+                        CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().remove(household1);
+                }
+            }
+        }
+        for(Area area : CRUDFlinger.getAreas()){
+            for(Household household : area.getResources()){
+                for(Member member : household.getMembers()) {
+                    for (Member member1 : DeleteRecord.getMembers()) {
+                        CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().get(CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().indexOf(household)).getMembers().remove(member1);
+                    }
+                }
+            }
+        }
+        DeleteRecord.initData();
     }
 
 }

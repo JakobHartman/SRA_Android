@@ -26,8 +26,11 @@ import com.special.menu.ResideMenu;
 
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.helperClasses.DeleteRecord;
 import org.rbdc.sra.helperClasses.DownloadData;
 import org.rbdc.sra.helperClasses.SyncUpload;
+import org.rbdc.sra.helperClasses.UrlBuilder;
+import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Region;
@@ -72,6 +75,7 @@ public class SyncFragment extends Fragment {
                             Gson gson = new GsonBuilder().create();
                             Region newRegion = gson.fromJson(json,Region.class);
                             CRUDFlinger.setRegion(newRegion);
+                            syncUp.removeFromDeleteRecord();
                             syncUp.uploadRegion();
                         }catch (Exception e){}
                     }

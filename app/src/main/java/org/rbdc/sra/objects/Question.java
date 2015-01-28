@@ -8,17 +8,17 @@ import java.util.ArrayList;
  */
 public class Question implements Serializable {
 
-    private String Name;
+    private String name;
     private Boolean multiUse;
-    private ArrayList<Datapoint> DataPoints;
+    private ArrayList<Datapoint> dataPoints;
 
     /*
      * Constructor
      */
     public Question(String refUrl) {
-        this.Name = "";
+        this.name = "";
         this.multiUse = false;
-        this.DataPoints = new ArrayList<Datapoint>();
+        this.dataPoints = new ArrayList<Datapoint>();
     }
 
     public Question(){}
@@ -27,22 +27,22 @@ public class Question implements Serializable {
     /*
      * Modifiers
      */
-    public void setName(String name) { this.Name = name; }
+    public void setName(String name) { this.name = name; }
     public void setMultiUse(Boolean isMultiUse) { this.multiUse = isMultiUse; }
-    public void setDataPoints(ArrayList<Datapoint> dataPoints) { this.DataPoints = dataPoints; }
+    public void setDataPoints(ArrayList<Datapoint> dataPoints) { this.dataPoints = dataPoints; }
     public void addDataPoint(Datapoint datapoint) {
-        for (Datapoint dp : DataPoints) {
+        for (Datapoint dp : dataPoints) {
             if (dp == datapoint) {
                 return;
             }
         }
-        DataPoints.add(datapoint);
+        dataPoints.add(datapoint);
     }
-    public void deleteDataPoint(Datapoint dp) { DataPoints.remove(dp); }
+    public void deleteDataPoint(Datapoint dp) { dataPoints.remove(dp); }
     public void deleteDataPoint(String label) {
-        for (Datapoint dp : DataPoints) {
+        for (Datapoint dp : dataPoints) {
             if (dp.getLabel().equals(label)) {
-                DataPoints.remove(dp);
+                dataPoints.remove(dp);
                 return;
             }
         }
@@ -51,11 +51,11 @@ public class Question implements Serializable {
     /*
      * Accessors
      */
-    public String getName() { return Name; }
+    public String getName() { return name; }
     public Boolean getMultiUse() { return multiUse; }
-    public ArrayList<Datapoint> getDataPoints() { return DataPoints; }
+    public ArrayList<Datapoint> getDataPoints() { return dataPoints; }
     public Datapoint getDataPoint(String label) {
-        for (Datapoint dp : DataPoints) {
+        for (Datapoint dp : dataPoints) {
             if (dp.getLabel().equals(label)) {
                 return dp;
             }

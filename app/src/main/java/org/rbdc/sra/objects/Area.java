@@ -8,40 +8,40 @@ import java.util.ArrayList;
  * Created by jakobhartman on 11/15/14.
  */
 public class Area implements Serializable {
-    private String Name;
-    private String Country;
-    private ArrayList<Household> Resources;
-    private String Region;
+    private String name;
+    private String country;
+    private ArrayList<Household> resources;
+    private String region;
     private ArrayList<Interview> interviews;
 
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public void setCountry(String country) {
-        this.Country = country;
+        this.country = country;
     }
 
     public Area(){
-        Resources = new ArrayList<Household>();
+        resources = new ArrayList<Household>();
         interviews = new ArrayList<Interview>();
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public ArrayList<Household> getResources() {
-        return Resources;
+        return resources;
     }
 
     public Household getHousehold(String householdName) {
-        for (Household h : Resources) {
+        for (Household h : resources) {
             if (h.getName().equals(householdName))
                 return h;
         }
@@ -49,19 +49,19 @@ public class Area implements Serializable {
     }
 
     public void addHousehold(Household household){
-        Resources.add(household);
+        resources.add(household);
     }
 
     public void setResources(ArrayList<Household> resources) {
-        this.Resources = resources;
+        this.resources = resources;
     }
 
     public void setRegion(String region) {
-        this.Region = region;
+        this.region = region;
     }
 
     public String getRegion() {
-        return Region;
+        return region;
     }
 
     public void setInterviews(ArrayList<Interview> interviews) {

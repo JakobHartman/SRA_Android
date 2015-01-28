@@ -1,67 +1,80 @@
 package org.rbdc.sra.objects;
 
+import com.shaded.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 /**
  * Created by imac on 1/5/15.
  */
 public class Member implements Serializable {
-    private String Name;
-    private String Relationship;
-    private String Birthday;
-    private String EducationLevel;
-    private String Gender;
-    private boolean Inschool;
+    private String name;
+    private String relationship;
+    private String birthday;
+    private String educationLevel;
+    private String gender;
+    private boolean inschool;
+
+    @JsonIgnore
+    private int memberId;
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
 
     public Member(){
 
     }
 
     public String getBirthday() {
-        return Birthday;
+        return birthday;
     }
 
     public String getEducationLevel() {
-        return EducationLevel;
+        return educationLevel;
     }
 
     public String getGender() {
-        return Gender;
+        return gender;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public String getRelationship() {
-        return Relationship;
+        return relationship;
     }
 
     public boolean isInschool() {
-        return Inschool;
+        return inschool;
     }
 
     public void setBirthday(String birthday) {
-        this.Birthday = birthday;
+        this.birthday = birthday;
     }
 
     public void setEducationLevel(String educationLevel) {
-        this.EducationLevel = educationLevel;
+        this.educationLevel = educationLevel;
     }
 
     public void setGender(String gender) {
-        this.Gender = gender;
+        this.gender = gender;
     }
 
     public void setInschool(boolean inschool) {
-        this.Inschool = inschool;
+        this.inschool = inschool;
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public void setRelationship(String relationship) {
-        this.Relationship = relationship;
+        this.relationship = relationship;
     }
 }

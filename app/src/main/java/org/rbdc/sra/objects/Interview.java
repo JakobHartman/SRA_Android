@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by jakobhartman on 11/17/14.
  */
 public class Interview implements Serializable {
-    private String DateCreated;
+    private String dateCreated;
     private ArrayList<QuestionSet> questionsets;
 
     public void addQuestionSets(QuestionSet questionSet){
@@ -24,11 +24,11 @@ public class Interview implements Serializable {
     }
 
     public String getDateCreated() {
-        return DateCreated;
+        return dateCreated;
     }
 
     public void setDateCreated(String dateCreated) {
-        this.DateCreated = dateCreated;
+        this.dateCreated = dateCreated;
     }
 
     public void setQuestionsets(ArrayList<QuestionSet> questionsets) {

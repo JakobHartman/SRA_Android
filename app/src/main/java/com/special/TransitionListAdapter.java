@@ -198,6 +198,7 @@ class TransitionListAdapter extends BaseAdapter {
                     DeleteRecord.addArea(CRUDFlinger.getAreas().get(position));
                     CRUDFlinger.getAreas().remove(position);
                     updateArea();
+                    CRUDFlinger.saveRegion();
                     dialog.dismiss();
                 }
             });
@@ -220,6 +221,7 @@ class TransitionListAdapter extends BaseAdapter {
                     DeleteRecord.addHousehold(CRUDFlinger.getAreas().get(area).getResources().get(position));
                     CRUDFlinger.getAreas().get(area).getResources().remove(position);
                     updateHousehold(area);
+                    CRUDFlinger.saveRegion();
                     dialog.dismiss();
                 }
             });
@@ -234,7 +236,7 @@ class TransitionListAdapter extends BaseAdapter {
 
         }
 
-        private void deleteListItemMember(final int area,final int house,final int position){
+        private void deleteListItemMember(final int area,final int house,final int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setTitle("Delete member: " + CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(position).getName());
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -243,6 +245,7 @@ class TransitionListAdapter extends BaseAdapter {
                     DeleteRecord.addMember(CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(position));
                     CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().remove(position);
                     updateMember(area,house);
+                    CRUDFlinger.saveRegion();
                     dialog.dismiss();
                 }
             });

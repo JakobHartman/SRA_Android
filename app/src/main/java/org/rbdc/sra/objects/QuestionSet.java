@@ -11,7 +11,7 @@ public class QuestionSet implements Serializable {
 
     private String name;
     private String type;
-    private ArrayList<Question> Questions;
+    private ArrayList<Question> questions;
 
     /*
      * Constructor
@@ -19,7 +19,7 @@ public class QuestionSet implements Serializable {
     public QuestionSet(String name, String url) {
         this.name = name;
         this.type = QuestionSetTypes.HOUSEHOLD;
-        this.Questions = new ArrayList<Question>();
+        this.questions = new ArrayList<Question>();
     }
 
     public QuestionSet(){
@@ -31,18 +31,18 @@ public class QuestionSet implements Serializable {
      */
     public void setName(String name) { this.name = name; }
     public void setType(String type) { this.type = type; }
-    public void addQuestion(Question qs) { Questions.add(qs); }
-    public void setQuestions(ArrayList<Question> questions) { this.Questions = questions; }
+    public void addQuestion(Question qs) { questions.add(qs); }
+    public void setQuestions(ArrayList<Question> questions) { this.questions = questions; }
 
     /*
      * Accessors
      */
     public String getName() { return name; }
     public String getType() { return type; }
-    public void deleteQuestion(Question qs) { Questions.remove(qs); }
-    public ArrayList<Question> getQuestions() { return Questions; }
+    public void deleteQuestion(Question qs) { questions.remove(qs); }
+    public ArrayList<Question> getQuestions() { return questions; }
     public Question getQuestion(String questionName) {
-        for (Question q : Questions) {
+        for (Question q : questions) {
             if (q.getName().equals(questionName)) {
                 return q;
             }
