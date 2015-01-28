@@ -41,7 +41,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        UrlBuilder.setOrg("SRA");
+        UrlBuilder.setOrg("sra");
         setUpMenu();
         changeFragment(new DashboardFragment(), "dashboard");
         title = (TextView)findViewById(R.id.title);

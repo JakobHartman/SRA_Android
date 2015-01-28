@@ -1,6 +1,7 @@
 package com.special;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.special.menu.ResideMenu;
 
+import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.DeleteRecord;
@@ -50,7 +53,7 @@ public class SyncFragment extends Fragment {
     Button btn, btnCancel;
     Region region;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         final View v =  (LinearLayout) inflater.inflate(R.layout.relogin_dialog, container, false);
             final SyncUpload syncUp = new SyncUpload();
             final LoginObject login = syncUp.startUpload(getActivity());
@@ -77,7 +80,15 @@ public class SyncFragment extends Fragment {
                             CRUDFlinger.setRegion(newRegion);
                             syncUp.removeFromDeleteRecord();
                             syncUp.uploadRegion();
+                            CRUDFlinger.saveRegion();
                         }catch (Exception e){}
+                        getFragmentManager().beginTransaction().replace(R.id.main_fragment,new DashboardFragment(), "dashboard")
+                                .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                .addToBackStack(null).commit();
+                        TextView view = (TextView)getActivity().findViewById(R.id.title);
+                                view.setText("Dashboard");
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(password.getWindowToken(), 0);
                     }
 
                     @Override

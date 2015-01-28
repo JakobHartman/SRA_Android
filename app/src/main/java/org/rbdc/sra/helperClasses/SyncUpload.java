@@ -47,13 +47,17 @@ public class SyncUpload {
     public void removeFromDeleteRecord(){
         for(Area area : DeleteRecord.getAreas()){
             for(Area area1 : CRUDFlinger.getAreas()){
-                CRUDFlinger.getAreas().remove(area1);
+                if(area1.getName() == area.getName()){
+                    CRUDFlinger.getAreas().remove(area);
+                }
             }
         }
         for(Area area : CRUDFlinger.getAreas()){
             for(Household household : area.getResources()){
                 for (Household household1 : DeleteRecord.getHouseholds()){
-                        CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().remove(household1);
+                    if(household.getName() == household1.getName()){
+                        CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().remove(household);
+                    }
                 }
             }
         }
@@ -61,7 +65,9 @@ public class SyncUpload {
             for(Household household : area.getResources()){
                 for(Member member : household.getMembers()) {
                     for (Member member1 : DeleteRecord.getMembers()) {
-                        CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().get(CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().indexOf(household)).getMembers().remove(member1);
+                        if(member.getName() == member1.getName() && member.getBirthday() == member1.getBirthday()){
+                            CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().get(CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().indexOf(household)).getMembers().remove(member1);
+                        }
                     }
                 }
             }

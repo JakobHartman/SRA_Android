@@ -34,7 +34,7 @@ public class UrlBuilder {
 
     public static String buildAreaUrl(Area area) {
         String url;
-        url = "https://testrbdc.firebaseio.com/organizations/" + org + "/countries/" + area.getCountry().toLowerCase() + "/regions/" + area.getRegion().toLowerCase() + "/areas/" + area.getName().toLowerCase();
+        url = "https://intense-inferno-7741.firebaseio.com/organizations/" + org + "/countries/" + area.getCountry().toLowerCase() + "/regions/" + area.getRegion().toLowerCase() + "/areas/" + area.getName().toLowerCase();
         return url;
     }
 }
