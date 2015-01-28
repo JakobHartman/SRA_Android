@@ -74,10 +74,7 @@ public class SyncFragment extends Fragment {
                         DownloadData.syncDownload(login);
                         try{
                             region = CRUDFlinger.merge(CRUDFlinger.getTempRegion(), CRUDFlinger.getRegion());
-                            String json = JSONUtilities.stringify(region);
-                            Gson gson = new GsonBuilder().create();
-                            Region newRegion = gson.fromJson(json,Region.class);
-                            CRUDFlinger.setRegion(newRegion);
+                            CRUDFlinger.setRegion(region);
                             syncUp.removeFromDeleteRecord();
                             try{
                                 Log.i("Being Pushed",JSONUtilities.stringify(CRUDFlinger.getAreas().get(0)));

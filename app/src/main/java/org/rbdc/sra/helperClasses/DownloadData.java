@@ -121,6 +121,7 @@ public class DownloadData {
         }
     }
 
+    //For getting the current areas on the firebase
     public static void syncDownload(LoginObject info) {
         for(CountryLogin country : info.getSiteLogin().getCountries()) {
             for (RegionLogin reg : country.getRegions()) {
@@ -132,9 +133,7 @@ public class DownloadData {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Area area = dataSnapshot.getValue(Area.class);
                             CRUDFlinger.getTempRegion().addArea(area);
-
                         }
-
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
 
