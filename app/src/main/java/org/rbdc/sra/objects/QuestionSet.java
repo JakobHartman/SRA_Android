@@ -23,7 +23,9 @@ public class QuestionSet implements Serializable {
     }
 
     public QuestionSet(){
-
+        this.name = "";
+        this.type = QuestionSetTypes.HOUSEHOLD;
+        this.questions = new ArrayList<Question>();
     }
 
     /*
