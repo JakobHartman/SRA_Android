@@ -37,7 +37,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
+        CRUDFlinger.setApplication(getActivity().getApplication());
         final Activity parentActivity = getActivity();
 
         // get the listview

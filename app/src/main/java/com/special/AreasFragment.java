@@ -193,7 +193,7 @@ public class AreasFragment extends Fragment {
                 addMember();
             }
         });
-        
+
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

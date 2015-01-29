@@ -161,6 +161,7 @@ public class Login extends Activity {
                                      user.putString("User", userString);
                                      user.commit();
                                      DownloadData.download(info,getBaseContext(),Dashboard.class);
+                                     DownloadData.downloadQuestions();
                                  }catch (JSONException e){}
 
 

@@ -79,6 +79,7 @@ public class SyncFragment extends Fragment {
                             try{
                                 Log.i("Being Pushed",JSONUtilities.stringify(CRUDFlinger.getAreas().get(0)));
                                 syncUp.uploadRegion();
+                                syncUp.uploadQuestions();
                                 CRUDFlinger.saveRegion();
                             }catch (JSONException e){}
 

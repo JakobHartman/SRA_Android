@@ -4,14 +4,20 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
+import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import quickconnectfamily.json.JSONUtilities;
 
@@ -32,6 +38,11 @@ public class SyncUpload {
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
         System.out.println("LoginObject for Upload "+ loginObject);
         return loginObject;
+    }
+
+    public void uploadQuestions() {
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/question sets");
+        base.setValue(CRUDFlinger.getQuestionSets());
     }
 
     public void uploadRegion() throws Exception{

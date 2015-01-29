@@ -16,12 +16,14 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.AreaLogin;
 import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
@@ -142,6 +144,25 @@ public class DownloadData {
                 }
             }
         }
+    }
+
+    public static void downloadQuestions() {
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/question sets");
+        base.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren())  {
+                    QuestionSet question = data.getValue(QuestionSet.class);
+                    CRUDFlinger.addQuestionSet(question);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public static HashMap buildMap(String json) throws IOException {
