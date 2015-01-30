@@ -12,6 +12,7 @@ import com.special.menu.ResideMenuItem;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -183,4 +184,5 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
             resideMenu.openMenu();
         }
     }
+
 }

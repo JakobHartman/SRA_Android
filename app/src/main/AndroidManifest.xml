@@ -25,7 +25,8 @@
         </activity>
         <activity
             android:name=".Dashboard"
-            android:label="@string/title_activity_dashboard">
+            android:label="@string/title_activity_dashboard"
+            android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
         <activity
             android:name="com.special.InterviewActivity"
