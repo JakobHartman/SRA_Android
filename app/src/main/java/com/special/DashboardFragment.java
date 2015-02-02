@@ -52,6 +52,7 @@ public class DashboardFragment extends Fragment {
                                         int groupPosition, int childPosition, long id) {
                 // Tell us what we clicked
 
+
                 if (CRUDFlinger.getAreas() == null) {
                      // need to be taken to login activity
                     Intent goToLogin = new Intent(getActivity().getBaseContext(), Login.class);
