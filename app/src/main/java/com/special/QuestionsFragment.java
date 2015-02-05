@@ -127,7 +127,8 @@ public class QuestionsFragment extends Fragment {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
-
+    // inflates the dialog xml
+    //
     private void openQuestionSetDialog(final QuestionSet qSet) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_set_dialog);
@@ -135,6 +136,7 @@ public class QuestionsFragment extends Fragment {
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
+        // The name of the question set
         final EditText nameField = (EditText) alert.findViewById(R.id.name_field);
         nameField.setText(qSet.getName());
         nameField.setSelection(nameField.length());
@@ -146,6 +148,7 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
+        // The type of question set - Community or household
         final Spinner type = (Spinner) alert.findViewById(R.id.type_spinner);
         String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
         final ArrayList<String> typesArrayList = new ArrayList<String>(Arrays.asList(typesArray));
@@ -161,6 +164,7 @@ public class QuestionsFragment extends Fragment {
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        // The list of questions
         questionListAdapter = new QuestionAdapter(getActivity(), qSet);
         final ListView questionList = (ListView) alert.findViewById(R.id.list_view);
         questionList.setAdapter(questionListAdapter);
@@ -181,6 +185,7 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
+        // Add button for adding a question to the set
         Button addButton = (Button) alert.findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,6 +299,8 @@ public class QuestionsFragment extends Fragment {
         });
     }
 
+    //Opens a single question from a question set
+    //
     private void openQuestionDialog(final Question q) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_dialog);
@@ -301,6 +308,7 @@ public class QuestionsFragment extends Fragment {
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
+        // Name of the question
         final EditText nameField = (EditText) alert.findViewById(R.id.name_field);
         nameField.setText(q.getName());
         nameField.setSelection(nameField.length());
@@ -312,6 +320,7 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
+        // A checkbox for whether or not the question can be used multiple times
         final CheckBox multiUseBox = (CheckBox) alert.findViewById(R.id.multi_use_checkbox);
         multiUseBox.setChecked(q.getMultiUse());
         multiUseBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -321,6 +330,7 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
+        // List of data points
         final LinearLayout dataPointList = (LinearLayout) alert.findViewById(R.id.list_view);
         ArrayList<Datapoint> datapoints = q.getDataPoints();
         for (Datapoint dp : datapoints) {
@@ -339,6 +349,7 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
+        // Add a new data point to the question
         Button addButton = (Button) alert.findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,7 +364,7 @@ public class QuestionsFragment extends Fragment {
     }
 
     /*
-     *
+     * Questions Set List Adapter and delete listener
      */
     class QuestionSetListAdapter extends BaseAdapter {
 

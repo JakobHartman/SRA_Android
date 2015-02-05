@@ -48,7 +48,7 @@ public class DataCollectQuestionFragment extends Fragment {
 
     private int questionIndex;
     private Question question;
-    private LinearLayout table;
+    private LinearLayout table; //Root element
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,6 +76,7 @@ public class DataCollectQuestionFragment extends Fragment {
             });
         }
 
+        // List of data points
         table = (LinearLayout) rootView.findViewById(R.id.layout);
         populateTable();
 
@@ -89,6 +90,7 @@ public class DataCollectQuestionFragment extends Fragment {
         }
     }
 
+    // Populates the question views
     private void populateTable() {
         table.removeAllViews();
         ArrayList<Datapoint> points = question.getDataPoints();
@@ -97,16 +99,18 @@ public class DataCollectQuestionFragment extends Fragment {
             numAnswers = points.get(0).getAnswers().size();
         }
 
+        // Create a Linear Layout container for question
         for (int i = 0; i < numAnswers; i++) {
             final int answerPosition = i;
             final LinearLayout questionContainer = new LinearLayout(getActivity());
             questionContainer.setOrientation(LinearLayout.VERTICAL);
             table.addView(questionContainer);
 
+            // Create a Linear Layout container for Question
             for (final Datapoint dp : points) {
                 final ArrayList<String> answers = dp.getAnswers();
                 final LinearLayout row = new LinearLayout(getActivity());
-                questionContainer.addView(row);
+                //questionContainer.addView(row);
                 row.setOrientation(LinearLayout.HORIZONTAL);
                 String answer = "";
                 if (answerPosition < answers.size()) {
@@ -115,12 +119,14 @@ public class DataCollectQuestionFragment extends Fragment {
 
                 TextView label = new TextView(getActivity());
                 label.setText(dp.getLabel());
-                row.addView(label);
+                questionContainer.addView(label);
 
                 String dataType = dp.getType();
                 if (dataType.equals(DatapointTypes.TEXT)) {
                     final EditText input = new EditText(getActivity());
-                    input.setText(answer);
+
+                    ViewGroup.LayoutParams params = input.getLayoutParams();
+
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
                     input.addTextChangedListener(new TextWatcher() {
                         public void afterTextChanged(Editable s) {}
@@ -132,12 +138,15 @@ public class DataCollectQuestionFragment extends Fragment {
                                 answers.set(answerPosition, input.getText().toString());
                         }
                     });
-                    row.addView(input);
+
+                    // Add question to Question Container
+                    questionContainer.addView(input);
                 }
                 else if (dataType.equals(DatapointTypes.NUMBER)) {
                     final EditText input = new EditText(getActivity());
                     input.setText(answer);
                     input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    input.setHint("Type here");
                     input.addTextChangedListener(new TextWatcher() {
                         public void afterTextChanged(Editable s) {}
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -148,7 +157,9 @@ public class DataCollectQuestionFragment extends Fragment {
                                 answers.set(answerPosition, input.getText().toString());
                         }
                     });
-                    row.addView(input);
+
+                    // Add response to Question Container
+                    questionContainer.addView(input);
                 }
                 else if (dataType.equals(DatapointTypes.DATE)) {
                     Calendar calendar = Calendar.getInstance();
@@ -177,7 +188,8 @@ public class DataCollectQuestionFragment extends Fragment {
                     datePicker.init(year, month, day, listener);
                     datePicker.setCalendarViewShown(false);
 
-                    row.addView(datePicker);
+                    // add response to question container
+                    questionContainer.addView(datePicker);
                 }
                 else if (dataType.equals(DatapointTypes.LIST_SINGLE_ANSWER)) {
                     final Spinner options = new Spinner(getActivity());
@@ -197,7 +209,9 @@ public class DataCollectQuestionFragment extends Fragment {
                         @Override
                         public void onNothingSelected(AdapterView<?> parentView) {}
                     });
-                    row.addView(options);
+
+                    // add response to question container
+                    questionContainer.addView(options);
                 }
                 else if (dataType.equals(DatapointTypes.LIST_MULTI_ANSWER)) {
                     final MultiSelectionSpinner options = new MultiSelectionSpinner(getActivity());
@@ -221,7 +235,9 @@ public class DataCollectQuestionFragment extends Fragment {
                             return false;
                         }
                     });
-                    row.addView(options);
+
+                    //add question to question container
+                    questionContainer.addView(options);
                 }
             }
 
@@ -236,10 +252,15 @@ public class DataCollectQuestionFragment extends Fragment {
                         populateTable();
                     }
                 });
+
+                // if it is a multi-use response add delete option
                 questionContainer.addView(deleteDataPoint);
             }
         }
     }
+
+
+
 
     public class MultiSelectionSpinner extends Spinner implements
             OnMultiChoiceClickListener {

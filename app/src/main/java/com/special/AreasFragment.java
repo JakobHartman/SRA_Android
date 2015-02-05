@@ -60,6 +60,7 @@ public class AreasFragment extends Fragment {
     private static int householdId;
     public TextView title;
     private Button interviewButton;
+    private Button noteButton;
 
     //Vars
     private String PACKAGE = "IDENTIFY";
@@ -72,8 +73,10 @@ public class AreasFragment extends Fragment {
         listView = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
         interviewButton = (Button) parentView.findViewById(R.id.interview_button);
+        noteButton = (Button) parentView.findViewById(R.id.new_note_button);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
+
         // Questions button
         interviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +90,29 @@ public class AreasFragment extends Fragment {
                     intent.putExtra("interviewType", "household");
                 } else return;
                 startActivity(intent);
+            }
+        });
+
+        // New Note Button
+        noteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog = new Dialog(getActivity(),
+                        android.R.style.Theme_Translucent);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(true);
+                dialog.setContentView(R.layout.new_note);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
+                dialog.show();
+                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
+                note_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
             }
         });
 

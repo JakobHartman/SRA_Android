@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#ffffff">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="4dp"
+            android:textAlignment="center"
+            android:hint="This is a Note Title"
+            android:id="@+id/noteTitle"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/noteTitle"
+            android:layout_marginTop="20dp"
+            android:hint="Type your note here"
+            android:id="@+id/note_text"
+            android:layout_margin="4dp"
+            android:gravity="top" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/note_cancel"
+                android:layout_below="@id/note_text"
+                style="@style/UIButton"/>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:id="@+id/note_save"
+                android:layout_below="@id/note_text"
+                android:layout_toRightOf="@+id/note_cancel"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="4dp"
+                style="@style/UIButton"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

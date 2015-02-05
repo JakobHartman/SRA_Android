@@ -60,6 +60,8 @@ public class DataCollect extends FragmentActivity {
             Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
             ArrayList<Interview> interviews = household.getInterviews();
             if (interviews.isEmpty()) interviews.add(new Interview());
+
+            // Right now it isn't clear why we need multiple interviews...for now just grab the first one
             Interview interview = interviews.get(0);
             ArrayList<QuestionSet> responseSets = interview.getQuestionsets();
             questionSet = responseSets.get(responseSetIndex);
@@ -75,9 +77,13 @@ public class DataCollect extends FragmentActivity {
             numQuestions = questionSet.getQuestions().size();
         }
 
+        // A title for the question fragment
         questionNameView = (TextView) findViewById(R.id.question_header_view);
+
+        // How far along you are in the response set
         progressView = (TextView) findViewById(R.id.question_progress_view);
 
+        // Question set title
         TextView pageTitle = (TextView) findViewById(R.id.title);
         pageTitle.setText(questionSet.getName());
 

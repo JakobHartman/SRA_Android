@@ -56,5 +56,14 @@
         android:layout_gravity="right|top"
         android:layout_marginRight="3dp" />
 
+    <Button
+        android:id="@+id/new_note_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Note"
+        style="@style/UIButtonInverse"
+        android:layout_gravity="left|top"
+        android:layout_marginLeft="3dp" />
+
 
 </FrameLayout>
