@@ -152,6 +152,8 @@ public class AreasFragment extends Fragment {
             listView.setAdapter(mAdapter);
             listView.setIgnoredViewHandler(resideMenu);
             interviewButton.setVisibility(View.INVISIBLE);
+            noteButton.setVisibility(View.INVISIBLE);
+
 
             button.setText("Add Area");
             button.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +172,6 @@ public class AreasFragment extends Fragment {
                     householdView(areaId);
                 }
             });
-
 
         }
 
@@ -194,6 +195,8 @@ public class AreasFragment extends Fragment {
             }
         });
         interviewButton.setVisibility(View.VISIBLE);
+        noteButton.setVisibility(View.VISIBLE);
+
         button.setText("Add Household");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,6 +231,8 @@ public class AreasFragment extends Fragment {
         });
         // Questions button
         interviewButton.setVisibility(View.VISIBLE);
+        noteButton.setVisibility(View.VISIBLE);
+
 
 
 

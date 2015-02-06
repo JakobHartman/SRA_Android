@@ -151,11 +151,11 @@ public class DownloadData {
         base.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren())  {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
                     QuestionSet question = data.getValue(QuestionSet.class);
+
                     CRUDFlinger.addQuestionSet(question);
                 }
-
             }
 
             @Override
