@@ -31,4 +31,8 @@ public class Note {
         _title = title;
         _dateUpdated = Calendar.getInstance();
     }
+
+    public String getNoteContents () { return _noteContents;}
+
+    public String getNoteTitle() {return _title;}
 }

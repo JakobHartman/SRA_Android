@@ -35,6 +35,7 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
+import org.rbdc.sra.objects.Note;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -42,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 public class AreasFragment extends Fragment {
@@ -61,6 +63,7 @@ public class AreasFragment extends Fragment {
     public TextView title;
     private Button interviewButton;
     private Button noteButton;
+    private List<Note> notes_list;
 
     //Vars
     private String PACKAGE = "IDENTIFY";
@@ -68,6 +71,8 @@ public class AreasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
+
+        notes_list = new ArrayList<Note>();
 
         title = (TextView) getActivity().findViewById(R.id.title);
         listView = (UISwipableList) parentView.findViewById(R.id.listView);
@@ -99,18 +104,44 @@ public class AreasFragment extends Fragment {
             public void onClick(View v) {
                 dialog = new Dialog(getActivity(),
                         android.R.style.Theme_Translucent);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+                dialog.setTitle("New Note");
                 dialog.setCancelable(true);
                 dialog.setContentView(R.layout.new_note);
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
                 dialog.show();
+
+                // Cancel Button
                 Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
                 note_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.cancel();
+                    }
+                });
+
+                // Save Button
+                Button note_save = (Button) dialog.findViewById(R.id.note_save);
+                note_save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Create a new note
+                        // Store in an arraylist?
+                        EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
+                        EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
+                        Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString());
+
+                        // Notify Note created
+                        Toast toast = new Toast(getActivity());
+                        toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+
+                        // Add note to the list
+                        notes_list.add(newNote);
+
+                        // Close the view
+                         dialog.cancel();
                     }
                 });
             }
@@ -133,6 +164,7 @@ public class AreasFragment extends Fragment {
         return parentView;
     }
 
+    //
     public void initView(){
         if (navigation == "members") {
 
@@ -177,6 +209,7 @@ public class AreasFragment extends Fragment {
 
     }
 
+    // Set up for the household View
     private void householdView(int pos) {
         navigation = "household";
         areaId = pos;
@@ -205,9 +238,17 @@ public class AreasFragment extends Fragment {
             }
         });
 
-
+        // Testing note creation
+        if (notes_list.isEmpty()) {
+            System.out.println("no notes found");
+        } else {
+            for (Note note : notes_list) {
+                System.out.println(note.getNoteContents());
+            }
+        }
     }
 
+    // Set up for the member view
     private void memberView(int areaPos, int housePos) {
         areaId = areaPos;
         householdId = housePos;
@@ -233,11 +274,7 @@ public class AreasFragment extends Fragment {
         interviewButton.setVisibility(View.VISIBLE);
         noteButton.setVisibility(View.VISIBLE);
 
-
-
-
     }
-
 
 
     private void addArea(){
@@ -267,9 +304,9 @@ public class AreasFragment extends Fragment {
                 Area newArea = new Area();
 
                 if(areaText.getText().toString().matches("")){
-                    toast.makeText(getActivity(),"Please Enter A Valid Area Name", Toast.LENGTH_LONG).show();
+                    toast.makeText(getActivity(),"Please Enter A Valid Area Name", Toast.LENGTH_SHORT).show();
                 }else if(regionText.getSelectedItemPosition() == 0){
-                    toast.makeText(getActivity(),"Please Select A Valid Region", Toast.LENGTH_LONG).show();
+                    toast.makeText(getActivity(),"Please Select A Valid Region", Toast.LENGTH_SHORT).show();
                 }else{
                     newArea.setRegion(regionText.getSelectedItem().toString());
                     newArea.setCountry(CRUDFlinger.getCountryName(regionText.getSelectedItem().toString()));
@@ -321,7 +358,7 @@ public class AreasFragment extends Fragment {
 
                 Household newHousehold = new Household();
                 if(areaText.getText().toString().matches("")){
-                    toast.makeText(getActivity(),"Please Enter A Valid Household Name", Toast.LENGTH_LONG).show();
+                    toast.makeText(getActivity(),"Please Enter A Valid Household Name", Toast.LENGTH_SHORT).show();
                 }else{
                     newHousehold.setName(areaText.getText().toString());
                     newHousehold.setArea(CRUDFlinger.getAreas().get(areaId).getName());
@@ -566,5 +603,3 @@ public class AreasFragment extends Fragment {
 
 
 }
-
-
