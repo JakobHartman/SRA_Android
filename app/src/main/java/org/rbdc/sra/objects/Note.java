@@ -6,7 +6,7 @@ import java.util.Calendar;
  * Created by chad on 2/3/15.
  */
 public class Note {
-    private String _noteType;
+    public String _noteType;
     private Calendar _dateCreated;
     private Calendar _dateUpdated;
     private String _title;

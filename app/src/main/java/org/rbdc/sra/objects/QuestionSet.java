@@ -18,13 +18,13 @@ public class QuestionSet implements Serializable {
      */
     public QuestionSet(String name, String url) {
         this.name = name;
-        this.type = QuestionSetTypes.HOUSEHOLD;
+        this.type = "HOUSEHOLD";
         this.questions = new ArrayList<Question>();
     }
 
     public QuestionSet(){
         this.name = "";
-        this.type = QuestionSetTypes.HOUSEHOLD;
+        this.type = "HOUSEHOLD";
         this.questions = new ArrayList<Question>();
     }
 
@@ -32,7 +32,16 @@ public class QuestionSet implements Serializable {
      * Modifiers
      */
     public void setName(String name) { this.name = name; }
-    public void setType(String type) { this.type = type; }
+    public void setType(String type) {
+        if (type.equals("Community") ) {
+            this.type = "AREA";
+            System.out.println("type==Community");
+        } else if (type.equals("Household")){
+            this.type = "HOUSEHOLD";
+            System.out.println("type==Household");
+
+        }
+    }
     public void addQuestion(Question qs) { questions.add(qs); }
     public void setQuestions(ArrayList<Question> questions) { this.questions = questions; }
 

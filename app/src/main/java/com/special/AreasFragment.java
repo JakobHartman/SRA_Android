@@ -238,14 +238,17 @@ public class AreasFragment extends Fragment {
             }
         });
 
+/**********************Testing*****************************/
         // Testing note creation
         if (notes_list.isEmpty()) {
             System.out.println("no notes found");
         } else {
             for (Note note : notes_list) {
-                System.out.println(note.getNoteContents());
+                System.out.println(note._noteType);
             }
         }
+/*********************************************************/
+
     }
 
     // Set up for the member view

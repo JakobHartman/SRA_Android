@@ -28,7 +28,6 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.Interview;
 import org.rbdc.sra.objects.QuestionSet;
-import org.rbdc.sra.objects.QuestionSetTypes;
 
 import java.util.ArrayList;
 
@@ -50,8 +49,11 @@ public class InterviewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interview);
         TextView title = (TextView) findViewById(R.id.title);
+
+
         CRUDFlinger.setApplication(getApplication());
 
+        // Pull information from the Intent that got us here
         Intent intent = getIntent();
         areaID = intent.getIntExtra("areaID", -1);
         householdID = intent.getIntExtra("householdID", -1);
@@ -78,15 +80,21 @@ public class InterviewActivity extends Activity {
             ArrayList<Interview> interviews = area.getInterviews();
             if (interviews.isEmpty()) interviews.add(new Interview());
             interview = interviews.get(0);
+
+            // Gets the questionSets
             responseSets = interview.getQuestionsets();
             title.setText(area.getName() + " -> Response Sets");
         }
 
+        // Put the Surverys in a swipable list
         responseSetList = (UISwipableList) findViewById(R.id.list_view);
         listItems = new ArrayList<ListItem>();
+
+        // Put items in the List
         populateListItems();
         setupList();
 
+        // Add response set Button
         Button addButton = (Button) findViewById(R.id.add_response_set_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +104,7 @@ public class InterviewActivity extends Activity {
         });
     }
 
+    //responseSetList is a swipable list
     private void setupList() {
         responseSetAdapter = new ResponseSetAdapter(this, listItems);
         responseSetList.setActionLayout(R.id.hidden);
@@ -110,17 +119,22 @@ public class InterviewActivity extends Activity {
         });
     }
 
+
+    // Method for putting items in "listItems"
     private void populateListItems() {
         listItems.clear();
         String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
+
+        // For each question set add an icon, name, ... idk
         for (QuestionSet qs : responseSets) {
             listItems.add(new ListItem(
                     R.drawable.ic_home,
                     qs.getName(),
-                    typesArray[QuestionSetTypes.getTypeIndex(qs.getType())],
+                    qs.getType(),
                     null, null));
         }
     }
+
 
     private QuestionSet addResponseSet(QuestionSet qs) {
         Gson gson = new GsonBuilder().create();
@@ -140,8 +154,8 @@ public class InterviewActivity extends Activity {
         alert.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         ArrayList<QuestionSet> sets = new ArrayList<QuestionSet>();
-        if (interviewType.equals("household")) sets = CRUDFlinger.getQuestionSets(QuestionSetTypes.HOUSEHOLD);
-        else if (interviewType.equals("area")) sets = CRUDFlinger.getQuestionSets(QuestionSetTypes.AREA);
+        if (interviewType.equals("household")) sets = CRUDFlinger.getQuestionSets("HOUSEHOLD");
+        else if (interviewType.equals("area")) sets = CRUDFlinger.getQuestionSets("AREA");
         final ArrayList<QuestionSet> finalSets = sets;
         QuestionSetSelectionAdapter adapter = new QuestionSetSelectionAdapter(this, sets);
         final ListView list = (ListView) alert.findViewById(R.id.list_view);

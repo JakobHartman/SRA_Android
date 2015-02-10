@@ -34,13 +34,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black"
             android:text="Question Set Type:  "
@@ -48,12 +48,35 @@
             android:singleLine="false"
             android:padding="10dp" />
 
-        <Spinner
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="left|center_vertical"
-            android:id="@+id/type_spinner" />
-        <!--style="@style/UIButtonInverse" />-->
+
+        <com.special.utils.UITabs
+            android:id="@+id/radio_type"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <RadioButton
+                android:id="@+id/radio_community"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="Community"
+                style="@style/UITabs" />
+
+            <RadioButton
+                android:id="@+id/radio_household"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:checked="true"
+                android:text="Household"
+                style="@style/UITabs" />
+
+        </com.special.utils.UITabs>
+
+
     </LinearLayout>
 
     <TextView

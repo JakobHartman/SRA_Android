@@ -2,6 +2,7 @@ package com.special;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -22,6 +23,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +40,6 @@ import org.rbdc.sra.objects.Datapoint;
 import org.rbdc.sra.objects.DatapointTypes;
 import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.QuestionSet;
-import org.rbdc.sra.objects.QuestionSetTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,7 +101,7 @@ public class QuestionsFragment extends Fragment {
             listItems.add(new ListItem(
                     R.drawable.ic_home,
                     qs.getName(),
-                    typesArray[QuestionSetTypes.getTypeIndex(qs.getType())],
+                    qs.getType(),
                     null, null));
         }
     }
@@ -127,8 +129,7 @@ public class QuestionsFragment extends Fragment {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
-    // inflates the dialog xml
-    //
+    // Opens the dialog for creating a new question set
     private void openQuestionSetDialog(final QuestionSet qSet) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_set_dialog);
@@ -148,21 +149,6 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
-        // The type of question set - Community or household
-        final Spinner type = (Spinner) alert.findViewById(R.id.type_spinner);
-        String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
-        final ArrayList<String> typesArrayList = new ArrayList<String>(Arrays.asList(typesArray));
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(
-                getActivity(), android.R.layout.simple_spinner_item, typesArrayList);
-        type.setAdapter(typesAdapter);
-        type.setSelection(QuestionSetTypes.getTypeIndex(qSet.getType()));
-        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                qSet.setType(QuestionSetTypes.getTypeFromIndex(position));
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
 
         // The list of questions
         questionListAdapter = new QuestionAdapter(getActivity(), qSet);
@@ -180,6 +166,14 @@ public class QuestionsFragment extends Fragment {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //gets the selected button's id
+                RadioGroup radioTypeGroup = (RadioGroup) alert.findViewById(R.id.radio_type);
+                int selectedRadioId = radioTypeGroup.getCheckedRadioButtonId();
+                RadioButton selectedButton = (RadioButton) alert.findViewById(selectedRadioId);
+                String typeText = selectedButton.getText().toString();
+                System.out.println("Type selected: "+ typeText);
+                qSet.setType(typeText); //if Works, delete questionsetTypes class
                 saveQuestionSets();
                 alert.dismiss();
             }
