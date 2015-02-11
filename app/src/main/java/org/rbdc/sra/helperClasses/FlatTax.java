@@ -40,38 +40,6 @@ public class FlatTax {
     }
 
 
-    public static Region downlaod(LoginObject info){
-        Region region = new Region();
-        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
 
-        for (CountryLogin country : info.getSiteLogin().getCountries()){
-            for(RegionLogin regions : country.getRegions()){
-                for(AreaLogin area : regions.getAreas()){
-                    String id = capitalizeFirstLetter(area.getName());
-                    Query query = base.orderByChild("area").startAt(id).endAt(id);
-                    query.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for(DataSnapshot child : dataSnapshot.getChildren()){
-                                Household household = child.getValue(Household.class);
-                                Log.i("area",household.getArea());
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {}
-                    });
-                }
-            }
-        }
-
-        return region;
-    }
-
-    public static String capitalizeFirstLetter(String original){
-        if(original.length() == 0)
-            return original;
-        return original.substring(0, 1).toUpperCase() + original.substring(1);
-    }
 
 }

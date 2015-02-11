@@ -162,9 +162,10 @@ public class Login extends Activity {
                                      user.putString("User", userString);
                                      user.commit();
                                      Firebase.setAndroidContext(getBaseContext());
-                                     FlatTax.downlaod(info);
-//                                     DownloadData.download(info,getBaseContext(),Dashboard.class);
-//                                     DownloadData.downloadQuestions();
+
+                                     DownloadData.downloadGoToDash(info,getBaseContext());
+                                     DownloadData.downloadQuestions();
+
                                  }catch (JSONException e){}
 
 

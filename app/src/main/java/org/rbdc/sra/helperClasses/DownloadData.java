@@ -3,30 +3,29 @@ package org.rbdc.sra.helperClasses;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.shaded.fasterxml.jackson.core.JsonFactory;
 import com.shaded.fasterxml.jackson.core.type.TypeReference;
 import com.shaded.fasterxml.jackson.databind.ObjectMapper;
 
+import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.AreaLogin;
 import org.rbdc.sra.objects.CountryLogin;
+import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.QuestionSet;
-import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import quickconnectfamily.json.JSONException;
-import quickconnectfamily.json.JSONUtilities;
 
 /**
  * Created by imac on 1/14/15.
@@ -52,40 +51,49 @@ public class DownloadData {
         return instance;
     }
 
-    public static void download(final LoginObject info, final Context activity, final Class destination) {
-        Region region = new Region();
+    public static void downloadGoToDash(LoginObject info, final Context activity){
+        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
         final int number = info.getSiteLogin().getAreaCount();
-        for(CountryLogin country : info.getSiteLogin().getCountries()) {
-            for (RegionLogin reg : country.getRegions()) {
-                for (AreaLogin area : reg.getAreas()) {
-                    Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + country.getName() + "/regions/" + reg.getName() + "/areas/" + area.getName());
-                    Log.i("base url: ", "https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + country.getName() + "/regions/" + reg.getName() + "/areas/" + area.getName());
-                    base.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        for (CountryLogin country : info.getSiteLogin().getCountries()){
+            for(RegionLogin regions : country.getRegions()){
+                for(AreaLogin area : regions.getAreas()){
+                    String id = capitalizeFirstLetter(area.getName());
+                    Query query = base.orderByChild("area").startAt(id).endAt(id);
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.i(" Area: ", dataSnapshot.getKey());
-                            Area area = dataSnapshot.getValue(Area.class);
-                            CRUDFlinger.addArea(area);
-                            CRUDFlinger.saveRegion();
-                            try{
-                                Log.i("Area :", JSONUtilities.stringify(area));
-                            }catch (JSONException e){
+                            passes = 0;
+                            Log.i("String: ",dataSnapshot.getValue().toString());
+                            for(DataSnapshot child : dataSnapshot.getChildren()){
+                                Household household = child.getValue(Household.class);
 
-                            }
-                            Log.i(" Count: ", CRUDFlinger.getAreas().size() + " " + number + " " + passes);
-                            passes++;
+                                if(passes > 0) {
+                                    for (Area area1 : CRUDFlinger.getAreas()){
+                                        if (area1.getName().equals(household.getArea())) {
+                                            area1.addHousehold(household);
+                                        } else {
+                                            createArea(household);
+                                        }
+                                    }
+                                }else{
+                                    Log.i("counts: ","" + passes);
+                                    createArea(household);
+                                }
 
-                            if (passes == number  && number == CRUDFlinger.getAreas().size() ) {
-                                Intent intent = new Intent(activity, destination);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                activity.startActivity(intent);
-                                passes = 0;
+                                if(CRUDFlinger.getAreas().size() == number){
+                                    Intent intent = new Intent(activity,Dashboard.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    activity.startActivity(intent);
+                                }
+                                passes++;
                             }
 
                         }
+
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-
+                            Toast.makeText(activity,firebaseError.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -93,57 +101,56 @@ public class DownloadData {
         }
     }
 
-    public static void download(final LoginObject info) {
-        final int number = info.getSiteLogin().getAreaCount();
-        for(CountryLogin country : info.getSiteLogin().getCountries()) {
-            for (RegionLogin reg : country.getRegions()) {
-                for (AreaLogin area : reg.getAreas()) {
-                    Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + country.getName() + "/regions/" + reg.getName() + "/areas/" + area.getName());
-                    Log.i("base url: ", "https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + country.getName() + "/regions/" + reg.getName() + "/areas/" + area.getName());
-                    base.addListenerForSingleValueEvent(new ValueEventListener() {
+    public static void download(LoginObject info){
+        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
+
+        for (CountryLogin country : info.getSiteLogin().getCountries()){
+            for(RegionLogin regions : country.getRegions()){
+                for(AreaLogin area : regions.getAreas()){
+                    String id = capitalizeFirstLetter(area.getName());
+                    Query query = base.orderByChild("area").startAt(id).endAt(id);
+                    query.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.i(" Area: ", dataSnapshot.getKey());
-                            Area area = dataSnapshot.getValue(Area.class);
-                            CRUDFlinger.addArea(area);
-                            CRUDFlinger.saveRegion();
-                            try{
-                                Log.i("Area :", JSONUtilities.stringify(area));
-                            }catch (JSONException e){
+                            for(DataSnapshot child : dataSnapshot.getChildren()){
+                                Household household = child.getValue(Household.class);
+                                if(CRUDFlinger.getAreas().size() > 0){
+                                    for(Area area : CRUDFlinger.getAreas()){
+                                        if(area.getName() == household.getArea()){
+                                            area.addHousehold(household);
+                                        }else{
+                                            createArea(household);
+                                        }
+                                    }
+                                }else{
+                                    createArea(household);
+                                }
 
                             }
                         }
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
 
-                        }
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {}
                     });
                 }
             }
         }
     }
 
-    //For getting the current areas on the firebase
-    public static void syncDownload(LoginObject info) {
-        for(CountryLogin country : info.getSiteLogin().getCountries()) {
-            for (RegionLogin reg : country.getRegions()) {
-                for (AreaLogin area : reg.getAreas()) {
-                    Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + country.getName() + "/regions/" + reg.getName() + "/areas/" + area.getName());
-                    Log.i("base url: ", "https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/countries/" + country.getName() + "/regions/" + reg.getName() + "/areas/" + area.getName());
-                    base.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Area area = dataSnapshot.getValue(Area.class);
-                            CRUDFlinger.getTempRegion().addArea(area);
-                        }
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
+    public static void createArea(Household household){
+        Area area = new Area();
+        area.setCountry(household.getCountry());
+        area.setRegion(household.getRegion());
+        area.setName(household.getArea());
+        area.addHousehold(household);
+        CRUDFlinger.getRegion().addArea(area);
+    }
 
-                        }
-                    });
-                }
-            }
-        }
+
+    public static String capitalizeFirstLetter(String original){
+        if(original.length() == 0)
+            return original;
+        return original.substring(0, 1).toUpperCase() + original.substring(1);
     }
 
     public static void downloadQuestions() {
