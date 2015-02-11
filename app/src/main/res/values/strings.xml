@@ -105,5 +105,6 @@
     <string name="title_activity_question_set_list">QuestionSetList</string>
     <string name="title_activity_data_gather">DataGather</string>
     <string name="title_activity_data_collect">DataCollect</string>
+    <string name="title_activity_picture">Picture</string>
 
 </resources>

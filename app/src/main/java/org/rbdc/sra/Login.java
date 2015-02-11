@@ -19,6 +19,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import org.rbdc.sra.helperClasses.DownloadData;
+import org.rbdc.sra.helperClasses.FlatTax;
 import org.rbdc.sra.objects.AreaLogin;
 import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.LoginObject;
@@ -132,13 +133,13 @@ public class Login extends Activity {
                                  info.setLoggedIn(true);
                                  for(DataSnapshot rs : country.getChildren()){
                                      CountryLogin countryLogin = new CountryLogin();
-                                     countryLogin.setName(rs.getName());
+                                     countryLogin.setName(rs.getKey());
                                      for(DataSnapshot as : rs.child("regions").getChildren()){
                                          RegionLogin regionLogin = new RegionLogin();
-                                         regionLogin.setName(as.getName());
+                                         regionLogin.setName(as.getKey());
                                          for(DataSnapshot a : as.child("areas").getChildren()){
                                              AreaLogin areaLogin = new AreaLogin();
-                                             areaLogin.setName(a.getName());
+                                             areaLogin.setName(a.getKey());
                                              regionLogin.addArea(areaLogin);
                                          }
                                          countryLogin.addRegion(regionLogin);
@@ -160,8 +161,10 @@ public class Login extends Activity {
                                      userString = JSONUtilities.stringify(info);
                                      user.putString("User", userString);
                                      user.commit();
-                                     DownloadData.download(info,getBaseContext(),Dashboard.class);
-                                     DownloadData.downloadQuestions();
+                                     Firebase.setAndroidContext(getBaseContext());
+                                     FlatTax.downlaod(info);
+//                                     DownloadData.download(info,getBaseContext(),Dashboard.class);
+//                                     DownloadData.downloadQuestions();
                                  }catch (JSONException e){}
 
 

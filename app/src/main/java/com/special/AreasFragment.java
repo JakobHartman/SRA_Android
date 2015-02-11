@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.special.menu.ResideMenu;
+import com.special.utils.UICircularImage;
 import com.special.utils.UISwipableList;
 import com.special.utils.UITabs;
 
@@ -200,14 +201,13 @@ public class AreasFragment extends Fragment {
 
             }
         });
+
         // Questions button
         interviewButton.setVisibility(View.VISIBLE);
 
 
 
     }
-
-
 
     private void addArea(){
         dialog = new Dialog(getActivity(),
@@ -295,7 +295,7 @@ public class AreasFragment extends Fragment {
                     newHousehold.setName(areaText.getText().toString());
                     newHousehold.setArea(CRUDFlinger.getAreas().get(areaId).getName());
                     newHousehold.setCountry(CRUDFlinger.getAreas().get(areaId).getCountry());
-                    CRUDFlinger.addHousehold(areaId,newHousehold);
+                    CRUDFlinger.addHousehold(areaId, newHousehold);
                     mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(areaId));
                     listView.setAdapter(mAdapter);
                     dialog.cancel();

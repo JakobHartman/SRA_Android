@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.DeleteRecord;
@@ -19,12 +20,15 @@ import com.special.utils.UICircularImage;
 import com.special.utils.UISwipableList;
 import com.special.utils.UITabs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,7 +53,6 @@ import quickconnectfamily.json.JSONException;
 class TransitionListAdapter extends BaseAdapter {
 	
 	   ViewHolder viewHolder;
-
         private ArrayList<ListItem> mItems = new ArrayList<ListItem>();
         private Context mContext;
 
@@ -116,6 +119,33 @@ class TransitionListAdapter extends BaseAdapter {
             viewHolder.descr.setText(desc);
             final ImageButton hiddenView = (ImageButton) v.findViewById(R.id.hidden_view1);
             final ImageButton hiddenViewEdit = (ImageButton) v.findViewById(R.id.hidden_view2);
+            final ImageView image = (ImageView) v.findViewById(R.id.item_image);
+            image.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    String text = desc.split("\\s++")[1];
+                    if(text.matches("Households")){
+                        intent.putExtra("house",9999);
+                        intent.putExtra("area",9999);
+                        intent.putExtra("pos",position);
+
+                    }else if(text.matches("Members")){
+                        intent.putExtra("house",9999);
+                        intent.putExtra("area",areaId);
+                        intent.putExtra("pos",position);
+                    }else {
+                        intent.putExtra("house",houseId);
+                        intent.putExtra("area",areaId);
+                        intent.putExtra("pos",position);
+                    }
+
+                    Activity act = (Dashboard)mContext;
+                    act.startActivityForResult(intent, 1);
+                }
+            });
+
+
             hiddenViewEdit.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -159,17 +189,19 @@ class TransitionListAdapter extends BaseAdapter {
                     }
                 }
             });
-            viewHolder.image.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, item + " icon clicked",
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
+//            viewHolder.image.setOnClickListener(new OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//
+//
+//
+//                }
+//            });
 
             return v;
         }
+
         
         static class ViewHolder {
         	  TextView title;

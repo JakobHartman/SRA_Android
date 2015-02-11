@@ -63,7 +63,7 @@ public class DownloadData {
                     base.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.i(" Area: ", dataSnapshot.getName());
+                            Log.i(" Area: ", dataSnapshot.getKey());
                             Area area = dataSnapshot.getValue(Area.class);
                             CRUDFlinger.addArea(area);
                             CRUDFlinger.saveRegion();
@@ -103,7 +103,7 @@ public class DownloadData {
                     base.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.i(" Area: ", dataSnapshot.getName());
+                            Log.i(" Area: ", dataSnapshot.getKey());
                             Area area = dataSnapshot.getValue(Area.class);
                             CRUDFlinger.addArea(area);
                             CRUDFlinger.saveRegion();
