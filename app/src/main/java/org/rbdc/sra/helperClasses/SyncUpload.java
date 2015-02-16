@@ -3,7 +3,11 @@ package org.rbdc.sra.helperClasses;
 import android.app.Activity;
 import android.util.Log;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -14,11 +18,13 @@ import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
 
 /**
@@ -45,14 +51,39 @@ public class SyncUpload {
         base.setValue(CRUDFlinger.getQuestionSets());
     }
 
-    public void uploadRegion() throws Exception{
+    public void uploadAreas(){
         Region region = CRUDFlinger.getRegion();
         for(Area area : region.getAreas()){
             String url = UrlBuilder.buildAreaUrl(area);
             Firebase base = new Firebase(url);
-            base.setValue(DownloadData.buildMap(JSONUtilities.stringify(area)));
+            base.child(area.getName()).setValue(area.getName());
         }
+    }
 
+    public void uploadHouses(){
+        Region region = CRUDFlinger.getRegion();
+        for(Area area : region.getAreas()){
+            for(final Household household : area.getResources()) {
+                String url = UrlBuilder.buildHouseUrl(household);
+                Firebase base = new Firebase(url);
+                Query query = base.orderByChild("name").startAt(household.getName()).endAt(household.getName());
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                       Firebase string = dataSnapshot.getRef();
+                        try{
+                            string.setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
+                        }catch (JSONException e){}catch (IOException e){}
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
+            }
+        }
     }
 
     public void removeFromDeleteRecord(){

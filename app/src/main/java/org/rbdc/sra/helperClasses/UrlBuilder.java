@@ -40,4 +40,11 @@ public class UrlBuilder {
         Log.i("Url: ",url);
         return url;
     }
+
+    public static String buildHouseUrl(Household area) {
+        String url;
+        url = "https://intense-inferno-7741.firebaseio.com/organizations/" + org + "/countries/" + area.getCountry().toLowerCase() + "/regions/" + area.getRegion().toLowerCase() + "/areas/" + area.getName().toLowerCase() + "/resources/";
+        Log.i("Url: ",url);
+        return url;
+    }
 }

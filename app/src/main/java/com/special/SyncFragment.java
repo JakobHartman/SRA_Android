@@ -78,7 +78,8 @@ public class SyncFragment extends Fragment {
                             syncUp.removeFromDeleteRecord();
                             try{
                                 Log.i("Being Pushed",JSONUtilities.stringify(CRUDFlinger.getAreas().get(0)));
-                                syncUp.uploadRegion();
+                                syncUp.uploadAreas();
+                                syncUp.uploadHouses();
                                 syncUp.uploadQuestions();
                                 CRUDFlinger.saveRegion();
                             }catch (JSONException e){}
