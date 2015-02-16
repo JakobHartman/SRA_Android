@@ -101,7 +101,7 @@ public class DownloadData {
         }
     }
 
-    public static void download(LoginObject info){
+    public static void downloadToSync(LoginObject info, final Context activity){
         Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
 
         for (CountryLogin country : info.getSiteLogin().getCountries()){
@@ -114,23 +114,25 @@ public class DownloadData {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for(DataSnapshot child : dataSnapshot.getChildren()){
                                 Household household = child.getValue(Household.class);
-                                if(CRUDFlinger.getAreas().size() > 0){
-                                    for(Area area : CRUDFlinger.getAreas()){
+                                if(CRUDFlinger.getTempAreas().size() > 0){
+                                    for(Area area : CRUDFlinger.getTempRegion().getAreas()){
                                         if(area.getName() == household.getArea()){
                                             area.addHousehold(household);
                                         }else{
-                                            createArea(household);
+                                            createTempArea(household);
                                         }
                                     }
                                 }else{
-                                    createArea(household);
+                                    createTempArea(household);
                                 }
 
                             }
                         }
 
                         @Override
-                        public void onCancelled(FirebaseError firebaseError) {}
+                        public void onCancelled(FirebaseError firebaseError) {
+                            Toast.makeText(activity,firebaseError.getMessage(),Toast.LENGTH_LONG).show();
+                        }
                     });
                 }
             }
@@ -146,6 +148,14 @@ public class DownloadData {
         CRUDFlinger.getRegion().addArea(area);
     }
 
+    public static void createTempArea(Household household){
+        Area area = new Area();
+        area.setCountry(household.getCountry());
+        area.setRegion(household.getRegion());
+        area.setName(household.getArea());
+        area.addHousehold(household);
+        CRUDFlinger.getTempRegion().addArea(area);
+    }
 
     public static String capitalizeFirstLetter(String original){
         if(original.length() == 0)

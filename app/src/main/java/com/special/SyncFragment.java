@@ -71,7 +71,7 @@ public class SyncFragment extends Fragment {
                 base.authWithPassword(login.getUsername(),password.getText().toString(),new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        //DownloadData.syncDownload(login);
+                        DownloadData.downloadToSync(login,getActivity().getBaseContext());
                         try{
                             region = CRUDFlinger.merge(CRUDFlinger.getTempRegion(), CRUDFlinger.getRegion());
                             CRUDFlinger.setRegion(region);
