@@ -56,9 +56,10 @@ public class SyncUpload {
         for(Area area : region.getAreas()){
             String url = UrlBuilder.buildAreaUrl(area);
             Firebase base = new Firebase(url);
-            base.child(area.getName().toLowerCase()).child("region").setValue(area.getRegion());
-            base.child(area.getName().toLowerCase()).child("country").setValue(area.getCountry());
-            base.child(area.getName().toLowerCase()).child("name").setValue(area.getName());
+            Firebase newBase = base.child(area.getName().toLowerCase());
+            newBase.child("region").setValue(capitalize(area.getRegion()));
+            newBase.child("country").setValue(capitalize(area.getCountry()));
+            newBase.child("name").setValue(capitalize(area.getName()));
         }
     }
 
@@ -86,6 +87,11 @@ public class SyncUpload {
 
             }
         }
+    }
+
+    private String capitalize(String line)
+    {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
 
     public void removeFromDeleteRecord(){
