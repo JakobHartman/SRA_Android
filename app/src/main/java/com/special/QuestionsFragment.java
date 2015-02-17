@@ -86,6 +86,8 @@ public class QuestionsFragment extends Fragment {
         questionSetListView.setItemLayout(R.id.front_layout);
         questionSetListView.setAdapter(questionSetListAdapter);
         questionSetListView.setIgnoredViewHandler(resideMenu);
+
+        // Opens a dialog when a question set is selected
         questionSetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
@@ -114,7 +116,7 @@ public class QuestionsFragment extends Fragment {
     }
 
     private void addQuestionSet() {
-        QuestionSet qs = new QuestionSet("", "");
+        QuestionSet qs = new QuestionSet("", "","");
         CRUDFlinger.addQuestionSet(qs);
         saveQuestionSets();
         openQuestionSetDialog(qs);
@@ -129,7 +131,8 @@ public class QuestionsFragment extends Fragment {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
-    // Opens the dialog for creating a new question set
+    // Opens the dialog for editing or viewing a question set
+    //
     private void openQuestionSetDialog(final QuestionSet qSet) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_set_dialog);
@@ -149,11 +152,25 @@ public class QuestionsFragment extends Fragment {
             }
         });
 
+        // Radio button fo whether the question is meant for households or areas
+        if (qSet.getType() == "HOUSEHOLD") {
+            RadioButton houseButton = (RadioButton) alert.findViewById(R.id.radio_household);
+            System.out.println("house button");
+            houseButton.setChecked(true);
+        } else if (qSet.getType() ==  "AREA") {
+            RadioButton areaButton = (RadioButton) alert.findViewById(R.id.radio_community);
+            areaButton.setChecked(true);
+            System.out.println("area button");
+
+        }
+
 
         // The list of questions
         questionListAdapter = new QuestionAdapter(getActivity(), qSet);
         final ListView questionList = (ListView) alert.findViewById(R.id.list_view);
         questionList.setAdapter(questionListAdapter);
+
+        // Opens a dialog to view or edit the individual questions
         questionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
@@ -173,7 +190,7 @@ public class QuestionsFragment extends Fragment {
                 RadioButton selectedButton = (RadioButton) alert.findViewById(selectedRadioId);
                 String typeText = selectedButton.getText().toString();
                 System.out.println("Type selected: "+ typeText);
-                qSet.setType(typeText); //if Works, delete questionsetTypes class
+                qSet.setType(typeText);
                 saveQuestionSets();
                 alert.dismiss();
             }
@@ -293,7 +310,7 @@ public class QuestionsFragment extends Fragment {
         });
     }
 
-    //Opens a single question from a question set
+    //Opens a single question to edit from a question set
     //
     private void openQuestionDialog(final Question q) {
         final Dialog alert = new Dialog(getActivity());
@@ -313,6 +330,7 @@ public class QuestionsFragment extends Fragment {
                 q.setName(nameField.getText().toString());
             }
         });
+
 
         // A checkbox for whether or not the question can be used multiple times
         final CheckBox multiUseBox = (CheckBox) alert.findViewById(R.id.multi_use_checkbox);
@@ -359,6 +377,14 @@ public class QuestionsFragment extends Fragment {
 
     /*
      * Questions Set List Adapter and delete listener
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      */
     class QuestionSetListAdapter extends BaseAdapter {
 
@@ -461,6 +487,15 @@ public class QuestionsFragment extends Fragment {
     }
 
     /*
+     * Question Adapter
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      *
      */
     public class QuestionAdapter extends BaseAdapter {
