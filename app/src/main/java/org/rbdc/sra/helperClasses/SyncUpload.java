@@ -56,7 +56,9 @@ public class SyncUpload {
         for(Area area : region.getAreas()){
             String url = UrlBuilder.buildAreaUrl(area);
             Firebase base = new Firebase(url);
-            base.child(area.getName()).setValue(area.getName());
+            base.child(area.getName().toLowerCase()).child("region").setValue(area.getRegion());
+            base.child(area.getName().toLowerCase()).child("country").setValue(area.getCountry());
+            base.child(area.getName().toLowerCase()).child("name").setValue(area.getName());
         }
     }
 

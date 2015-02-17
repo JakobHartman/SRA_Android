@@ -24,6 +24,7 @@ import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.RegionLogin;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -35,6 +36,7 @@ public class DownloadData {
     private static DownloadData instance = null;
     private static String organization = null;
     private static int passes = 0;
+    private static ArrayList<Area> areas = null;
 
     public static void setOrganization(String organization) {
         DownloadData.organization = organization;
@@ -54,7 +56,7 @@ public class DownloadData {
     public static void downloadGoToDash(LoginObject info, final Context activity){
         Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
         final int number = info.getSiteLogin().getAreaCount();
-
+        areas = new ArrayList<Area>();
         for (CountryLogin country : info.getSiteLogin().getCountries()){
             for(RegionLogin regions : country.getRegions()){
                 for(AreaLogin area : regions.getAreas()){
@@ -67,7 +69,6 @@ public class DownloadData {
                             Log.i("String: ",dataSnapshot.getValue().toString());
                             for(DataSnapshot child : dataSnapshot.getChildren()){
                                 Household household = child.getValue(Household.class);
-
                                 if(passes > 0) {
                                     for (Area area1 : CRUDFlinger.getAreas()){
                                         if (area1.getName().equals(household.getArea())) {
@@ -76,12 +77,15 @@ public class DownloadData {
                                             createArea(household);
                                         }
                                     }
+
                                 }else{
                                     Log.i("counts: ","" + passes);
                                     createArea(household);
                                 }
-
+                                CRUDFlinger.getRegion().getAreas().addAll(areas);
+                                areas.clear();
                                 if(CRUDFlinger.getAreas().size() == number){
+                                    CRUDFlinger.saveRegion();
                                     Intent intent = new Intent(activity,Dashboard.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     activity.startActivity(intent);
@@ -103,7 +107,7 @@ public class DownloadData {
 
     public static void downloadToSync(LoginObject info, final Context activity){
         Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
-
+        areas = new ArrayList<Area>();
         for (CountryLogin country : info.getSiteLogin().getCountries()){
             for(RegionLogin regions : country.getRegions()){
                 for(AreaLogin area : regions.getAreas()){
@@ -127,6 +131,8 @@ public class DownloadData {
                                 }
 
                             }
+                            CRUDFlinger.getTempRegion().getAreas().addAll(areas);
+                            areas.clear();
                         }
 
                         @Override
@@ -137,24 +143,26 @@ public class DownloadData {
                 }
             }
         }
+        CRUDFlinger.saveRegion();
     }
 
-    public static void createArea(Household household){
+    public static void createArea(Household household) {
         Area area = new Area();
         area.setCountry(household.getCountry());
         area.setRegion(household.getRegion());
         area.setName(household.getArea());
         area.addHousehold(household);
-        CRUDFlinger.getRegion().addArea(area);
+        areas.add(area);
     }
 
     public static void createTempArea(Household household){
+
         Area area = new Area();
         area.setCountry(household.getCountry());
         area.setRegion(household.getRegion());
         area.setName(household.getArea());
         area.addHousehold(household);
-        CRUDFlinger.getTempRegion().addArea(area);
+        areas.add(area);
     }
 
     public static String capitalizeFirstLetter(String original){

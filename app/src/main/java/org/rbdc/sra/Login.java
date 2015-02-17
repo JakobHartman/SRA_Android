@@ -19,7 +19,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import org.rbdc.sra.helperClasses.DownloadData;
-import org.rbdc.sra.helperClasses.FlatTax;
 import org.rbdc.sra.objects.AreaLogin;
 import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.LoginObject;
