@@ -31,6 +31,13 @@ import org.rbdc.sra.objects.QuestionSet;
 
 import java.util.ArrayList;
 
+/*
+    This is the activity that is called when someone clicks
+    on the Questions button inside of the AreasFragment.
+    It displays a list of question sets
+
+ */
+
 public class InterviewActivity extends Activity {
     private UISwipableList responseSetList;
     private ResponseSetAdapter responseSetAdapter;

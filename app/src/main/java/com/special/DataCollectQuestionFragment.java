@@ -41,8 +41,11 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- *
+/*
+    This class is called when someone selects a question and
+    is what is displayed inside of the ViewPager inside of the
+    DataCollect Activity
+
  */
 public class DataCollectQuestionFragment extends Fragment {
 
@@ -192,10 +195,12 @@ public class DataCollectQuestionFragment extends Fragment {
                     questionContainer.addView(datePicker);
                 }
                 else if (dataType.equals(DatapointTypes.LIST_SINGLE_ANSWER)) {
-                    final Spinner options = new Spinner(getActivity());
+                    //final Spinner options = new Spinner(getActivity());
+                    final Spinner options = new Spinner(getActivity(), Spinner.MODE_DROPDOWN);
+
                     ArrayList<String> list = dp.getOptions();
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                            android.R.layout.simple_spinner_item, list);
+                            android.R.layout.simple_list_item_1, list);
                     options.setAdapter(adapter);
                     options.setSelection(list.indexOf(answer));
                     options.setOnItemSelectedListener(new OnItemSelectedListener() {

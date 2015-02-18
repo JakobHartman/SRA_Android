@@ -16,9 +16,9 @@ public class QuestionSet implements Serializable {
     /*
      * Constructor
      */
-    public QuestionSet(String name, String url) {
+    public QuestionSet(String name, String url, String type) {
         this.name = name;
-        this.type = "HOUSEHOLD";
+        this.type = type;
         this.questions = new ArrayList<Question>();
     }
 

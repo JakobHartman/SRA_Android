@@ -44,6 +44,12 @@ import org.rbdc.sra.objects.QuestionSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/*
+    This Fragment is displayed when someone clicks on the Question Sets option
+    in the dashboard menu. This file also contains the adapters that
+    are used.
+
+ */
 public class QuestionsFragment extends Fragment {
     //Views & Widgets
     private View parentView;

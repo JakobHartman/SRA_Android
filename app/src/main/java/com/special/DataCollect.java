@@ -23,6 +23,14 @@ import org.rbdc.sra.objects.QuestionSet;
 
 import java.util.ArrayList;
 
+/*
+    This class is called when someone clicks on one
+    of the Response sets. This view contains a
+    ViewPager which holds multiple or single
+    DataCollectQuestionFragments
+
+ */
+
 public class DataCollect extends FragmentActivity {
 
     private int numQuestions;
