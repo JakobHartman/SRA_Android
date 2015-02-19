@@ -47,7 +47,7 @@ public class SyncUpload {
     }
 
     public void uploadQuestions() {
-        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/question sets");
+        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/question sets");
         base.setValue(CRUDFlinger.getQuestionSets());
     }
 
