@@ -278,6 +278,14 @@ public class CRUDFlinger {
         return region.getAreas();
     }
 
+    public static ArrayList<Area>getTempAreas(){
+        if(tempRegion == null){
+            setTempRegion(new Region());
+        }
+        return tempRegion.getAreas();
+    }
+
+
     public static void setRegion(Region region) {
         CRUDFlinger.region = region;
     }

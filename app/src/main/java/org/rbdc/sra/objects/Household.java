@@ -14,10 +14,16 @@ public class Household implements Serializable {
     private String region;
     private String country;
     private String area;
+    private ArrayList<Nutrition> nutrition;
+
+    public ArrayList<Nutrition> getNutrition() {
+        return nutrition;
+    }
 
     public Household(){
         interviews = new ArrayList<Interview>();
         members = new ArrayList<Member>();
+        nutrition = new ArrayList<Nutrition>();
     }
 
     public String getCountry() {

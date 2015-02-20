@@ -13,7 +13,24 @@ public class Area implements Serializable {
     private ArrayList<Household> resources;
     private String region;
     private ArrayList<Interview> interviews;
+    private ImageData mainImage;
+    private ArrayList<ImageData> imageCollection;
 
+    public ArrayList<ImageData> getImageCollection() {
+        return imageCollection;
+    }
+
+    public ImageData getMainImage() {
+        return mainImage;
+    }
+
+    public void setImageCollection(ArrayList<ImageData> imageCollection) {
+        this.imageCollection = imageCollection;
+    }
+
+    public void setMainImage(ImageData mainImage) {
+        this.mainImage = mainImage;
+    }
 
     public String getCountry() {
         return country;

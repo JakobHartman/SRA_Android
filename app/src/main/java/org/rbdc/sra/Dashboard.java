@@ -13,10 +13,13 @@ import com.special.menu.ResideMenuItem;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -24,6 +27,14 @@ import android.widget.Toast;
 
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.UrlBuilder;
+import org.rbdc.sra.objects.ImageData;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
@@ -185,4 +196,42 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         }
     }
 
+    @Override
+    protected void onActivityResult( int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+
+            if (resultCode == RESULT_OK) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                int position = extras.getInt("pos");
+                int household = extras.getInt("house");
+                int area = extras.getInt("area");
+                ImageData image = new ImageData();
+                Date date = new Date();
+                image.setCreationDate(getDate(date.getTime(),"dd/MM/yyyy hh:mm:ss.SSS"));
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] b = baos.toByteArray();
+                String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+                image.setImageData(imageEncoded);
+                Log.i("Area: ","" + area);
+                Log.i("House: ","" + household);
+                Log.i("Position: ","" + position);
+//                if(household == 9999 && area == 9999){
+//                    CRUDFlinger.getAreas().get(position);
+//                }
+            }
+        }
+    }
+
+    public static String getDate(long milliSeconds, String dateFormat)
+    {
+        // Create a DateFormatter object for displaying date in specified format.
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
+    }
 }

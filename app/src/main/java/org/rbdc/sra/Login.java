@@ -132,13 +132,13 @@ public class Login extends Activity {
                                  info.setLoggedIn(true);
                                  for(DataSnapshot rs : country.getChildren()){
                                      CountryLogin countryLogin = new CountryLogin();
-                                     countryLogin.setName(rs.getName());
+                                     countryLogin.setName(rs.getKey());
                                      for(DataSnapshot as : rs.child("regions").getChildren()){
                                          RegionLogin regionLogin = new RegionLogin();
-                                         regionLogin.setName(as.getName());
+                                         regionLogin.setName(as.getKey());
                                          for(DataSnapshot a : as.child("areas").getChildren()){
                                              AreaLogin areaLogin = new AreaLogin();
-                                             areaLogin.setName(a.getName());
+                                             areaLogin.setName(a.getKey());
                                              regionLogin.addArea(areaLogin);
                                          }
                                          countryLogin.addRegion(regionLogin);
@@ -160,8 +160,10 @@ public class Login extends Activity {
                                      userString = JSONUtilities.stringify(info);
                                      user.putString("User", userString);
                                      user.commit();
-                                     DownloadData.download(info,getBaseContext(),Dashboard.class);
+                                     Firebase.setAndroidContext(getBaseContext());
+                                     DownloadData.downloadGoToDash(info,getBaseContext());
                                      DownloadData.downloadQuestions();
+
                                  }catch (JSONException e){}
 
 
