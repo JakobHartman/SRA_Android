@@ -14,6 +14,14 @@ import com.shaded.fasterxml.jackson.core.JsonFactory;
 import com.shaded.fasterxml.jackson.core.type.TypeReference;
 import com.shaded.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.AreaLogin;
@@ -26,6 +34,7 @@ import org.rbdc.sra.objects.RegionLogin;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -37,6 +46,10 @@ public class DownloadData {
     private static String organization = null;
     private static int passes = 0;
     private static ArrayList<Area> areas = null;
+
+    private static HttpClient httpclient = new DefaultHttpClient();
+    private static HttpPost httppost = new HttpPost("https://api.nutritionix.com/v1_1/search");
+
 
     public static void setOrganization(String organization) {
         DownloadData.organization = organization;
@@ -200,5 +213,34 @@ public class DownloadData {
         HashMap<String,Object> o = mapper.readValue(json, typeRef);
 
         return o;
+    }
+
+    public static void nutritionixFetch(String food){
+        passes = 0;
+        try {
+            // Add your data
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+            nameValuePairs.add(new BasicNameValuePair("appId", "f67bfd42"));
+            nameValuePairs.add(new BasicNameValuePair("appKey", "c69bd76b98dd8d4e1fd629241b3bb199"));
+            nameValuePairs.add(new BasicNameValuePair("query",food));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            // Execute HTTP Post Request
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        HttpResponse response = httpclient.execute(httppost);
+                        String string = EntityUtils.toString(response.getEntity());
+                        Log.i("Fired: ",string);
+                    }catch (IOException e){}
+                }
+            }).start();
+
+
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+        }
     }
 }

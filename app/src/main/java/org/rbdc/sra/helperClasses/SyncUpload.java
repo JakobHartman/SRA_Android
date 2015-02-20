@@ -15,6 +15,7 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
+import org.rbdc.sra.objects.Nutrition;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
@@ -67,6 +68,9 @@ public class SyncUpload {
         Region region = CRUDFlinger.getRegion();
         for(Area area : region.getAreas()){
             for(final Household household : area.getResources()) {
+                for(Nutrition nutrition : household.getNutrition()){
+                    DownloadData.nutritionixFetch(nutrition.getFoodName());
+                }
                 String url = UrlBuilder.buildHouseUrl(household);
                 Firebase base = new Firebase(url);
                 Query query = base.orderByChild("name").startAt(household.getName()).endAt(household.getName());
