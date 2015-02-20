@@ -15,15 +15,24 @@ public class Household implements Serializable {
     private String country;
     private String area;
     private ArrayList<Nutrition> nutrition;
+    private String HouseholdID;
+
+    public String getHouseholdID() {
+        return HouseholdID;
+    }
+
+    public void setHouseholdID() {
+        HouseholdID = "" + System.currentTimeMillis();
+    }
 
     public ArrayList<Nutrition> getNutrition() {
         return nutrition;
     }
 
     public Household(){
-        interviews = new ArrayList<Interview>();
-        members = new ArrayList<Member>();
-        nutrition = new ArrayList<Nutrition>();
+        interviews = new ArrayList<>();
+        members = new ArrayList<>();
+        nutrition = new ArrayList<>();
     }
 
     public String getCountry() {

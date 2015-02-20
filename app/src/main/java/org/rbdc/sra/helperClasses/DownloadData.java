@@ -219,7 +219,7 @@ public class DownloadData {
         passes = 0;
         try {
             // Add your data
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+            List<NameValuePair> nameValuePairs = new ArrayList<>(3);
             nameValuePairs.add(new BasicNameValuePair("appId", "f67bfd42"));
             nameValuePairs.add(new BasicNameValuePair("appKey", "c69bd76b98dd8d4e1fd629241b3bb199"));
             nameValuePairs.add(new BasicNameValuePair("query",food));

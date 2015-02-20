@@ -2,7 +2,6 @@ package com.special;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -71,7 +70,7 @@ public class QuestionsFragment extends Fragment {
         CRUDFlinger.setApplication(getActivity().getApplication());
 
         questionSets = CRUDFlinger.getQuestionSets();
-        listItems = new ArrayList<ListItem>();
+        listItems = new ArrayList<>();
         populateListItems();
         setupList();
 
@@ -159,11 +158,11 @@ public class QuestionsFragment extends Fragment {
         });
 
         // Radio button fo whether the question is meant for households or areas
-        if (qSet.getType() == "HOUSEHOLD") {
+        if (qSet.getType().equals("HOUSEHOLD")) {
             RadioButton houseButton = (RadioButton) alert.findViewById(R.id.radio_household);
             System.out.println("house button");
             houseButton.setChecked(true);
-        } else if (qSet.getType() ==  "AREA") {
+        } else if (qSet.getType().equals("AREA")) {
             RadioButton areaButton = (RadioButton) alert.findViewById(R.id.radio_community);
             areaButton.setChecked(true);
             System.out.println("area button");
@@ -281,8 +280,8 @@ public class QuestionsFragment extends Fragment {
 
         Spinner dataTypeSpinner = (Spinner) dpItemView.findViewById(R.id.data_type_spinner);
         String[] types = getResources().getStringArray(R.array.data_point_types_array);
-        ArrayList<String> typesList = new ArrayList<String>(Arrays.asList(types));
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<String>(
+        ArrayList<String> typesList = new ArrayList<>(Arrays.asList(types));
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(
                 getActivity(), android.R.layout.simple_spinner_item, typesList);
         dataTypeSpinner.setAdapter(typesAdapter);
         dataTypeSpinner.setSelection(DatapointTypes.getTypeIndex(dp.getType()));
@@ -395,7 +394,7 @@ public class QuestionsFragment extends Fragment {
     class QuestionSetListAdapter extends BaseAdapter {
 
         ViewHolder viewHolder;
-        private ArrayList<ListItem> mItems = new ArrayList<ListItem>();
+        private ArrayList<ListItem> mItems = new ArrayList<>();
         private Context mContext;
 
         public QuestionSetListAdapter(Context context, ArrayList<ListItem> list) {

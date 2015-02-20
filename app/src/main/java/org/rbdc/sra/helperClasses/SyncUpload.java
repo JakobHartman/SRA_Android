@@ -73,14 +73,18 @@ public class SyncUpload {
                 }
                 String url = UrlBuilder.buildHouseUrl(household);
                 Firebase base = new Firebase(url);
-                Query query = base.orderByChild("name").startAt(household.getName()).endAt(household.getName());
+                Query query = base.orderByChild("name").equalTo(household.getName());
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                       Firebase string = dataSnapshot.getRef();
-                        try{
-                            string.setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
-                        }catch (JSONException e){}catch (IOException e){}
+                       for(DataSnapshot data : dataSnapshot.getChildren()){
+                           Firebase newBase = new Firebase(data.getRef().toString());
+                           try{
+                               newBase.setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
+                           }catch (JSONException e){}catch (IOException e){}
+                       }
+
+
                     }
 
                     @Override
