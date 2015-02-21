@@ -15,14 +15,14 @@ public class Household implements Serializable {
     private String country;
     private String area;
     private ArrayList<Nutrition> nutrition;
-    private String HouseholdID;
+    private long HouseholdID;
 
-    public String getHouseholdID() {
+    public long getHouseholdID() {
         return HouseholdID;
     }
 
     public void setHouseholdID() {
-        HouseholdID = "" + System.currentTimeMillis();
+        HouseholdID =  System.currentTimeMillis();
     }
 
     public ArrayList<Nutrition> getNutrition() {
