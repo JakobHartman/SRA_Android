@@ -140,9 +140,9 @@ public class AreasFragment extends Fragment {
                             // Notify Note created
                             Toast toast = new Toast(getActivity());
                             toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
-                            
+
                         } else if (navigation == "household") {
-                            Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
+                            Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                             // Add note to the list
                             notes_list.add(newNote);
                             // Notify Note created

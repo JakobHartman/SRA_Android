@@ -15,9 +15,9 @@ public class Household implements Serializable {
     private String country;
     private String area;
     private ArrayList<Nutrition> nutrition;
-    private long HouseholdID;
+    private String HouseholdID;
 
-    public long getHouseholdID() {
+    public String getHouseholdID() {
         return HouseholdID;
     }
 

@@ -13,7 +13,7 @@ public class Note {
     private String _noteContents;
     private String _author;
     private String _area;
-    private long _householdId;
+    private String _householdId;
 
     public Note (String noteType, String title, String noteContents, String area) {
         _noteType = noteType;
@@ -26,7 +26,7 @@ public class Note {
         _area = area;
     }
 
-    public Note (String noteType, String title, String noteContents, long householdId) {
+    public Note (String noteType, String title, String noteContents, String area, String householdId) {
         _noteType = noteType;
         _dateCreated = _dateUpdated = Calendar.getInstance();
         _title = title;
@@ -34,6 +34,7 @@ public class Note {
         // Need to add author to CRUDflinger so we can store it here
         //_author =
 
+        _area = area;
         _householdId = householdId;
     }
 
