@@ -15,7 +15,6 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
-import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
@@ -26,10 +25,6 @@ import java.util.ArrayList;
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
 
-
-/**
- * Created by imac on 12/17/14.
- */
 public class CRUDFlinger {
 
     private static CRUDFlinger instance = null;
@@ -84,7 +79,9 @@ public class CRUDFlinger {
         try{
             saver.putString(key,JSONUtilities.stringify(serializable));
             saver.commit();
-        }catch (JSONException e){}
+        }catch (JSONException e){
+            //
+        }
     }
 
     public static <Any> Any load(String key,Class className){
@@ -98,23 +95,29 @@ public class CRUDFlinger {
 
     private static void loadRegion(){
         setPreferences();
-        String json = loader.getString("Country",null);
-        Gson gson = new GsonBuilder().create();
-        Log.i("JSON: ",json);
-        Region country = gson.fromJson(json,Region.class);
-        CRUDFlinger.region = country;
+        if(loader.contains("Country")){
+            String json = loader.getString("Country",null);
+            Gson gson = new GsonBuilder().create();
+            Log.i("JSON: ",json);
+            Region region = gson.fromJson(json,Region.class);
+            CRUDFlinger.region = region;
+        } else{
+            region = new Region();
+        }
+
     }
 
     public static void saveRegion(){
         setPreferences();
         if(region == null){
             loadRegion();
-            return;
         }else{
             try{
                 saver.putString("Country",JSONUtilities.stringify(region));
                 saver.commit();
-            }catch (JSONException e){}
+            }catch (JSONException e){
+                //
+            }
         }
    }
 
@@ -221,7 +224,7 @@ public class CRUDFlinger {
                     QuestionSet set = gson.fromJson(questionSetJSON, QuestionSet.class);
                     questionSets.add(set);
                 } catch (Exception e) {
-
+                    //
                 }
             } catch (NullPointerException e){
                 System.out.println("Nothing Here");
@@ -290,28 +293,6 @@ public class CRUDFlinger {
         CRUDFlinger.region = region;
     }
 
-    public static Area buildObject(){
-        Area area = new Area();
-        area.setName("Bob");
-        area.setCountry("USA");
-        area.setRegion("Idaho");
-        Household household = new Household();
-        household.setRegion("Idaho");
-        household.setCountry("USA");
-        household.setArea("Bob");
-        Member member = new Member();
-        member.setName("John");
-        member.setBirthday("");
-        member.setRelationship("");
-        member.setGender("");
-        member.setEducationLevel("");
-        member.setInschool(true);
-        household.addMember(member);
-        area.addHousehold(household);
-
-        area.addHousehold(household);
-        return area;
-    }
 
     public static String getCountryName(String regionName){
         LoginObject login = CRUDFlinger.load("User",LoginObject.class);

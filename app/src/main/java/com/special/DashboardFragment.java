@@ -7,27 +7,29 @@ import org.rbdc.sra.helperClasses.ExpandableListAdapter;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
 
 public class DashboardFragment extends Fragment {
 
     private View parentView;
-    private TextView title;
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private TextView listItem;
@@ -38,8 +40,11 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         CRUDFlinger.setApplication(getActivity().getApplication());
-        final Activity parentActivity = getActivity();
-
+        for (Area area : CRUDFlinger.getAreas()){
+            for(Household household : area.getResources()){
+                Log.i("House ID: ",household.getHouseholdID());
+            }
+        }
         // get the listview
         expListView = (ExpandableListView) parentView.findViewById(R.id.lvExp);
         // get the listItem
@@ -91,7 +96,7 @@ public class DashboardFragment extends Fragment {
         try{
             prepareListData();
         } catch (JSONException e){
-
+            //
         }
 
 
@@ -108,20 +113,20 @@ public class DashboardFragment extends Fragment {
 
 
     private void prepareListData() throws JSONException{
-        listDataHeader = new ArrayList<String>();
+        listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<String, List<String>>();
-        List<String> area0 = new ArrayList<String>();
-        List<Household> households = new ArrayList();
-        ArrayList<Area> areas = new ArrayList<Area>();
+        List<String> area0 = new ArrayList<>();
+        List<Household> households = new ArrayList<>();
+        ArrayList<Area> areas = new ArrayList<>();
 
         // Get areas
         try {
             areas = CRUDFlinger.getAreas();
         } catch (Exception e) {
-
+            return;
         }
 
-        if (areas.isEmpty() || areas == null) {
+        if (areas.isEmpty() || areas == null ){
             listDataHeader.add("Hello!");
             area0.add("You need to sync or add areas");
             listDataChild.put(listDataHeader.get(0), area0);

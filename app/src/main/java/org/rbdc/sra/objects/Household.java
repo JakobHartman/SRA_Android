@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-/**
- * Created by jakobhartman on 11/15/14.
- */
+
 public class Household implements Serializable {
     private String name;
     private ArrayList<Interview> interviews;
@@ -15,14 +13,14 @@ public class Household implements Serializable {
     private String country;
     private String area;
     private ArrayList<Nutrition> nutrition;
-    private String HouseholdID;
+    private String householdID;
 
     public String getHouseholdID() {
-        return HouseholdID;
+        return householdID;
     }
 
-    public void setHouseholdID() {
-        HouseholdID =  System.currentTimeMillis();
+    public void setHouseholdID(String name) {
+        householdID = name + System.currentTimeMillis();
     }
 
     public ArrayList<Nutrition> getNutrition() {

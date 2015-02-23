@@ -22,6 +22,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.AreaLogin;
@@ -36,10 +37,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-/**
- * Created by imac on 1/14/15.
- */
 public class DownloadData {
 
     private static DownloadData instance = null;
@@ -67,14 +64,14 @@ public class DownloadData {
     }
 
     public static void downloadGoToDash(LoginObject info, final Context activity){
-        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
+        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/" + organization + "/resources/");
         final int number = info.getSiteLogin().getAreaCount();
-        areas = new ArrayList<Area>();
+        areas = new ArrayList<>();
         for (CountryLogin country : info.getSiteLogin().getCountries()){
             for(RegionLogin regions : country.getRegions()){
                 for(AreaLogin area : regions.getAreas()){
                     String id = capitalizeFirstLetter(area.getName());
-                    Query query = base.orderByChild("area").startAt(id).endAt(id);
+                    Query query = base.orderByChild("area").equalTo(id);
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -120,7 +117,7 @@ public class DownloadData {
 
     public static void downloadToSync(LoginObject info, final Context activity){
         Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
-        areas = new ArrayList<Area>();
+        areas = new ArrayList<>();
         for (CountryLogin country : info.getSiteLogin().getCountries()){
             for(RegionLogin regions : country.getRegions()){
                 for(AreaLogin area : regions.getAreas()){
@@ -133,7 +130,7 @@ public class DownloadData {
                                 Household household = child.getValue(Household.class);
                                 if(CRUDFlinger.getTempAreas().size() > 0){
                                     for(Area area : CRUDFlinger.getTempRegion().getAreas()){
-                                        if(area.getName() == household.getArea()){
+                                        if(area.getName().equals(household.getArea())){
                                             area.addHousehold(household);
                                         }else{
                                             createTempArea(household);
@@ -233,7 +230,9 @@ public class DownloadData {
                         HttpResponse response = httpclient.execute(httppost);
                         String string = EntityUtils.toString(response.getEntity());
                         Log.i("Fired: ",string);
-                    }catch (IOException e){}
+                    }catch (IOException e){
+                        //
+                    }
                 }
             }).start();
 

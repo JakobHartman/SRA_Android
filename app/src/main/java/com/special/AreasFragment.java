@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.special.menu.ResideMenu;
-import com.special.utils.UICircularImage;
 import com.special.utils.UISwipableList;
 import com.special.utils.UITabs;
 
@@ -67,13 +66,13 @@ public class AreasFragment extends Fragment {
     private List<Note> notes_list;
 
     //Vars
-    private String PACKAGE = "IDENTIFY";
+    //private String PACKAGE = "IDENTIFY";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_areas, container, false);
 
-        notes_list = new ArrayList<Note>();
+        notes_list = new ArrayList<>();
 
         title = (TextView) getActivity().findViewById(R.id.title);
         listView = (UISwipableList) parentView.findViewById(R.id.listView);
@@ -90,11 +89,16 @@ public class AreasFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), InterviewActivity.class);
                 intent.putExtra("areaID", areaId);
                 intent.putExtra("householdID", householdId);
-                if (navigation.equals("household")) {
-                    intent.putExtra("interviewType", "area");
-                } else if (navigation.equals("members")) {
-                    intent.putExtra("interviewType", "household");
-                } else return;
+                switch (navigation){
+                    case "household":
+                        intent.putExtra("interviewType", "area");
+                        break;
+                    case "members":
+                        intent.putExtra("interviewType", "household");
+                        break;
+                    default:
+                        return;
+                }
                 startActivity(intent);
             }
         });
@@ -133,7 +137,7 @@ public class AreasFragment extends Fragment {
                         EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
                         EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
 
-                        if (navigation == "area") {
+                        if (navigation.equals("area")) {
                             Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
                             // Add note to the list
                             notes_list.add(newNote);
@@ -141,7 +145,7 @@ public class AreasFragment extends Fragment {
                             Toast toast = new Toast(getActivity());
                             toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
 
-                        } else if (navigation == "household") {
+                        } else if (navigation.equals("household")) {
                             Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                             // Add note to the list
                             notes_list.add(newNote);
@@ -172,7 +176,8 @@ public class AreasFragment extends Fragment {
             if (!args.isEmpty()) {
                 navigation = "members";
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {//
+        }
         initView();
 
         return parentView;
@@ -180,17 +185,17 @@ public class AreasFragment extends Fragment {
 
     //
     public void initView(){
-        if (navigation == "members") {
+        if (navigation.equals("members")) {
 
             householdId = args.getInt("Household Id");
             areaId = args.getInt("Area Index");
             memberView(areaId,householdId);
 
-        } else if (navigation == "household") {
+        } else if (navigation.equals("household")) {
             householdView(areaId);
         }
 
-        else if (navigation == "area") {
+        else if (navigation.equals("area")) {
             // Lists Areas
             mAdapter = new TransitionListAdapter(getActivity(), listArea());
             listView.setActionLayout(R.id.hidden);
@@ -363,7 +368,7 @@ public class AreasFragment extends Fragment {
 
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
-        ArrayList<String> regions = new ArrayList<String>();
+        ArrayList<String> regions = new ArrayList<>();
         regions.add("Select Region");
         regions.addAll(loginObject.getSiteLogin().getRegionNames());
 
@@ -377,8 +382,9 @@ public class AreasFragment extends Fragment {
                 if(areaText.getText().toString().matches("")){
                     toast.makeText(getActivity(),"Please Enter A Valid Household Name", Toast.LENGTH_SHORT).show();
                 }else{
-                    newHousehold.setHouseholdID();
+                    ;
                     newHousehold.setName(areaText.getText().toString());
+                    newHousehold.setHouseholdID(newHousehold.getName().substring(0,3).toUpperCase());
                     newHousehold.setArea(CRUDFlinger.getAreas().get(areaId).getName());
                     newHousehold.setCountry(CRUDFlinger.getAreas().get(areaId).getCountry());
                     CRUDFlinger.addHousehold(areaId, newHousehold);
@@ -593,15 +599,12 @@ public class AreasFragment extends Fragment {
         int month = datePicker.getMonth();
         int year =  datePicker.getYear();
 
-        String time = day + "/" + month + "/" + year;
-
-        return time;
+        return day + "/" + month + "/" + year;
     }
 
     public String getAge(String bday){
         DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
-        String time;
-        time = new String();
+        String time = new String();
         try {
             Date date = formatter.parse(bday);
             Date current = new Date();
@@ -614,7 +617,7 @@ public class AreasFragment extends Fragment {
 
             time = cYear - mYear + "";
         }catch (ParseException e){
-
+            //
         }
         return time;
     }
