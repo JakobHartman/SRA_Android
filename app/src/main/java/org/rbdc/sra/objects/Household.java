@@ -22,7 +22,7 @@ public class Household implements Serializable {
     }
 
     public void setHouseholdID() {
-        HouseholdID = "" + System.currentTimeMillis();
+        HouseholdID =  System.currentTimeMillis();
     }
 
     public ArrayList<Nutrition> getNutrition() {

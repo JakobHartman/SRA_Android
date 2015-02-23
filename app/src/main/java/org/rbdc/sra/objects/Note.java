@@ -12,14 +12,30 @@ public class Note {
     private String _title;
     private String _noteContents;
     private String _author;
+    private String _area;
+    private String _householdId;
 
-    public Note (String noteType, String title, String noteContents) {
+    public Note (String noteType, String title, String noteContents, String area) {
         _noteType = noteType;
         _dateCreated = _dateUpdated = Calendar.getInstance();
         _title = title;
         _noteContents = noteContents;
         // Need to add author to CRUDflinger so we can store it here
         //_author =
+
+        _area = area;
+    }
+
+    public Note (String noteType, String title, String noteContents, String area, String householdId) {
+        _noteType = noteType;
+        _dateCreated = _dateUpdated = Calendar.getInstance();
+        _title = title;
+        _noteContents = noteContents;
+        // Need to add author to CRUDflinger so we can store it here
+        //_author =
+
+        _area = area;
+        _householdId = householdId;
     }
 
     public void editNoteContents(String contents) {

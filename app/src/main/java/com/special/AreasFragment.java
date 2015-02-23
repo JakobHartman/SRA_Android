@@ -132,14 +132,27 @@ public class AreasFragment extends Fragment {
                         // Store in an arraylist?
                         EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
                         EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
-                        Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString());
 
-                        // Notify Note created
-                        Toast toast = new Toast(getActivity());
-                        toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+                        if (navigation == "area") {
+                            Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
+                            // Add note to the list
+                            notes_list.add(newNote);
+                            // Notify Note created
+                            Toast toast = new Toast(getActivity());
+                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
 
-                        // Add note to the list
-                        notes_list.add(newNote);
+                        } else if (navigation == "household") {
+                            Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
+                            // Add note to the list
+                            notes_list.add(newNote);
+                            // Notify Note created
+                            Toast toast = new Toast(getActivity());
+                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+                        }
+
+
+
+
 
                         // Close the view
                          dialog.cancel();
