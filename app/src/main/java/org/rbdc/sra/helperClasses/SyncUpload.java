@@ -1,44 +1,27 @@
 package org.rbdc.sra.helperClasses;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.Nutrition;
-import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
 
-/**
- * Created by chad on 1/12/15.
- */
+
 public class SyncUpload {
-    String databaseString;
-
-/*
-    public SyncUpload(Activity activity){
-        this.activity = activity;
-
-    }*/
 
     public LoginObject startUpload(Activity activity) {
         Firebase.setAndroidContext(activity.getApplication());
@@ -81,7 +64,7 @@ public class SyncUpload {
                            Firebase newBase = new Firebase(data.getRef().toString());
                            try{
                                newBase.setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
-                           }catch (JSONException e){}catch (IOException e){}
+                           }catch (JSONException e){return;}catch (IOException e){return;}
                        }
 
 
@@ -105,7 +88,7 @@ public class SyncUpload {
     public void removeFromDeleteRecord(){
         for(Area area : DeleteRecord.getAreas()){
             for(Area area1 : CRUDFlinger.getAreas()){
-                if(area1.getName() == area.getName()){
+                if(area1.getName().equals(area.getName())){
                     CRUDFlinger.getAreas().remove(area);
                 }
             }
@@ -113,7 +96,7 @@ public class SyncUpload {
         for(Area area : CRUDFlinger.getAreas()){
             for(Household household : area.getResources()){
                 for (Household household1 : DeleteRecord.getHouseholds()){
-                    if(household.getName() == household1.getName()){
+                    if(household.getHouseholdID().equals(household1.getHouseholdID())){
                         CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().remove(household);
                     }
                 }
@@ -123,7 +106,7 @@ public class SyncUpload {
             for(Household household : area.getResources()){
                 for(Member member : household.getMembers()) {
                     for (Member member1 : DeleteRecord.getMembers()) {
-                        if(member.getName() == member1.getName() && member.getBirthday() == member1.getBirthday()){
+                        if(member.getName().equals(member1.getName()) && member.getBirthday().equals(member1.getBirthday())){
                             CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().get(CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().indexOf(household)).getMembers().remove(member1);
                         }
                     }

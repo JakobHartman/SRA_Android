@@ -1,60 +1,43 @@
 package com.special;
 
-import android.app.Dialog;
+
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.special.menu.ResideMenu;
 
-import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
-import org.rbdc.sra.helperClasses.DeleteRecord;
 import org.rbdc.sra.helperClasses.DownloadData;
 import org.rbdc.sra.helperClasses.SyncUpload;
-import org.rbdc.sra.helperClasses.UrlBuilder;
-import org.rbdc.sra.objects.Area;
-import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Region;
-
-import java.util.ArrayList;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
 
-/**
- * Created by imac on 1/14/15.
- */
+
 public class SyncFragment extends Fragment {
 
     //Layouts
-    private ResideMenu resideMenu;
-    Button btn, btnCancel;
+    Button btn;
     Region region;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        final View v =  (LinearLayout) inflater.inflate(R.layout.relogin_dialog, container, false);
+        final View v = inflater.inflate(R.layout.relogin_dialog, container, false);
             final SyncUpload syncUp = new SyncUpload();
             final LoginObject login = syncUp.startUpload(getActivity());
 
@@ -82,10 +65,10 @@ public class SyncFragment extends Fragment {
                                 syncUp.uploadHouses();
                                 syncUp.uploadQuestions();
                                 CRUDFlinger.saveRegion();
-                            }catch (JSONException e){}
+                            }catch (JSONException e){return;}
 
 
-                        }catch (Exception e){}
+                        }catch (Exception e){return;}
                         getFragmentManager().beginTransaction().replace(R.id.main_fragment,new DashboardFragment(), "dashboard")
                                 .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                 .addToBackStack(null).commit();
