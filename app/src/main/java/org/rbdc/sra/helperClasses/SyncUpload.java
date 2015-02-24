@@ -13,6 +13,7 @@ import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.Nutrition;
+import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
 import java.io.IOException;
@@ -32,7 +33,13 @@ public class SyncUpload {
 
     public void uploadQuestions() {
         Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/question sets");
-        base.setValue(CRUDFlinger.getQuestionSets());
+        // For each qs, create a new node with the ID as the name
+        for(QuestionSet qs : CRUDFlinger.getQuestionSets()) {
+
+            // Does this replace if exists?
+            base.child(qs.getqSetId()).setValue(qs);
+        }
+        //base.setValue(CRUDFlinger.getQuestionSets());
     }
 
     public void uploadAreas(){

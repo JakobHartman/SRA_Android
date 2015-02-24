@@ -53,6 +53,7 @@ public class QuestionSet implements Serializable {
      */
     public String getName() { return name; }
     public String getType() { return type; }
+    public String getqSetId() { return qSetId;}
     public void deleteQuestion(Question qs) { questions.remove(qs); }
     public ArrayList<Question> getQuestions() { return questions; }
     public Question getQuestion(String questionName) {
