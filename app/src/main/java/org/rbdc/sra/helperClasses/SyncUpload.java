@@ -56,7 +56,7 @@ public class SyncUpload {
                 }
                 String url = UrlBuilder.buildHouseUrl(household);
                 Firebase base = new Firebase(url);
-                Query query = base.orderByChild("household").equalTo(household.getHouseholdID());
+                Query query = base.orderByChild("name").equalTo(household.getHouseholdID());
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -68,8 +68,6 @@ public class SyncUpload {
                                //
                            }
                        }
-
-
                     }
 
                     @Override
