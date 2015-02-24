@@ -12,6 +12,7 @@ public class QuestionSet implements Serializable {
     private String name;
     private String type;
     private ArrayList<Question> questions;
+    private String qSetId;
 
     /*
      * Constructor
@@ -20,12 +21,14 @@ public class QuestionSet implements Serializable {
         this.name = name;
         this.type = type;
         this.questions = new ArrayList<Question>();
+        this.qSetId = "id" + System.currentTimeMillis();
     }
 
     public QuestionSet(){
         this.name = "";
         this.type = "HOUSEHOLD";
         this.questions = new ArrayList<Question>();
+        this.qSetId = "id" + System.currentTimeMillis();
     }
 
     /*
@@ -50,6 +53,7 @@ public class QuestionSet implements Serializable {
      */
     public String getName() { return name; }
     public String getType() { return type; }
+    public String getqSetId() { return qSetId;}
     public void deleteQuestion(Question qs) { questions.remove(qs); }
     public ArrayList<Question> getQuestions() { return questions; }
     public Question getQuestion(String questionName) {
