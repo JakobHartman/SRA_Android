@@ -98,6 +98,7 @@ public class CRUDFlinger {
     }
 
     public static void clearCRUD(){
+        setPreferences();
         saver.clear().commit();
     }
 
