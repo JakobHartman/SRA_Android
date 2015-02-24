@@ -18,6 +18,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.DownloadData;
 import org.rbdc.sra.objects.AreaLogin;
 import org.rbdc.sra.objects.CountryLogin;
@@ -44,7 +45,8 @@ public class Login extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        CRUDFlinger.setApplication(getApplication());
+        DownloadData.setOrganization(organization);
         //Set the activity for the firebase
         Firebase.setAndroidContext(this);
 

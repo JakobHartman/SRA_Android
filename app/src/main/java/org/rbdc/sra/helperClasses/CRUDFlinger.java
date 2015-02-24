@@ -63,7 +63,7 @@ public class CRUDFlinger {
 
     public static void setPreferences(){
         if(application == null){
-            throw new NullPointerException();
+
         }
         if (loader == null || saver == null) {
             System.out.println("hello crud" + application);
@@ -91,6 +91,14 @@ public class CRUDFlinger {
         Object object = gson.fromJson(json,className);
 
         return (Any)object;
+    }
+
+    public static void commit(){
+        saver.commit();
+    }
+
+    public static void clearCRUD(){
+        saver.clear().commit();
     }
 
     private static void loadRegion(){

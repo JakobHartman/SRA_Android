@@ -72,6 +72,7 @@ public class DownloadData {
                 for(AreaLogin area : regions.getAreas()){
                     String id = capitalizeFirstLetter(area.getName());
                     Query query = base.orderByChild("area").equalTo(id);
+                    Log.i("link: ", query.getRef().toString());
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
