@@ -38,6 +38,8 @@
     </style>
     
 	<style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowTitleSize">0dp</item>
 	</style>
     <color name="DefaultBackgroundColor">#efe</color>
 	

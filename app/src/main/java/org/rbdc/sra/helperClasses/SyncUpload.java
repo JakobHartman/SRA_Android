@@ -59,7 +59,7 @@ public class SyncUpload {
         for(Area area : region.getAreas()){
             for(final Household household : area.getResources()) {
                 for(Nutrition nutrition : household.getNutrition()){
-                    DownloadData.nutritionixFetch(nutrition.getFoodName());
+                    //DownloadData.nutritionixFetch(nutrition.getFoodName());
                 }
                 String url = UrlBuilder.buildHouseUrl(household);
                 Firebase base = new Firebase(url);

@@ -206,7 +206,7 @@ public class AreasFragment extends Fragment {
             noteButton.setVisibility(View.INVISIBLE);
 
 
-            button.setText("Add Area");
+            button.setText("Add Community");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -8,62 +8,64 @@
     android:background="#ffffff"
     android:alpha="1">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fillViewport = 'true'
 
-        >
-        <LinearLayout
+        android:layout_gravity="center_horizontal|top">
+
+        <Button
+            android:id="@+id/button3"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:background="#FFF">
+            android:layout_height="wrap_content"
+            android:text="Add Community"
+            style="@style/UIButtonInverse"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Add Community"
-                style="@style/UIButtonInverse"
-                android:layout_gravity="bottom"
-                android:layout_marginRight="3dp" />
-        </LinearLayout>
-        <LinearLayout
+        <Button
+            android:id="@+id/new_note_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Note"
+            style="@style/UIButtonInverse"
+            android:layout_gravity="left|top"
+            android:layout_above="@+id/button3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/interview_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Questions"
+            style="@style/UIButtonInverse"
+            android:layout_gravity="right|top"
+            android:layout_above="@+id/new_note_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <com.special.utils.UISwipableList
+            android:id="@+id/listView"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5">
-
-            <com.special.utils.UISwipableList
-                android:id="@+id/listView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fillViewport = 'true'
-                android:background="#FFF" />
-        </LinearLayout>
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:fillViewport = 'true'
+            android:background="@drawable/back"
+            android:layout_above="@+id/interview_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
 
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/interview_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Questions"
-        style="@style/UIButtonInverse"
-        android:layout_gravity="right|top"
-        android:layout_marginRight="3dp" />
-
-    <Button
-        android:id="@+id/new_note_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Note"
-        style="@style/UIButtonInverse"
-        android:layout_gravity="left|top"
-        android:layout_marginLeft="3dp" />
+    </RelativeLayout>
 
 
 </FrameLayout>
