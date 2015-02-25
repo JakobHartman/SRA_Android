@@ -76,8 +76,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
 
         itemDashboard = new ResideMenuItem(this, R.drawable.ic_dash, "Dashboard");
-        itemAreas = new ResideMenuItem(this, R.drawable.ic_map,  "Areas");
-        itemQuestions = new ResideMenuItem(this, R.drawable.ic_question, "Question Sets");
+        itemAreas = new ResideMenuItem(this, R.drawable.ic_map,  "Communities");
+        itemQuestions = new ResideMenuItem(this, R.drawable.ic_question, "Surveys");
         itemNotes = new ResideMenuItem(this, R.drawable.ic_notes, "Notes");
         itemStats = new ResideMenuItem(this,R.drawable.ic_stats,"Stats");
         itemSync = new ResideMenuItem(this,R.drawable.ic_sync,"Sync");
@@ -122,7 +122,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
             name = "dashboard";
         }else if (view == itemAreas){
             changeFragment(new AreasFragment(), "areas");
-            title.setText("Areas");
+            title.setText("Communities");
             name = "areas";
         }else if (view == itemQuestions){
             changeFragment(new QuestionsFragment(), "questions");
