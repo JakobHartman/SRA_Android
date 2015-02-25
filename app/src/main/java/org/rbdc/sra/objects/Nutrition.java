@@ -1,18 +1,43 @@
 package org.rbdc.sra.objects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-/**
- * Created by jakobhartman on 2/19/15.
- */
+
 public class Nutrition implements Serializable {
-    private String foodName;
+    private String householdID;
+    private ArrayList<FoodItem> foodItems;
+    private String householdName;
 
-    public String getFoodName() {
-        return foodName;
+    public ArrayList<FoodItem> getFoodItems() {
+        return foodItems;
     }
 
-    public void setFoodName(String foodName) {
-        this.foodName = foodName;
+    public void setFoodItems(ArrayList<FoodItem> foodItems) {
+        this.foodItems = foodItems;
+    }
+
+    public void addFoodItem(FoodItem item){
+        foodItems.add(item);
+    }
+
+    public void removeFoodItem(int item){
+        foodItems.remove(item);
+    }
+
+    public String getHouseholdID() {
+        return householdID;
+    }
+
+    public void setHouseholdID(String householdID) {
+        this.householdID = householdID;
+    }
+
+    public String getHouseholdName() {
+        return householdName;
+    }
+
+    public void setHouseholdName(String householdName) {
+        this.householdName = householdName;
     }
 }
