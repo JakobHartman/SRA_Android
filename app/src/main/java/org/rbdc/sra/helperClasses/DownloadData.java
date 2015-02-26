@@ -64,7 +64,7 @@ public class DownloadData {
     }
 
     public static void downloadGoToDash(LoginObject info, final Context activity){
-        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/" + organization + "/resources/");
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/resources/");
         final int number = info.getSiteLogin().getAreaCount();
         areas = new ArrayList<>();
         for (CountryLogin country : info.getSiteLogin().getCountries()){
@@ -117,7 +117,7 @@ public class DownloadData {
     }
 
     public static void downloadToSync(LoginObject info, final Context activity){
-        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/resources/");
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/resources/");
         areas = new ArrayList<>();
         for (CountryLogin country : info.getSiteLogin().getCountries()){
             for(RegionLogin regions : country.getRegions()){
@@ -183,7 +183,7 @@ public class DownloadData {
     }
 
     public static void downloadQuestions() {
-        Firebase base = new Firebase("https://testrbdc.firebaseio.com/organizations/sra/question sets");
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/question sets");
         base.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
