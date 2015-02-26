@@ -33,6 +33,7 @@ public class CRUDFlinger {
     private static Region region = null;
     private static Application application = null;
     private static Region tempRegion = null;
+    private static ArrayList<QuestionSet> tempQuestionSets = new ArrayList<QuestionSet>();
 
     protected CRUDFlinger(){
 
@@ -278,6 +279,16 @@ public class CRUDFlinger {
         if (questionSets == null) { loadQuestionSets(); }
         questionSets.add(qs);
         saveQuestionSets();
+    }
+
+    public static void addTempQuestionSet(QuestionSet qs) {
+        setPreferences();
+        tempQuestionSets.add(qs);
+    }
+
+    public static ArrayList<QuestionSet> getTempQuestionSets() {
+
+        return tempQuestionSets;
     }
     /* END QUESTION SET STUFF */
 
