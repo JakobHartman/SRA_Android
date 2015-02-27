@@ -201,6 +201,26 @@ public class DownloadData {
         });
     }
 
+    public static void downloadTempQuestions() {
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/question sets");
+        base.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    QuestionSet question = data.getValue(QuestionSet.class);
+
+                    CRUDFlinger.addTempQuestionSet(question);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
+
     public static HashMap buildMap(String json) throws IOException {
         JsonFactory factory = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper(factory);

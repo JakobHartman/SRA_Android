@@ -55,6 +55,14 @@ public class SyncFragment extends Fragment {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         DownloadData.downloadToSync(login,getActivity().getBaseContext());
+                        DownloadData.downloadTempQuestions();
+                        try {
+                            CRUDFlinger.merge(CRUDFlinger.getTempQuestionSets(), CRUDFlinger.getQuestionSets());
+
+                        }catch (Exception e) {
+                            System.out.println("There was an exception merging questions");
+                        }
+
                         try{
                             region = CRUDFlinger.merge(CRUDFlinger.getTempRegion(), CRUDFlinger.getRegion());
                             CRUDFlinger.setRegion(region);

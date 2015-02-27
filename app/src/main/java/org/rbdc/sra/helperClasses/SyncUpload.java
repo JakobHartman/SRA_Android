@@ -34,9 +34,7 @@ public class SyncUpload {
     public void uploadQuestions() {
         Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/question sets");
         // For each qs, create a new node with the ID as the name
-        for(QuestionSet qs : CRUDFlinger.getQuestionSets()) {
-
-            // Does this replace if exists?
+        for(QuestionSet qs : CRUDFlinger.getQuestionSets()) { 
             base.child(qs.getqSetId()).setValue(qs);
         }
         //base.setValue(CRUDFlinger.getQuestionSets());
