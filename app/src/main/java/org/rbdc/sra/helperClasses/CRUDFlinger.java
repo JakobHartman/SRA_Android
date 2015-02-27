@@ -15,6 +15,7 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Note;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
@@ -326,4 +327,71 @@ public class CRUDFlinger {
         }
         return countryName;
     }
+
+    /******************************* Notes Stuff *********************************/
+
+    private static ArrayList<Note> notes = null;
+
+    // Get Notes
+    public static ArrayList<Note> getNotes() {
+        if (notes == null) { loadNotes(); }
+        return notes;
+    }
+
+    // Save Notes
+    public static void saveNotes() {
+        setPreferences();
+        if (notes == null) {
+            loadNotes();
+            return;
+        }
+        try {
+            Gson gson = new GsonBuilder().create();
+            String json = gson.toJson(notes);
+            saver.putString("NotesBank", json);
+            saver.commit();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception: Couldn't store Notes bank using KVStore.");
+        }
+    }
+
+    // Load Notes
+    private static void loadNotes() {
+        setPreferences();
+        JSONArray json_notes = null;
+        String loadedJSON = null;
+        try {
+            loadedJSON = loader.getString("NotesBank", null);
+            if (loadedJSON != null) {
+                json_notes = new JSONArray(loadedJSON);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (json_notes == null) {
+            saveNotes();
+            return;
+        }
+        for (int i = 0; i < json_notes.length(); i++) {
+            try {
+                try {
+                    String notesJSON = json_notes.getString(i);
+                    Gson gson = new GsonBuilder().create();
+                    Note aNote = gson.fromJson(notesJSON, Note.class);
+                    notes.add(aNote);
+                } catch (Exception e) {
+                    //
+                }
+            } catch (NullPointerException e){
+                System.out.println("Nothing Here");
+            }
+        }
+    }
+
+    /***************************** End Notes Stuff ************************************/
+
+
+
 }

@@ -154,10 +154,6 @@ public class AreasFragment extends Fragment {
                             toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
                         }
 
-
-
-
-
                         // Close the view
                          dialog.cancel();
                     }
