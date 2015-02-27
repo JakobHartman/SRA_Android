@@ -16,6 +16,7 @@ import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import org.rbdc.sra.helperClasses.CRUDFlinger;
@@ -112,65 +113,67 @@ public class Login extends Activity {
                         status = true;
                         textview.setText("Authenticating....");
                         //Get reference to User Tree
-                        final String Node = username.split("@")[0];
-                        Firebase users = new Firebase("https://intense-inferno-7741.firebaseio.com/users/" + Node.toLowerCase());
+
+                        Firebase users = new Firebase("https://intense-inferno-7741.firebaseio.com/users/");
+                        Query user = users.orderByChild("email").equalTo(username);
                         //Start download from firebase, once
-                         users.addListenerForSingleValueEvent(new ValueEventListener() {
+                         user.addListenerForSingleValueEvent(new ValueEventListener() {
 
                              //Success
                              @Override
                              public void onDataChange(DataSnapshot dataSnapshot) {
-                                 //loop through Users
-                                 textview.setText("Saving User For Offline Use");
-                                 System.out.println(dataSnapshot.getValue().toString());
+                                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                     //loop through Users
+                                     textview.setText("Saving User For Offline Use");
+                                     System.out.println(dataSnapshot1.getValue().toString());
 
-                                 String username = dataSnapshot.child("email").getValue().toString();
+                                     String username = dataSnapshot1.child("email").getValue().toString();
 
-                                 DataSnapshot ld = dataSnapshot.child("organizations").child(organization);
-                                 DataSnapshot role = ld.child("roles");
-                                 DataSnapshot country = ld.child("countries");
-                                 final LoginObject info = new LoginObject();
-                                 info.setUsername(username);
-                                 info.setLoggedIn(true);
-                                 for(DataSnapshot rs : country.getChildren()){
-                                     CountryLogin countryLogin = new CountryLogin();
-                                     countryLogin.setName(rs.getKey());
-                                     for(DataSnapshot as : rs.child("regions").getChildren()){
-                                         RegionLogin regionLogin = new RegionLogin();
-                                         regionLogin.setName(as.getKey());
-                                         for(DataSnapshot a : as.child("areas").getChildren()){
-                                             AreaLogin areaLogin = new AreaLogin();
-                                             areaLogin.setName(a.getKey());
-                                             regionLogin.addArea(areaLogin);
+                                     DataSnapshot ld = dataSnapshot1.child("organizations").child(organization);
+                                     DataSnapshot role = ld.child("roles");
+                                     DataSnapshot country = ld.child("countries");
+                                     final LoginObject info = new LoginObject();
+                                     info.setUsername(username);
+                                     info.setLoggedIn(true);
+                                     for (DataSnapshot rs : country.getChildren()) {
+                                         CountryLogin countryLogin = new CountryLogin();
+                                         countryLogin.setName(rs.getKey());
+                                         for (DataSnapshot as : rs.child("regions").getChildren()) {
+                                             RegionLogin regionLogin = new RegionLogin();
+                                             regionLogin.setName(as.getKey());
+                                             for (DataSnapshot a : as.child("areas").getChildren()) {
+                                                 AreaLogin areaLogin = new AreaLogin();
+                                                 areaLogin.setName(a.getKey());
+                                                 regionLogin.addArea(areaLogin);
+                                             }
+                                             countryLogin.addRegion(regionLogin);
+
                                          }
-                                         countryLogin.addRegion(regionLogin);
-
+                                         info.getSiteLogin().addCountry(countryLogin);
                                      }
-                                     info.getSiteLogin().addCountry(countryLogin);
+
+                                     textview.setText("Loading User Areas");
+
+                                     //add roles to loginInfo
+                                     for (DataSnapshot roles : role.getChildren()) {
+                                         String Roles = roles.getValue().toString();
+                                         info.addToRoles(Roles);
+                                     }
+                                     String userString;
+                                     SharedPreferences.Editor user = getSharedPreferences("AppPrefs", MODE_PRIVATE).edit();
+                                     try {
+                                         userString = JSONUtilities.stringify(info);
+                                         user.putString("User", userString);
+                                         user.commit();
+                                         Firebase.setAndroidContext(getBaseContext());
+                                         DownloadData.downloadQuestions();
+                                         DownloadData.downloadGoToDash(info, getBaseContext());
+
+
+                                     } catch (JSONException e) {
+                                         //
+                                     }
                                  }
-
-                                 textview.setText("Loading User Areas");
-
-                                 //add roles to loginInfo
-                                 for(DataSnapshot roles:role.getChildren()){
-                                     String Roles = roles.getValue().toString();
-                                     info.addToRoles(Roles);
-                                 }
-                                 String userString;
-                                 SharedPreferences.Editor user = getSharedPreferences("AppPrefs",MODE_PRIVATE).edit();
-                                 try {
-                                     userString = JSONUtilities.stringify(info);
-                                     user.putString("User", userString);
-                                     user.commit();
-                                     Firebase.setAndroidContext(getBaseContext());
-                                     DownloadData.downloadQuestions();
-                                     DownloadData.downloadGoToDash(info,getBaseContext());
-
-
-                                 }catch (JSONException e){
-                                     //
-                                 }
-
 
                              }
                              //Fail
