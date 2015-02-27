@@ -192,9 +192,8 @@ public class CRUDFlinger {
     }
 
 
-    /*
-     * Question set bank stuff.
-     */
+    /************************* Question set bank stuff ***********************/
+
     private static ArrayList<QuestionSet> questionSets = null;
     public static ArrayList<QuestionSet> getQuestionSets() {
         if (questionSets == null) { loadQuestionSets(); }
@@ -291,7 +290,7 @@ public class CRUDFlinger {
 
         return tempQuestionSets;
     }
-    /* END QUESTION SET STUFF */
+    /************************ END QUESTION SET STUFF *******************************/
 
 
 
@@ -355,6 +354,22 @@ public class CRUDFlinger {
             e.printStackTrace();
             System.out.println("Exception: Couldn't store Notes bank using KVStore.");
         }
+    }
+
+    // Add Note
+    public static void addNote(Note added_note) {
+        setPreferences();
+        if (notes == null) { loadNotes(); }
+        notes.add(added_note);
+        saveNotes();
+    }
+
+    // Delete Note
+    public static void deleteNote(Note deleted_note) {
+        setPreferences();
+        if (notes == null) { loadNotes(); }
+        notes.remove(deleted_note);
+        saveNotes();
     }
 
     // Load Notes
