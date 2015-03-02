@@ -133,27 +133,27 @@ public class AreasFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // Create a new note
-                        // Store in an arraylist?
                         EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
                         EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
+                        Note newNote;
 
                         if (navigation.equals("area")) {
-                            Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
+                            newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
                             // Add note to the list
                             notes_list.add(newNote);
                             // Notify Note created
                             Toast toast = new Toast(getActivity());
                             toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
-
+                            CRUDFlinger.addNote(newNote);
                         } else if (navigation.equals("household")) {
-                            Note newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
+                            newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                             // Add note to the list
                             notes_list.add(newNote);
                             // Notify Note created
                             Toast toast = new Toast(getActivity());
                             toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+                            CRUDFlinger.addNote(newNote);
                         }
-
                         // Close the view
                          dialog.cancel();
                     }
@@ -162,7 +162,6 @@ public class AreasFragment extends Fragment {
         });
 
         navigation = "area";
-
 
         //System.out.println("AreaFrag tag = "+this.getTag());
 
@@ -219,9 +218,7 @@ public class AreasFragment extends Fragment {
                     householdView(areaId);
                 }
             });
-
         }
-
     }
 
     // Set up for the household View
@@ -467,10 +464,8 @@ public class AreasFragment extends Fragment {
                     listView.setAdapter(mAdapter);
                     CRUDFlinger.saveRegion();
                 }
-
             }
         });
-
 
         btnCancel = (Button) dialog.findViewById(R.id.btncancel);
 

@@ -1,5 +1,6 @@
 package org.rbdc.sra.objects;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -51,4 +52,11 @@ public class Note {
     public String getNoteContents () { return _noteContents;}
 
     public String getNoteTitle() {return _title;}
+
+    public String getAuthor() {return _author;}
+
+    public String getDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        return sdf.format(_dateUpdated.getTime());}
 }
