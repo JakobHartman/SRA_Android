@@ -19,12 +19,20 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.Asyncer;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.DownloadData;
 import org.rbdc.sra.helperClasses.SyncUpload;
+import org.rbdc.sra.objects.Area;
+import org.rbdc.sra.objects.Datapoint;
+import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.Region;
+
+import java.util.ArrayList;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
@@ -72,6 +80,23 @@ public class SyncFragment extends Fragment {
                                 syncUp.uploadAreas();
                                 syncUp.uploadHouses();
                                 syncUp.uploadQuestions();
+                                for(Area area : CRUDFlinger.getAreas()){
+                                    for(Household household : area.getResources()){
+                                        int areaId = CRUDFlinger.getAreas().indexOf(area);
+                                        int householdId = CRUDFlinger.getAreas().get(areaId).getResources().indexOf(household);
+                                        ArrayList<Question> questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
+                                        if(questions != null) {
+                                            for (Question question : questions) {
+                                                for(Datapoint datapoint : question.getDataPoints()){
+                                                    for(String food : datapoint.getAnswers()){
+                                                        CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getNutrition().clear();
+                                                        new Asyncer().execute(food, areaId, householdId);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                                 CRUDFlinger.saveRegion();
                             }catch (JSONException e){return;}
 

@@ -239,8 +239,4 @@ public class DownloadData {
         return o;
     }
 
-    public static void nutritionixFetch(String food,int area,int household){
-       passes = 0;
-       new Asyncer().execute(food,area,household);
-    }
 }
