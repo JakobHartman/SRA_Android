@@ -24,12 +24,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Asyncer extends AsyncTask<String,Void,FoodItem>{
+public class Asyncer extends AsyncTask<Object,Void,Void>{
     final private static String key = "c69bd76b98dd8d4e1fd629241b3bb199";
     final private static String id = "f67bfd42";
 
     @Override
-    protected FoodItem doInBackground(String... params) {
+    protected Void doInBackground(Object... params) {
         final HttpClient httpclient = new DefaultHttpClient();
         final HttpPost httppost = new HttpPost("https://api.nutritionix.com/v1_1/search");
         FoodItem item = new FoodItem();
@@ -38,7 +38,7 @@ public class Asyncer extends AsyncTask<String,Void,FoodItem>{
             List<NameValuePair> nameValuePairs = new ArrayList<>(3);
             nameValuePairs.add(new BasicNameValuePair("appId", id));
             nameValuePairs.add(new BasicNameValuePair("appKey", key));
-            nameValuePairs.add(new BasicNameValuePair("query",params[0]));
+            nameValuePairs.add(new BasicNameValuePair("query",params[0].toString()));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             // Execute HTTP Post Request
@@ -66,6 +66,7 @@ public class Asyncer extends AsyncTask<String,Void,FoodItem>{
                 Gson gson = new GsonBuilder().create();
                 item = gson.fromJson(string1,FoodItem.class);
                 Log.i("Item",item.getItemName());
+                CRUDFlinger.getAreas().get((int)params[1]).getResources().get((int)params[2]).getNutrition().add(item);
 
             }
             catch (JSONException e){
@@ -75,11 +76,11 @@ public class Asyncer extends AsyncTask<String,Void,FoodItem>{
         } catch (IOException e) {
             // TODO Auto-generated catch block
         }
-        return item;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(FoodItem result) {
+    protected void onPostExecute(Void result) {
 
     }
 

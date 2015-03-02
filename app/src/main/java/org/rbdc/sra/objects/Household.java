@@ -12,7 +12,7 @@ public class Household implements Serializable {
     private String region;
     private String country;
     private String area;
-    private ArrayList<Nutrition> nutrition;
+    private ArrayList<FoodItem> nutrition;
     private String householdID;
 
     public String getHouseholdID() {
@@ -23,7 +23,7 @@ public class Household implements Serializable {
         householdID = name + System.currentTimeMillis();
     }
 
-    public ArrayList<Nutrition> getNutrition() {
+    public ArrayList<FoodItem> getNutrition() {
         return nutrition;
     }
 

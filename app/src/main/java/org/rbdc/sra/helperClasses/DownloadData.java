@@ -2,6 +2,7 @@ package org.rbdc.sra.helperClasses;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class DownloadData {
 
@@ -237,8 +239,8 @@ public class DownloadData {
         return o;
     }
 
-    public static void nutritionixFetch(String food){
-        passes = 0;
-        new Asyncer().execute(food);
+    public static void nutritionixFetch(String food,int area,int household){
+       passes = 0;
+       new Asyncer().execute(food,area,household);
     }
 }
