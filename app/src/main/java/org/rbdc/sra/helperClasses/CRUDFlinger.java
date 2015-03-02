@@ -337,11 +337,17 @@ public class CRUDFlinger {
         return notes;
     }
 
+    // Get Single Note
     public static Note getNote(int pos) {
         if (notes == null) { loadNotes();}
 
         return notes.get(pos);
     }
+
+    // Edit a Note
+    //
+    //
+
 
     // Save Notes
     public static void saveNotes() {

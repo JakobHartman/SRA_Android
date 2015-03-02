@@ -53,10 +53,10 @@ public class NotesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) { 
                 ListItem item = (ListItem) listView.getAdapter().getItem(i);
-                Note theNote = CRUDFlinger.getNote(i);
+                final Note theNote = CRUDFlinger.getNote(i);
                 final Dialog dialog = new Dialog(getActivity());
 
-                dialog.setTitle(theNote.getNoteTitle());
+                dialog.setTitle("Preview");
                 dialog.setCancelable(true);
                 dialog.setContentView(R.layout.view_note);
                 TextView title = (TextView) dialog.findViewById(R.id.noteTitle);
@@ -73,6 +73,42 @@ public class NotesFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                    }
+                });
+
+                Button edit_button = (Button) dialog.findViewById(R.id.note_edit);
+                edit_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.setContentView(R.layout.new_note);
+                        dialog.setTitle(("Edit"));
+                        final EditText editText = (EditText) dialog.findViewById(R.id.note_text);
+                        editText.setText(theNote.getNoteContents());
+                        final EditText editTitle = (EditText) dialog.findViewById(R.id.noteTitle);
+                        editTitle.setText(theNote.getNoteTitle());
+
+                        Button saveButton = (Button) dialog.findViewById(R.id.note_save);
+                        saveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Save the changes
+                                theNote.editNoteTitle(editTitle.getText().toString());
+                                theNote.editNoteContents(editText.getText().toString());
+                                dialog.dismiss();
+                                // Call to a CRUD editNote method
+                                // The method will need to save the change
+                                CRUDFlinger.saveNotes();
+                            }
+                        });
+
+                        Button cancelButton = (Button) dialog.findViewById(R.id.note_cancel);
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
                     }
                 });
                 dialog.show();
