@@ -337,6 +337,18 @@ public class CRUDFlinger {
         return notes;
     }
 
+    // Get Single Note
+    public static Note getNote(int pos) {
+        if (notes == null) { loadNotes();}
+
+        return notes.get(pos);
+    }
+
+    // Edit a Note
+    //
+    //
+
+
     // Save Notes
     public static void saveNotes() {
         setPreferences();
@@ -375,6 +387,7 @@ public class CRUDFlinger {
     // Load Notes
     private static void loadNotes() {
         setPreferences();
+        notes = new ArrayList<>();
         JSONArray json_notes = null;
         String loadedJSON = null;
         try {

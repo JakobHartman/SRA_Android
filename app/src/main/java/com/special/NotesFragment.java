@@ -1,11 +1,13 @@
 package com.special;
 
-import android.content.Intent;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -13,6 +15,9 @@ import java.util.ArrayList;
 
 import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.objects.Note;
+
 import com.special.menu.ResideMenu;
 import com.special.utils.UISwipableList;
 
@@ -38,54 +43,85 @@ public class NotesFragment extends Fragment {
     }
 
     private void initView(){
-    	mAdapter = new TransitionListAdapter(getActivity(), getListData());
+    	mAdapter = new TransitionListAdapter(getActivity(),getListData());
         listView.setActionLayout(R.id.hidden_view1);
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);
+
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) { 
                 ListItem item = (ListItem) listView.getAdapter().getItem(i);
-        
-                Intent intent = new Intent(getActivity(), TransitionDetailActivity.class);
-                
-                Bundle bundle = new Bundle();
-                bundle.putString("title", item.getTitle());
-                bundle.putInt("img", item.getImageId());
-                bundle.putString("descr", item.getDesc());
-                
-                int[] screen_location = new int[2];
-                View view = viewa.findViewById(R.id.item_image);
-                view.getLocationOnScreen(screen_location);
-                
-                bundle.putInt(PACKAGE + ".left", screen_location[0]);
-                bundle.putInt(PACKAGE + ".top", screen_location[1]);
-                bundle.putInt(PACKAGE + ".width", view.getWidth());
-                bundle.putInt(PACKAGE + ".height", view.getHeight());
-                
-                intent.putExtras(bundle);
+                final Note theNote = CRUDFlinger.getNote(i);
+                final Dialog dialog = new Dialog(getActivity());
 
-                startActivity(intent);
-                getActivity().overridePendingTransition(0, 0);
+                dialog.setTitle("Preview");
+                dialog.setCancelable(true);
+                dialog.setContentView(R.layout.view_note);
+                TextView title = (TextView) dialog.findViewById(R.id.noteTitle);
+                title.setText(theNote.getNoteTitle());
+                TextView text = (TextView) dialog.findViewById(R.id.note_text);
+                text.setText(theNote.getNoteContents());
+
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                Button ok_button = (Button) dialog.findViewById(R.id.note_ok);
+
+                ok_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                Button edit_button = (Button) dialog.findViewById(R.id.note_edit);
+                edit_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.setContentView(R.layout.new_note);
+                        dialog.setTitle(("Edit"));
+                        final EditText editText = (EditText) dialog.findViewById(R.id.note_text);
+                        editText.setText(theNote.getNoteContents());
+                        final EditText editTitle = (EditText) dialog.findViewById(R.id.noteTitle);
+                        editTitle.setText(theNote.getNoteTitle());
+
+                        Button saveButton = (Button) dialog.findViewById(R.id.note_save);
+                        saveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Save the changes
+                                theNote.editNoteTitle(editTitle.getText().toString());
+                                theNote.editNoteContents(editText.getText().toString());
+                                dialog.dismiss();
+                                // Call to a CRUD editNote method
+                                // The method will need to save the change
+                                CRUDFlinger.saveNotes();
+                            }
+                        });
+
+                        Button cancelButton = (Button) dialog.findViewById(R.id.note_cancel);
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                    }
+                });
+                dialog.show();
             }
         });
     }
 
     private ArrayList<ListItem> getListData(){
         ArrayList<ListItem> listData = new ArrayList<ListItem>();
-        listData.add(new ListItem(R.drawable.ph_1, "Henry Smith", "Vacation!", null, null));
-        listData.add(new ListItem(R.drawable.ph_2, "Martinez", "Still exited from my trip last week!", null, null));
-        listData.add(new ListItem(R.drawable.ph_3, "Olivier Smith", "Visiting Canada next week!", null, null));
-        listData.add(new ListItem(R.drawable.ph_4, "Aria Thompson", "Can not go shopping tomorrow :(", null, null));
-        listData.add(new ListItem(R.drawable.ph_5, "Sophie Hill", "Live every day like it is the last one!", null, null));
-        listData.add(new ListItem(R.drawable.ph_6, "Addison Adams", "Not available, working...", null, null));
-        listData.add(new ListItem(R.drawable.ph_7, "Harper Clark", "Whats up?", null, null));
-        listData.add(new ListItem(R.drawable.ph_8, "Micheal Green", "Guess who has to work? Pfff..", null, null));
-        listData.add(new ListItem(R.drawable.ph_9, "Benjamin Lewis", "Playing games all week", null, null));
-        listData.add(new ListItem(R.drawable.ph_10, "Luke Wilson", "Anybody got any plans for this weekend?", null, null));
-        listData.add(new ListItem(R.drawable.ph_11, "Daniel Moore", "Going to the movies, so do not call me :)", null, null));
-        listData.add(new ListItem(R.drawable.ph_12, "Ella Smith", "Going on a trip with the family next week!", null, null));
+
+        for (Note note: CRUDFlinger.getNotes()) {
+            listData.add(new ListItem(R.drawable.ic_like,"Title: " + note.getNoteTitle(),"Updated: " + note.getDate(),null,null));
+        }
         return listData;
     }
 }
