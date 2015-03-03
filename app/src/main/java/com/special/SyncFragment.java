@@ -46,7 +46,7 @@ public class SyncFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.relogin_dialog, container, false);
-            final SyncUpload syncUp = new SyncUpload();
+        final SyncUpload syncUp = new SyncUpload();
             final LoginObject login = syncUp.startUpload(getActivity());
 
 
@@ -62,6 +62,31 @@ public class SyncFragment extends Fragment {
                 base.authWithPassword(login.getUsername(),password.getText().toString(),new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
+                        for(Area area : CRUDFlinger.getAreas()){
+                            for(Household household : area.getResources()) {
+                                int areaId = CRUDFlinger.getAreas().indexOf(area);
+                                int householdId = CRUDFlinger.getAreas().get(areaId).getResources().indexOf(household);
+                                Log.i("Food: ", areaId + "");
+                                ArrayList<Question> questions = null;
+                                try {
+                                    questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
+                                }
+                                catch(NullPointerException e){
+                                  //
+                                }
+                                if(questions != null) {
+                                    for (Question question : questions) {
+                                        for(Datapoint datapoint : question.getDataPoints()){
+                                            for(String food : datapoint.getAnswers()){
+                                                CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getNutrition().clear();
+                                                Log.i("Food: ", food);
+                                                new Asyncer().execute(food, areaId, householdId);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         DownloadData.downloadToSync(login,getActivity().getBaseContext());
                         DownloadData.downloadTempQuestions();
                         try {
@@ -80,23 +105,7 @@ public class SyncFragment extends Fragment {
                                 syncUp.uploadAreas();
                                 syncUp.uploadHouses();
                                 syncUp.uploadQuestions();
-                                for(Area area : CRUDFlinger.getAreas()){
-                                    for(Household household : area.getResources()){
-                                        int areaId = CRUDFlinger.getAreas().indexOf(area);
-                                        int householdId = CRUDFlinger.getAreas().get(areaId).getResources().indexOf(household);
-                                        ArrayList<Question> questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
-                                        if(questions != null) {
-                                            for (Question question : questions) {
-                                                for(Datapoint datapoint : question.getDataPoints()){
-                                                    for(String food : datapoint.getAnswers()){
-                                                        CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getNutrition().clear();
-                                                        new Asyncer().execute(food, areaId, householdId);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+
                                 CRUDFlinger.saveRegion();
                             }catch (JSONException e){return;}
 
