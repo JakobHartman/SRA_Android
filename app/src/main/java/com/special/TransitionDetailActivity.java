@@ -183,19 +183,19 @@ public class TransitionDetailActivity extends Activity {
     
     private ArrayList<ListItem> generateData(){
         ArrayList<ListItem> items = new ArrayList<ListItem>();
-        items.add(new ListItem(imgId, title, lor2, null, null));
-        items.add(new ListItem(imgId, title, lor1, null, null));
+        items.add(new ListItem(imgId, title, lor2, null, null,null));
+        items.add(new ListItem(imgId, title, lor1, null, null,null));
         if (imgId != R.drawable.ph_1)
-        	items.add(new ListItem(R.drawable.ph_1, "Henry Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
+        	items.add(new ListItem(R.drawable.ph_1, "Henry Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null,null));
         else 
-        	items.add(new ListItem(R.drawable.ph_12, "Ella Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
-        items.add(new ListItem(imgId, title, lor2, null, null));
+        	items.add(new ListItem(R.drawable.ph_12, "Ella Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null,null));
+        items.add(new ListItem(imgId, title, lor2, null, null,null));
         if (imgId != R.drawable.ph_3)
-        	items.add(new ListItem(R.drawable.ph_3, "Olivier Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor4, null, null));
+        	items.add(new ListItem(R.drawable.ph_3, "Olivier Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor4, null, null,null));
         else 
-        	items.add(new ListItem(R.drawable.ph_12, "Ella Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null));
-        items.add(new ListItem(imgId, title, lor3, null, null));
-        items.add(new ListItem(imgId, title, lor4, null, null));
+        	items.add(new ListItem(R.drawable.ph_12, "Ella Smith", "<font color='"+ getResources().getColor(R.color.theme_color) +"'>@" + title + "</font> " + lor3, null, null,null));
+        items.add(new ListItem(imgId, title, lor3, null, null,null));
+        items.add(new ListItem(imgId, title, lor4, null, null,null));
  
         return items;
     }

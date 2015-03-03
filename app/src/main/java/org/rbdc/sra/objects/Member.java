@@ -3,6 +3,7 @@ package org.rbdc.sra.objects;
 import com.shaded.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by imac on 1/5/15.
@@ -26,8 +27,25 @@ public class Member implements Serializable {
         this.memberId = memberId;
     }
 
-    public Member(){
+    private ArrayList<ImageData> imageCollection;
 
+
+    public void addImage(ImageData image){
+        if (imageCollection == null){
+            imageCollection = new ArrayList<>();
+        }
+        imageCollection.add(image);
+    }
+
+    public ArrayList<ImageData> getImageCollection() {
+        return imageCollection;
+    }
+    public void setImageCollection(ArrayList<ImageData> imageCollection) {
+        this.imageCollection = imageCollection;
+    }
+
+    public Member(){
+        imageCollection = new ArrayList<>();
     }
 
     public String getBirthday() {

@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.UrlBuilder;
 import org.rbdc.sra.objects.ImageData;
 
@@ -197,9 +198,6 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
             if (resultCode == RESULT_OK) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-                int position = extras.getInt("pos");
-                int household = extras.getInt("house");
-                int area = extras.getInt("area");
                 ImageData image = new ImageData();
                 Date date = new Date();
                 image.setCreationDate(getDate(date.getTime(),"dd/MM/yyyy hh:mm:ss.SSS"));
@@ -208,12 +206,16 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
                 byte[] b = baos.toByteArray();
                 String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
                 image.setImageData(imageEncoded);
-                Log.i("Area: ","" + area);
-                Log.i("House: ","" + household);
-                Log.i("Position: ","" + position);
-//                if(household == 9999 && area == 9999){
-//                    CRUDFlinger.getAreas().get(position);
-//                }
+                int house = CRUDFlinger.load("house");
+                int area = CRUDFlinger.load("area");
+                int pos = CRUDFlinger.load("pos");
+                if(house == 9999 && area == 9999){
+                    CRUDFlinger.getAreas().get(pos).addImage(image);
+                }else if (house == 9999){
+                    CRUDFlinger.getAreas().get(area).getResources().get(pos).addImage(image);
+                } else {
+                    CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(pos).addImage(image);
+                }
             }
         }
     }

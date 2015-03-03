@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-/**
- * Created by jakobhartman on 11/15/14.
- */
+
 public class Area implements Serializable {
     private String name;
     private String country;
@@ -15,6 +13,13 @@ public class Area implements Serializable {
     private ArrayList<Interview> interviews;
     private ImageData mainImage;
     private ArrayList<ImageData> imageCollection;
+
+    public void addImage(ImageData image){
+        if (imageCollection == null){
+            imageCollection = new ArrayList<>();
+        }
+        imageCollection.add(image);
+    }
 
     public ArrayList<ImageData> getImageCollection() {
         return imageCollection;
@@ -41,8 +46,9 @@ public class Area implements Serializable {
     }
 
     public Area(){
-        resources = new ArrayList<Household>();
-        interviews = new ArrayList<Interview>();
+        imageCollection = new ArrayList<>();
+        resources = new ArrayList<>();
+        interviews = new ArrayList<>();
     }
 
     public String getName() {

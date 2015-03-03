@@ -138,7 +138,7 @@ public class InterviewActivity extends Activity {
                     R.drawable.ic_home,
                     qs.getName(),
                     qs.getType(),
-                    null, null));
+                    null, null,null));
         }
     }
 

@@ -45,6 +45,10 @@
             android:name=".Picture"
             android:label="@string/title_activity_picture" >
         </activity>
+        <activity
+            android:name="com.special.CustomCamera"
+            android:label="@string/title_activity_camera" >
+        </activity>
     </application>
 
 </manifest>
