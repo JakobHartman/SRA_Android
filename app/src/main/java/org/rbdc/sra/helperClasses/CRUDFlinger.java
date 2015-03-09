@@ -209,6 +209,7 @@ public class CRUDFlinger {
     /************************* Question set bank stuff ***********************/
 
     private static ArrayList<QuestionSet> questionSets = null;
+
     public static ArrayList<QuestionSet> getQuestionSets() {
         if (questionSets == null) { loadQuestionSets(); }
         return questionSets;
@@ -404,7 +405,7 @@ public class CRUDFlinger {
     // Load Notes
     private static void loadNotes() {
         setPreferences();
-        notes = new ArrayList<>();
+        notes = new ArrayList<Note>();
         JSONArray json_notes = null;
         String loadedJSON = null;
         try {
@@ -433,6 +434,7 @@ public class CRUDFlinger {
                 System.out.println("Nothing Here");
             }
         }
+
     }
 
     /***************************** End Notes Stuff ************************************/

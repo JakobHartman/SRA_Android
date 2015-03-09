@@ -248,8 +248,8 @@ public class DownloadData {
     }
 
     public static void downloadNotes() {
-        String url = UrlBuilder.buildNotesUrl();
-        Firebase fbNotes = new Firebase(url);
+
+        Firebase fbNotes = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/notes");
         fbNotes.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

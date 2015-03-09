@@ -38,15 +38,15 @@ public class NotesFragment extends Fragment {
         listView   = (UISwipableList) parentView.findViewById(R.id.listView);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
+        mAdapter = new TransitionListAdapter(getActivity(),getListData());
+        listView.setAdapter(mAdapter);
         initView();
         return parentView;
     }
 
     private void initView(){
-    	mAdapter = new TransitionListAdapter(getActivity(),getListData());
         listView.setActionLayout(R.id.hidden_view1);
         listView.setItemLayout(R.id.front_layout);
-        listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
