@@ -3,10 +3,15 @@ package com.special;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +38,7 @@ import org.rbdc.sra.helperClasses.CRUDFlinger;
 
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
+import org.rbdc.sra.objects.ImageData;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.Note;
@@ -51,7 +57,7 @@ public class AreasFragment extends Fragment {
     //Views & Widgets
     private View parentView;
     private UISwipableList listView;
-    private TransitionListAdapter mAdapter;
+    public TransitionListAdapter mAdapter;
     private ResideMenu resideMenu;
     private Button button;
     Button btn, btnCancel;
@@ -65,8 +71,6 @@ public class AreasFragment extends Fragment {
     private Button noteButton;
     private List<Note> notes_list;
 
-    //Vars
-    //private String PACKAGE = "IDENTIFY";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -195,6 +199,7 @@ public class AreasFragment extends Fragment {
         else if (navigation.equals("area")) {
             // Lists Areas
             mAdapter = new TransitionListAdapter(getActivity(), listArea());
+            mAdapter.notifyDataSetChanged();
             listView.setActionLayout(R.id.hidden);
             listView.setItemLayout(R.id.front_layout);
             listView.setAdapter(mAdapter);
@@ -306,10 +311,10 @@ public class AreasFragment extends Fragment {
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final Spinner regionText = (Spinner) dialog.findViewById(R.id.spinner);
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
-        ArrayList<String> regions = new ArrayList<String>();
+        ArrayList<String> regions = new ArrayList<>();
         regions.add("Select Region");
         regions.addAll(loginObject.getSiteLogin().getRegionNames());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,regions);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,regions);
         regionText.setAdapter(adapter);
 
         btn = (Button) dialog.findViewById(R.id.btn);
@@ -564,9 +569,18 @@ public class AreasFragment extends Fragment {
     }
 
     private ArrayList<ListItem> listArea(){
-        ArrayList<ListItem> listData = new ArrayList<ListItem>();
+        ArrayList<ListItem> listData = new ArrayList<>();
         for(Area area : CRUDFlinger.getAreas()){
-            listData.add(new ListItem(R.drawable.ic_like,area.getName(),area.getResources().size() + " Households",null,null));
+
+            if (area.getImageCollection().size() > 0) {
+                int last = area.getImageCollection().size() - 1;
+                ImageData image = area.getImageCollection().get(last);
+                String imageData = image.getImageData();
+                Bitmap actImage = BitmapFactory.decodeByteArray(Base64.decode(imageData, Base64.DEFAULT), 0, Base64.decode(imageData, Base64.DEFAULT).length);
+                listData.add(new ListItem(R.drawable.ic_like, area.getName(), area.getResources().size() + " Households", null, null,actImage));
+            } else {
+                listData.add(new ListItem(R.drawable.ic_like, area.getName(), area.getResources().size() + " Households", null, null,null));
+            }
         }
         return listData;
     }
@@ -574,15 +588,30 @@ public class AreasFragment extends Fragment {
     private ArrayList<ListItem> listHouseholds(int pos){
         ArrayList<ListItem>listData = new ArrayList<ListItem>();
         for(Household households : CRUDFlinger.getAreas().get(pos).getResources()){
-            listData.add(new ListItem(R.drawable.ic_like,households.getName(),households.getMembers().size() + " Members","" + areaId,null));
+            if (households.getImageCollection().size() > 0) {
+                int last = households.getImageCollection().size() - 1;
+                ImageData image = households.getImageCollection().get(last);
+                String imageData = image.getImageData();
+                Bitmap actImage = BitmapFactory.decodeByteArray(Base64.decode(imageData, Base64.DEFAULT), 0, Base64.decode(imageData, Base64.DEFAULT).length);
+                listData.add(new ListItem(R.drawable.ic_like,households.getName(),households.getMembers().size() + " Members","" + areaId,null,actImage));
+            } else {
+                listData.add(new ListItem(R.drawable.ic_like, households.getName(), households.getMembers().size() + " Members", "" + areaId, null, null));
+            }
         }
         return listData;
     }
 
     private ArrayList<ListItem> listMembers(int areaPos,int householdPos){
-        ArrayList<ListItem>listData = new ArrayList<ListItem>();
-        for(Member member : CRUDFlinger.getAreas().get(areaPos).getResources().get(householdPos).getMembers()){
-            listData.add(new ListItem(R.drawable.ic_like,member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(),"" + areaId,"" + householdId));
+        ArrayList<ListItem>listData = new ArrayList<>();
+        for(Member member : CRUDFlinger.getAreas().get(areaPos).getResources().get(householdPos).getMembers()) {
+            if (member.getImageCollection().size() > 0) {
+                int last = member.getImageCollection().size() - 1;
+                ImageData image = member.getImageCollection().get(last);
+                String imageData = image.getImageData();
+                Bitmap actImage = BitmapFactory.decodeByteArray(Base64.decode(imageData, Base64.DEFAULT), 0, Base64.decode(imageData, Base64.DEFAULT).length);
+                listData.add(new ListItem(R.drawable.ic_like, member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(), "" + areaId, "" + householdId, actImage));
+            } else
+                listData.add(new ListItem(R.drawable.ic_like, member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(), "" + areaId, "" + householdId, null));
         }
         return listData;
     }
@@ -616,4 +645,24 @@ public class AreasFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("","restarted");
+        switch (navigation){
+            case "area":
+                mAdapter = new TransitionListAdapter(getActivity(),listArea());
+                break;
+            case "household":
+                mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(areaId));
+                break;
+            case "member":
+                mAdapter = new TransitionListAdapter(getActivity(),listMembers(areaId,householdId));
+            default:
+                mAdapter = new TransitionListAdapter(getActivity(),listArea());
+        }
+        listView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
+    }
 }

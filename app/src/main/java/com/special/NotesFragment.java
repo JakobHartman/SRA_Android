@@ -121,7 +121,8 @@ public class NotesFragment extends Fragment {
         ArrayList<ListItem> listData = new ArrayList<ListItem>();
 
         for (Note note: CRUDFlinger.getNotes()) {
-            listData.add(new ListItem(R.drawable.ic_like,"Title: " + note.getNoteTitle(),"Updated: " + note.getDateUpdated(),null,null));
+            listData.add(new ListItem(R.drawable.ic_like,"Title: " + note.getNoteTitle(),"Updated: " + note.getDateUpdated(),null,null,null));
+
         }
         return listData;
     }

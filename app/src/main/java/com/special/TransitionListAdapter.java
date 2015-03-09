@@ -13,6 +13,7 @@ import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.DeleteRecord;
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
+import org.rbdc.sra.objects.ImageData;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
 
@@ -26,9 +27,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,13 +53,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import quickconnectfamily.json.JSONException;
-
-class TransitionListAdapter extends BaseAdapter {
+public class TransitionListAdapter extends BaseAdapter {
 	
 	   ViewHolder viewHolder;
-        private ArrayList<ListItem> mItems = new ArrayList<ListItem>();
+        private ArrayList<ListItem> mItems = new ArrayList<>();
         private Context mContext;
+
 
         public TransitionListAdapter(Context context, ArrayList<ListItem> list) {
             mContext = context;
@@ -115,32 +119,43 @@ class TransitionListAdapter extends BaseAdapter {
             final int areaId = id;
             
             viewHolder.image.setImageResource(imageid);
+            if(mItems.get(position).getPictureTaken() != null){
+                viewHolder.image.setImageBitmap(mItems.get(position).getPictureTaken());
+            }
+            Log.i("posotion",houseId + " " + areaId);
             viewHolder.title.setText(item);
             viewHolder.descr.setText(desc);
             final ImageButton hiddenView = (ImageButton) v.findViewById(R.id.hidden_view1);
             final ImageButton hiddenViewEdit = (ImageButton) v.findViewById(R.id.hidden_view2);
             final ImageView image = (ImageView) v.findViewById(R.id.item_image);
+
             image.setOnClickListener(new OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     String text = desc.split("\\s++")[1];
-                    if(text.matches("Households")){
-                        intent.putExtra("house",9999);
-                        intent.putExtra("area",9999);
-                        intent.putExtra("pos",position);
+                    if (text.matches("Households")) {
+                        CRUDFlinger.save("house", 9999);
+                        CRUDFlinger.save("area", 9999);
+                        CRUDFlinger.save("pos", position);
 
-                    }else if(text.matches("Members")){
-                        intent.putExtra("house",9999);
-                        intent.putExtra("area",areaId);
-                        intent.putExtra("pos",position);
-                    }else {
-                        intent.putExtra("house",houseId);
-                        intent.putExtra("area",areaId);
-                        intent.putExtra("pos",position);
+                    } else if (text.matches("Members")) {
+                        CRUDFlinger.save("house", 9999);
+                        CRUDFlinger.save("area", areaId);
+                        CRUDFlinger.save("pos", position);
+                    } else {
+                        CRUDFlinger.save("house", houseId);
+                        CRUDFlinger.save("area", areaId);
+                        CRUDFlinger.save("pos", position);
                     }
-
-                    Activity act = (Dashboard)mContext;
+                    image.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            
+                        }
+                    });
+                    Activity act = (Dashboard) mContext;
                     act.startActivityForResult(intent, 1);
                 }
             });
@@ -478,23 +493,47 @@ class TransitionListAdapter extends BaseAdapter {
         private ArrayList<ListItem> listArea(){
             ArrayList<ListItem> listData = new ArrayList<ListItem>();
             for(Area area : CRUDFlinger.getAreas()){
-                listData.add(new ListItem(R.drawable.ic_like,area.getName(),area.getResources().size() + " Households",null,null));
+                if (area.getImageCollection().size() > 0) {
+                    int last = area.getImageCollection().size() - 1;
+                    ImageData image = area.getImageCollection().get(last);
+                    String imageData = image.getImageData();
+                    Bitmap actImage = BitmapFactory.decodeByteArray(Base64.decode(imageData, Base64.DEFAULT), 0, Base64.decode(imageData, Base64.DEFAULT).length);
+                    listData.add(new ListItem(R.drawable.ic_like, area.getName(), area.getResources().size() + " Households", null, null,actImage));
+                } else {
+                    listData.add(new ListItem(R.drawable.ic_like, area.getName(), area.getResources().size() + " Households", null, null,null));
+                }
             }
             return listData;
         }
 
         private ArrayList<ListItem> listHouseholds(int pos){
-            ArrayList<ListItem>listData = new ArrayList<ListItem>();
+            ArrayList<ListItem>listData = new ArrayList<>();
             for(Household households : CRUDFlinger.getAreas().get(pos).getResources()){
-                listData.add(new ListItem(R.drawable.ic_like,households.getName(),households.getMembers().size() + " Members","" + pos,null));
+                if (households.getImageCollection().size() > 0) {
+                    int last = households.getImageCollection().size() - 1;
+                    ImageData image = households.getImageCollection().get(last);
+                    String imageData = image.getImageData();
+                    Bitmap actImage = BitmapFactory.decodeByteArray(Base64.decode(imageData, Base64.DEFAULT), 0, Base64.decode(imageData, Base64.DEFAULT).length);
+                    listData.add(new ListItem(R.drawable.ic_like,households.getName(),households.getMembers().size() + " Members","" + pos,null,actImage));
+                } else {
+                    listData.add(new ListItem(R.drawable.ic_like, households.getName(), households.getMembers().size() + " Members", "" + pos, null,null));
+                }
             }
             return listData;
         }
 
         private ArrayList<ListItem> listMembers(int areaPos,int householdPos){
-            ArrayList<ListItem>listData = new ArrayList<ListItem>();
+            ArrayList<ListItem>listData = new ArrayList<>();
             for(Member member : CRUDFlinger.getAreas().get(areaPos).getResources().get(householdPos).getMembers()){
-                listData.add(new ListItem(R.drawable.ic_like,member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(),"" + areaPos,"" + householdPos));
+                if (member.getImageCollection().size() > 0) {
+                    int last = member.getImageCollection().size() - 1;
+                    ImageData image = member.getImageCollection().get(last);
+                    String imageData = image.getImageData();
+                    Bitmap actImage = BitmapFactory.decodeByteArray(Base64.decode(imageData, Base64.DEFAULT), 0, Base64.decode(imageData, Base64.DEFAULT).length);
+                    listData.add(new ListItem(R.drawable.ic_like, member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(), "" + areaPos, "" + householdPos, actImage));
+                } else {
+                    listData.add(new ListItem(R.drawable.ic_like, member.getName(), "Age: " + getAge(member.getBirthday()) + " Relationship:  " + member.getRelationship(), "" + areaPos, "" + householdPos,null));
+                }
             }
             return listData;
         }

@@ -14,6 +14,23 @@ public class Household implements Serializable {
     private String area;
     private ArrayList<FoodItem> nutrition;
     private String householdID;
+    private ArrayList<ImageData> imageCollection;
+
+
+    public void addImage(ImageData image){
+        if (imageCollection == null){
+            imageCollection = new ArrayList<>();
+        }
+        imageCollection.add(image);
+    }
+
+    public ArrayList<ImageData> getImageCollection() {
+        return imageCollection;
+    }
+    public void setImageCollection(ArrayList<ImageData> imageCollection) {
+        this.imageCollection = imageCollection;
+    }
+
 
     public String getHouseholdID() {
         return householdID;
@@ -31,6 +48,7 @@ public class Household implements Serializable {
         interviews = new ArrayList<>();
         members = new ArrayList<>();
         nutrition = new ArrayList<>();
+        imageCollection = new ArrayList<>();
     }
 
     public String getCountry() {

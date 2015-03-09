@@ -86,6 +86,14 @@ public class CRUDFlinger {
         }
     }
 
+    public static void save(String key,int integer){
+        setPreferences();
+
+        saver.putInt(key,integer);
+        saver.commit();
+
+    }
+
     public static <Any> Any load(String key,Class className){
         //setPreferences();
         String json = loader.getString(key,null);
@@ -94,6 +102,12 @@ public class CRUDFlinger {
 
         return (Any)object;
     }
+
+    public static int load(String key){
+        return Integer.valueOf(loader.getInt(key,0));
+    }
+
+
 
     public static void commit(){
         saver.commit();
