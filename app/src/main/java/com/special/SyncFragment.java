@@ -98,12 +98,12 @@ public class SyncFragment extends Fragment {
                         }
 
                         // Download and merge notes
-//                        DownloadData.downloadTempNotes();
-//                        try {
-//                            CRUDFlinger.merge(CRUDFlinger.getTempNotes(), CRUDFlinger.getNotes());
-//                        }catch (Exception e) {
-//                            System.out.println("There was an exception merging notes");
-//                        }
+                        DownloadData.downloadTempNotes();
+                        try {
+                            CRUDFlinger.merge(CRUDFlinger.getTempNotes(), CRUDFlinger.getNotes());
+                        }catch (Exception e) {
+                            System.out.println("There was an exception merging notes");
+                        }
 
                         try{
                             region = CRUDFlinger.merge(CRUDFlinger.getTempRegion(), CRUDFlinger.getRegion());

@@ -345,7 +345,7 @@ public class CRUDFlinger {
     /******************************* Notes Stuff *********************************/
 
     private static ArrayList<Note> notes = null;
-    private static ArrayList<Note> tempNotes = null;
+    private static ArrayList<Note> tempNotes = new ArrayList<Note>();
 
     // Get Notes
     public static ArrayList<Note> getNotes() {

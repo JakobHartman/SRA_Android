@@ -1,6 +1,7 @@
 package com.special;
 
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -98,6 +99,13 @@ public class NotesFragment extends Fragment {
                                 // Call to a CRUD editNote method
                                 // The method will need to save the change
                                 CRUDFlinger.saveNotes();
+
+                                // This refreshes the fragment to reflect the changes
+                                Fragment frg = getFragmentManager().findFragmentByTag("notes");
+                                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                ft.detach(frg);
+                                ft.attach(frg);
+                                ft.commit();
                             }
                         });
 
@@ -106,6 +114,7 @@ public class NotesFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 dialog.dismiss();
+;
                             }
                         });
 
