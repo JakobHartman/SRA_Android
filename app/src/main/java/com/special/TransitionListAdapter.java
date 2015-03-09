@@ -149,7 +149,12 @@ public class TransitionListAdapter extends BaseAdapter {
                         CRUDFlinger.save("area", areaId);
                         CRUDFlinger.save("pos", position);
                     }
-                    image.setEnabled(false);
+                    image.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            
+                        }
+                    });
                     Activity act = (Dashboard) mContext;
                     act.startActivityForResult(intent, 1);
                 }
