@@ -217,8 +217,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
                 } else {
                     CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(pos).addImage(image);
                 }
-                AreasFragment areasFragment = (AreasFragment)getSupportFragmentManager().findFragmentByTag("areas");
-
+                CRUDFlinger.saveRegion();
             }
         }
     }
