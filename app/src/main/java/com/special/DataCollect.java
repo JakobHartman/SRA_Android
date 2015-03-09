@@ -35,7 +35,6 @@ public class DataCollect extends FragmentActivity {
 
     private int numQuestions;
     private QuestionSet questionSet;
-
     private TextView questionNameView;
     private TextView progressView;
     private ViewPager mPager;

@@ -137,17 +137,19 @@ public class AreasFragment extends Fragment {
                         EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
                         Note newNote;
 
-                        if (navigation.equals("area")) {
+                        if (navigation.equals("household")) {
                             newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
                             // Add note to the list
+                            System.out.println("Area name for the Note = "+CRUDFlinger.getAreas().get(areaId).getName());
                             notes_list.add(newNote);
                             // Notify Note created
                             Toast toast = new Toast(getActivity());
                             toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
                             CRUDFlinger.addNote(newNote);
-                        } else if (navigation.equals("household")) {
+                        } else if (navigation.equals("members")) {
                             newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                             // Add note to the list
+                            System.out.println("HouseholdID for the Note = " + CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                             notes_list.add(newNote);
                             // Notify Note created
                             Toast toast = new Toast(getActivity());
@@ -256,7 +258,7 @@ public class AreasFragment extends Fragment {
             System.out.println("no notes found");
         } else {
             for (Note note : notes_list) {
-                System.out.println(note._noteType);
+                System.out.println(note.noteType);
             }
         }
 /*********************************************************/

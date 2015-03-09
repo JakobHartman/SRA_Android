@@ -47,4 +47,9 @@ public class UrlBuilder {
         Log.i("Url: ",url);
         return url;
     }
+
+    public static String buildNotesUrl() {
+        String url = "https://intense-inferno-7741.firebaseio.com/organizations/" + org  + "/notes";
+        return url;
+    }
 }

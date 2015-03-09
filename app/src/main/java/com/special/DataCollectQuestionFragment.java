@@ -74,7 +74,7 @@ public class DataCollectQuestionFragment extends Fragment {
                     for (Datapoint dp : dps) {
                         dp.addAnswer("");
                     }
-                    populateTable();
+                    //populateTable();
                 }
             });
         }
@@ -95,7 +95,7 @@ public class DataCollectQuestionFragment extends Fragment {
 
     // Populates the question views
     private void populateTable() {
-        table.removeAllViews();
+        //table.removeAllViews();
         ArrayList<Datapoint> points = question.getDataPoints();
         int numAnswers = 1;
         if (question.getMultiUse() && !points.isEmpty()) {

@@ -88,6 +88,7 @@ public class SyncFragment extends Fragment {
                             }
                         }
                         DownloadData.downloadToSync(login,getActivity().getBaseContext());
+                        // Download and merge question sets
                         DownloadData.downloadTempQuestions();
                         try {
                             CRUDFlinger.merge(CRUDFlinger.getTempQuestionSets(), CRUDFlinger.getQuestionSets());
@@ -95,6 +96,14 @@ public class SyncFragment extends Fragment {
                         }catch (Exception e) {
                             System.out.println("There was an exception merging questions");
                         }
+
+                        // Download and merge notes
+//                        DownloadData.downloadTempNotes();
+//                        try {
+//                            CRUDFlinger.merge(CRUDFlinger.getTempNotes(), CRUDFlinger.getNotes());
+//                        }catch (Exception e) {
+//                            System.out.println("There was an exception merging notes");
+//                        }
 
                         try{
                             region = CRUDFlinger.merge(CRUDFlinger.getTempRegion(), CRUDFlinger.getRegion());
@@ -105,6 +114,7 @@ public class SyncFragment extends Fragment {
                                 syncUp.uploadAreas();
                                 syncUp.uploadHouses();
                                 syncUp.uploadQuestions();
+                                syncUp.uploadNotes();
 
                                 CRUDFlinger.saveRegion();
                             }catch (JSONException e){return;}

@@ -12,6 +12,7 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
+import org.rbdc.sra.objects.Note;
 import org.rbdc.sra.objects.Nutrition;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
@@ -33,11 +34,21 @@ public class SyncUpload {
 
     public void uploadQuestions() {
         Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/question sets");
+        //String url = UrlBuilder.buildHouseUrl("question sets");
+        //Firebase base = new Firebase(url);
         // For each qs, create a new node with the ID as the name
         for(QuestionSet qs : CRUDFlinger.getQuestionSets()) {
             base.child(qs.getqSetId()).setValue(qs);
         }
         //base.setValue(CRUDFlinger.getQuestionSets());
+    }
+
+    public void uploadNotes() {
+        //String url = UrlBuilder.buildHouseUrl("notes");
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/notes");
+        for (Note note : CRUDFlinger.getNotes()) {
+            base.child(note.getNoteID()).setValue(note);
+        }
     }
 
     public void uploadAreas(){

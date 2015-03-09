@@ -330,6 +330,7 @@ public class CRUDFlinger {
     /******************************* Notes Stuff *********************************/
 
     private static ArrayList<Note> notes = null;
+    private static ArrayList<Note> tempNotes = null;
 
     // Get Notes
     public static ArrayList<Note> getNotes() {
@@ -343,11 +344,6 @@ public class CRUDFlinger {
 
         return notes.get(pos);
     }
-
-    // Edit a Note
-    //
-    //
-
 
     // Save Notes
     public static void saveNotes() {
@@ -375,6 +371,13 @@ public class CRUDFlinger {
         notes.add(added_note);
         saveNotes();
     }
+
+    public static void addTempNote(Note added_note){
+        setPreferences();
+        tempNotes.add(added_note);
+    }
+
+    public static ArrayList<Note> getTempNotes() {return tempNotes;}
 
     // Delete Note
     public static void deleteNote(Note deleted_note) {
@@ -419,6 +422,7 @@ public class CRUDFlinger {
     }
 
     /***************************** End Notes Stuff ************************************/
+
 
 
 

@@ -36,6 +36,7 @@ import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.FoodItem;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Note;
 import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.RegionLogin;
 
@@ -225,6 +226,45 @@ public class DownloadData {
             }
         });
 
+    }
+
+    public static void downloadTempNotes() {
+        Firebase fbNotes = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/"+organization+"/notes");
+        fbNotes.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Note note = data.getValue(Note.class);
+
+                    CRUDFlinger.addTempNote(note);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public static void downloadNotes() {
+        String url = UrlBuilder.buildNotesUrl();
+        Firebase fbNotes = new Firebase(url);
+        fbNotes.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Note note = data.getValue(Note.class);
+
+                    CRUDFlinger.addNote(note);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public static HashMap buildMap(String json) throws IOException {

@@ -116,11 +116,12 @@ public class NotesFragment extends Fragment {
         });
     }
 
+    // This gets the note data for the ListItem object Type
     private ArrayList<ListItem> getListData(){
         ArrayList<ListItem> listData = new ArrayList<ListItem>();
 
         for (Note note: CRUDFlinger.getNotes()) {
-            listData.add(new ListItem(R.drawable.ic_like,"Title: " + note.getNoteTitle(),"Updated: " + note.getDate(),null,null));
+            listData.add(new ListItem(R.drawable.ic_like,"Title: " + note.getNoteTitle(),"Updated: " + note.getDateUpdated(),null,null));
         }
         return listData;
     }

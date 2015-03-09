@@ -167,6 +167,8 @@ public class Login extends Activity {
                                          user.commit();
                                          Firebase.setAndroidContext(getBaseContext());
                                          DownloadData.downloadQuestions();
+                                         //download notes
+                                         DownloadData.downloadNotes();
                                          DownloadData.downloadGoToDash(info, getBaseContext());
 
 
