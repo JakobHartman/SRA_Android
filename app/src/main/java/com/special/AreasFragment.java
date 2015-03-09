@@ -5,12 +5,13 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,7 @@ public class AreasFragment extends Fragment {
     //Views & Widgets
     private View parentView;
     private UISwipableList listView;
-    private TransitionListAdapter mAdapter;
+    public TransitionListAdapter mAdapter;
     private ResideMenu resideMenu;
     private Button button;
     Button btn, btnCancel;
@@ -196,6 +197,7 @@ public class AreasFragment extends Fragment {
         else if (navigation.equals("area")) {
             // Lists Areas
             mAdapter = new TransitionListAdapter(getActivity(), listArea());
+            mAdapter.notifyDataSetChanged();
             listView.setActionLayout(R.id.hidden);
             listView.setItemLayout(R.id.front_layout);
             listView.setAdapter(mAdapter);
@@ -307,10 +309,10 @@ public class AreasFragment extends Fragment {
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final Spinner regionText = (Spinner) dialog.findViewById(R.id.spinner);
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
-        ArrayList<String> regions = new ArrayList<String>();
+        ArrayList<String> regions = new ArrayList<>();
         regions.add("Select Region");
         regions.addAll(loginObject.getSiteLogin().getRegionNames());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,regions);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,regions);
         regionText.setAdapter(adapter);
 
         btn = (Button) dialog.findViewById(R.id.btn);
@@ -565,7 +567,7 @@ public class AreasFragment extends Fragment {
     }
 
     private ArrayList<ListItem> listArea(){
-        ArrayList<ListItem> listData = new ArrayList<ListItem>();
+        ArrayList<ListItem> listData = new ArrayList<>();
         for(Area area : CRUDFlinger.getAreas()){
 
             if (area.getImageCollection().size() > 0) {
@@ -641,4 +643,24 @@ public class AreasFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("","restarted");
+        switch (navigation){
+            case "area":
+                mAdapter = new TransitionListAdapter(getActivity(),listArea());
+                break;
+            case "household":
+                mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(areaId));
+                break;
+            case "member":
+                mAdapter = new TransitionListAdapter(getActivity(),listMembers(areaId,householdId));
+            default:
+                mAdapter = new TransitionListAdapter(getActivity(),listArea());
+        }
+        listView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
+    }
 }

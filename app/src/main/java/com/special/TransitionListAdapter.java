@@ -53,7 +53,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-class TransitionListAdapter extends BaseAdapter {
+public class TransitionListAdapter extends BaseAdapter {
 	
 	   ViewHolder viewHolder;
         private ArrayList<ListItem> mItems = new ArrayList<>();
