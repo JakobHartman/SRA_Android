@@ -321,7 +321,7 @@ public class QuestionsFragment extends Fragment {
     private void openQuestionDialog(final Question q) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_dialog);
-        alert.setCancelable(false);
+        alert.setCancelable(true);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 

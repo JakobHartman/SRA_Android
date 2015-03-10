@@ -72,7 +72,7 @@ public class SyncFragment extends Fragment {
                                     questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
                                 }
                                 catch(NullPointerException e){
-                                  //
+
                                 }
                                 if(questions != null) {
                                     for (Question question : questions) {

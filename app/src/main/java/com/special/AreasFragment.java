@@ -257,16 +257,6 @@ public class AreasFragment extends Fragment {
             }
         });
 
-/**********************Testing*****************************/
-        // Testing note creation
-        if (notes_list.isEmpty()) {
-            System.out.println("no notes found");
-        } else {
-            for (Note note : notes_list) {
-                System.out.println(note.noteType);
-            }
-        }
-/*********************************************************/
 
     }
 
@@ -298,6 +288,8 @@ public class AreasFragment extends Fragment {
         noteButton.setVisibility(View.VISIBLE);
 
     }
+
+    /****************** add Area ***********************/
 
     private void addArea(){
         dialog = new Dialog(getActivity(),
@@ -357,6 +349,8 @@ public class AreasFragment extends Fragment {
         dialog.show();
     }
 
+    /************************* add Household *******************************/
+
     private void addHousehold(){
         dialog = new Dialog(getActivity(),
                 android.R.style.Theme_Translucent);
@@ -411,6 +405,8 @@ public class AreasFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
         dialog.show();
     }
+
+    /************************ add Member ******************************/
 
     private void addMember(){
         final Member member = new Member();
@@ -488,6 +484,8 @@ public class AreasFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
         dialog.show();
     }
+
+    /**************************** add Member with householdID *********************/
 
     private void addMember(final int householdID){
         final Member member = new Member();
@@ -568,6 +566,8 @@ public class AreasFragment extends Fragment {
         dialog.show();
     }
 
+    /********************** list Area *********************************/
+
     private ArrayList<ListItem> listArea(){
         ArrayList<ListItem> listData = new ArrayList<>();
         for(Area area : CRUDFlinger.getAreas()){
@@ -585,6 +585,8 @@ public class AreasFragment extends Fragment {
         return listData;
     }
 
+    /********************** list Households *********************************/
+
     private ArrayList<ListItem> listHouseholds(int pos){
         ArrayList<ListItem>listData = new ArrayList<ListItem>();
         for(Household households : CRUDFlinger.getAreas().get(pos).getResources()){
@@ -600,6 +602,9 @@ public class AreasFragment extends Fragment {
         }
         return listData;
     }
+
+    /********************** list Members *********************************/
+
 
     private ArrayList<ListItem> listMembers(int areaPos,int householdPos){
         ArrayList<ListItem>listData = new ArrayList<>();

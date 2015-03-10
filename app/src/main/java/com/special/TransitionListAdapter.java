@@ -237,7 +237,10 @@ public class TransitionListAdapter extends BaseAdapter {
             return index;
         }
 
-        private void deleteListItemArea(final int position){
+    /**************************** delete List Item Area **********************************/
+
+
+    private void deleteListItemArea(final int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setTitle("Delete Community: " + CRUDFlinger.getAreas().get(position).getName());
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -260,7 +263,9 @@ public class TransitionListAdapter extends BaseAdapter {
             dialog.show();
         }
 
-        private void deleteListItemHousehold(final int area,final int position){
+    /**************************** delete List Item Household **********************************/
+
+    private void deleteListItemHousehold(final int area,final int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setTitle("Delete household: " + CRUDFlinger.getAreas().get(area).getResources().get(position).getName());
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -284,7 +289,9 @@ public class TransitionListAdapter extends BaseAdapter {
 
         }
 
-        private void deleteListItemMember(final int area,final int house,final int position) {
+    /**************************** delete List Item Member **********************************/
+
+    private void deleteListItemMember(final int area,final int house,final int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setTitle("Delete member: " + CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(position).getName());
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -307,7 +314,15 @@ public class TransitionListAdapter extends BaseAdapter {
             dialog.show();
         }
 
-        public void editListItemArea(final int position){
+    /**************************** delete Note **********************************/
+
+        private void deleteNote(final int position, final int noteID) {
+
+        }
+
+    /**************************** edit List Item Area **********************************/
+
+    public void editListItemArea(final int position){
             DeleteRecord.addArea(CRUDFlinger.getAreas().get(position));
             final Dialog dialog = new Dialog(mContext,
                     android.R.style.Theme_Translucent);
@@ -368,7 +383,9 @@ public class TransitionListAdapter extends BaseAdapter {
             dialog.show();
         }
 
-        public void editListItemHousehold(final int position,final int house){
+    /**************************** delete Note **********************************/
+
+    public void editListItemHousehold(final int position,final int house){
             DeleteRecord.addHousehold(CRUDFlinger.getAreas().get(position).getResources().get(house));
             final Dialog dialog = new Dialog(mContext,
                     android.R.style.Theme_Translucent);
