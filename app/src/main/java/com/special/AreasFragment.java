@@ -176,6 +176,7 @@ public class AreasFragment extends Fragment {
             args = getArguments();
             if (!args.isEmpty()) {
                 navigation = "members";
+
             }
         } catch (Exception e) {//
         }
@@ -187,7 +188,6 @@ public class AreasFragment extends Fragment {
     //
     public void initView(){
         if (navigation.equals("members")) {
-
             householdId = args.getInt("Household Id");
             areaId = args.getInt("Area Index");
             memberView(areaId,householdId);
@@ -268,6 +268,9 @@ public class AreasFragment extends Fragment {
         title.setText(listHouseholds(areaId).get(householdId).getTitle());
         mAdapter = new TransitionListAdapter(getActivity(), listMembers(areaId, householdId));
         listView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        System.out.println("Inside the member view");
+
         button.setText("Add Member");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -649,25 +652,4 @@ public class AreasFragment extends Fragment {
         return time;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i("","restarted");
-        switch (navigation){
-            case "area":
-                mAdapter = new TransitionListAdapter(getActivity(),listArea());
-                break;
-            case "household":
-                mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(areaId));
-                break;
-            case "member":
-                mAdapter = new TransitionListAdapter(getActivity(),listMembers(areaId,householdId));
-            default:
-                mAdapter = new TransitionListAdapter(getActivity(),listArea());
-        }
-        listView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
-
-    }
 }

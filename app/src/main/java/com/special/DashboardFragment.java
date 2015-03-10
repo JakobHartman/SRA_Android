@@ -83,7 +83,7 @@ public class DashboardFragment extends Fragment {
                     goToHouse.setArguments(args);
 
                     // Change the fragment
-                    getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse, "areas")
+                    getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse, "household")
                             .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                             .addToBackStack(null).commit();
                 }
