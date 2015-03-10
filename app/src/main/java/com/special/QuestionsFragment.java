@@ -122,6 +122,9 @@ public class QuestionsFragment extends Fragment {
 
     private void addQuestionSet() {
         QuestionSet qs = new QuestionSet("", "","");
+
+        // This shouldn't be happening until
+        // the user has actually created the qs
         CRUDFlinger.addQuestionSet(qs);
         saveQuestionSets();
         openQuestionSetDialog(qs);
