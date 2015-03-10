@@ -96,7 +96,7 @@ public class QuestionsFragment extends Fragment {
         questionSetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
-                openQuestionSetDialog(questionSets.get(i));
+                openQuestionSetDialog(questionSets.get(i),true);
             }
         });
     }
@@ -122,12 +122,7 @@ public class QuestionsFragment extends Fragment {
 
     private void addQuestionSet() {
         QuestionSet qs = new QuestionSet("", "","");
-
-        // This shouldn't be happening until
-        // the user has actually created the qs
-        CRUDFlinger.addQuestionSet(qs);
-        saveQuestionSets();
-        openQuestionSetDialog(qs);
+        openQuestionSetDialog(qs, false);
     }
 
     private void removeQuestionSet(int position) {
@@ -141,10 +136,10 @@ public class QuestionsFragment extends Fragment {
     }
     // Opens the dialog for editing or viewing a question set
     //
-    private void openQuestionSetDialog(final QuestionSet qSet) {
+    private void openQuestionSetDialog(final QuestionSet qSet, final boolean updating) {
         final Dialog alert = new Dialog(getActivity());
         alert.setContentView(R.layout.edit_question_set_dialog);
-        alert.setCancelable(false);
+        alert.setCancelable(true);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
@@ -199,6 +194,9 @@ public class QuestionsFragment extends Fragment {
                 String typeText = selectedButton.getText().toString();
                 System.out.println("Type selected: "+ typeText);
                 qSet.setType(typeText);
+                if (!updating) {
+                    CRUDFlinger.addQuestionSet(qSet);
+                }
                 saveQuestionSets();
                 alert.dismiss();
             }
