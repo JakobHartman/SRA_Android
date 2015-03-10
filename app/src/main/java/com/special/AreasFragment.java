@@ -314,7 +314,7 @@ public class AreasFragment extends Fragment {
         ArrayList<String> regions = new ArrayList<>();
         regions.add("Select Region");
         regions.addAll(loginObject.getSiteLogin().getRegionNames());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,regions);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),R.layout.spinner_dropdown_item,regions);
         regionText.setAdapter(adapter);
 
         btn = (Button) dialog.findViewById(R.id.btn);
