@@ -19,7 +19,6 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.Asyncer;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
@@ -72,7 +71,7 @@ public class SyncFragment extends Fragment {
                                     questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
                                 }
                                 catch(NullPointerException e){
-
+                                    //
                                 }
                                 if(questions != null) {
                                     for (Question question : questions) {

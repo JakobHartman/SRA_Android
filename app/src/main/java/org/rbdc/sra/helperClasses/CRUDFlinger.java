@@ -88,7 +88,6 @@ public class CRUDFlinger {
 
     public static void save(String key,int integer){
         setPreferences();
-
         saver.putInt(key,integer);
         saver.commit();
 
@@ -110,6 +109,7 @@ public class CRUDFlinger {
 
 
     public static void commit(){
+        setPreferences();
         saver.commit();
     }
 
@@ -358,6 +358,12 @@ public class CRUDFlinger {
         if (notes == null) { loadNotes();}
 
         return notes.get(pos);
+    }
+
+    public static void removeNotes(){
+        setPreferences();
+        saver.remove("NotesBank");
+        saver.commit();
     }
 
     // Save Notes
