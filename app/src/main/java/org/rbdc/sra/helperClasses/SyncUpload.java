@@ -1,6 +1,7 @@
 package org.rbdc.sra.helperClasses;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -126,6 +127,14 @@ public class SyncUpload {
                 }
             }
         }
+
+        for (Note note : DeleteRecord.getNotes()) {
+            Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/notes/" + note.getNoteID());
+            Log.i("Delete Record: ", "remove at " + base);
+            base.removeValue();
+            CRUDFlinger.getNotes().remove(note);
+        }
+
         DeleteRecord.initData();
     }
 

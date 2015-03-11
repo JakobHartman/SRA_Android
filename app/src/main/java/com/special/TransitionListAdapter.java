@@ -16,6 +16,7 @@ import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.ImageData;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
+import org.rbdc.sra.objects.Note;
 
 import com.special.utils.UICircularImage;
 import com.special.utils.UISwipableList;
@@ -197,6 +198,10 @@ public class TransitionListAdapter extends BaseAdapter {
                         deleteListItemHousehold(areaId, position);
                         UISwipableList list = (UISwipableList)parent;
                         list.onTouchEvent(buildEvent());
+                    }else if ((desc.split("\\s++")[0]).matches("Updated:")) {
+                        deleteListItemNote(position);
+                        UISwipableList list = (UISwipableList)parent;
+                        list.onTouchEvent(buildEvent());
                     }else {
                         deleteListItemMember(areaId, houseId, position);
                         UISwipableList list = (UISwipableList)parent;
@@ -316,9 +321,29 @@ public class TransitionListAdapter extends BaseAdapter {
 
     /**************************** delete Note **********************************/
 
-        private void deleteNote(final int position, final int noteID) {
+    public void deleteListItemNote(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Delete Note: " + CRUDFlinger.getNote(position).getNoteTitle());
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                DeleteRecord.addNote(CRUDFlinger.getNote(position));
+                CRUDFlinger.getNotes().remove(position);
+                updateNotes(position);
+                CRUDFlinger.saveNotes();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
-        }
+    }
 
     /**************************** edit List Item Area **********************************/
 
@@ -555,6 +580,14 @@ public class TransitionListAdapter extends BaseAdapter {
             return listData;
         }
 
+        private ArrayList<ListItem> listNotes(int position) {
+            ArrayList<ListItem> listData = new ArrayList<>();
+            for (Note note: CRUDFlinger.getNotes()) {
+                listData.add(new ListItem(R.drawable.ic_like, "Title: " + note.getNoteTitle(),"Updated: " + note.getDateUpdated(),null,null,null));
+            }
+            return listData;
+        }
+
         public void updateArea(){
             this.mItems = listArea();
             this.notifyDataSetChanged();
@@ -567,6 +600,11 @@ public class TransitionListAdapter extends BaseAdapter {
 
         public void updateMember(int area,int house){
             this.mItems = listMembers(area,house);
+            this.notifyDataSetChanged();
+        }
+
+        public void updateNotes(int position) {
+            this.mItems = listNotes(position);
             this.notifyDataSetChanged();
         }
 
