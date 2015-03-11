@@ -128,14 +128,27 @@ public class SyncUpload {
             }
         }
 
-        for (Note note : DeleteRecord.getNotes()) {
-            Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/notes/" + note.getNoteID());
-            Log.i("Delete Record: ", "remove at " + base);
-            base.removeValue();
-            CRUDFlinger.getNotes().remove(note);
-        }
+        Firebase fbnotes = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/notes");
+        fbnotes.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (Note note : DeleteRecord.getNotes()) {
+                    Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/notes/" + note.getNoteID());
+                    if (dataSnapshot.getChildrenCount() > 1) {
+                        Log.i("Delete Record: ", "remove at " + base);
+                        base.removeValue();
+                        CRUDFlinger.getNotes().remove(note);
+                    }
+                }
+                DeleteRecord.initData();
+            }
 
-        DeleteRecord.initData();
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
     }
 
 }
