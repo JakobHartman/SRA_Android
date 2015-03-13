@@ -34,11 +34,21 @@ public class CRUDFlinger {
     private static Region region = null;
     private static Application application = null;
     private static Region tempRegion = null;
-    private static ArrayList<QuestionSet> tempQuestionSets = new ArrayList<QuestionSet>();
+    private static ArrayList<QuestionSet> tempQuestionSets = new ArrayList<>();
+    private static LoginObject user;
 
     protected CRUDFlinger(){
 
     }
+
+    public static LoginObject getUser() {
+        return user;
+    }
+
+    public static void setUser(){
+        CRUDFlinger.user = CRUDFlinger.load("User",LoginObject.class);
+    }
+
 
     public static CRUDFlinger getInstance() {
 
@@ -71,6 +81,7 @@ public class CRUDFlinger {
             System.out.println("hello crud" + application);
             CRUDFlinger.loader = application.getSharedPreferences("AppPrefs", application.MODE_PRIVATE);
             CRUDFlinger.saver = application.getSharedPreferences("AppPrefs", application.MODE_PRIVATE).edit();
+
         }
 
     }

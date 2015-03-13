@@ -54,6 +54,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         changeFragment(new DashboardFragment(), "dashboard");
         title = (TextView)findViewById(R.id.title);
         title.setText("Dashboard");
+        CRUDFlinger.setUser();
     }
 
     private void setUpMenu() {

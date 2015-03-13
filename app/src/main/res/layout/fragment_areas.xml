@@ -18,14 +18,14 @@
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Community"
             style="@style/UIButtonInverse"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_toRightOf="@+id/interview_button"
+            android:layout_toEndOf="@+id/interview_button" />
 
         <Button
             android:id="@+id/new_note_button"
@@ -34,24 +34,21 @@
             android:text="New Note"
             style="@style/UIButtonInverse"
             android:layout_gravity="left|top"
-            android:layout_above="@+id/button3"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@+id/button3"
+            android:layout_toEndOf="@+id/button3" />
 
         <Button
             android:id="@+id/interview_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="Questions"
             style="@style/UIButtonInverse"
             android:layout_gravity="right|top"
-            android:layout_above="@+id/new_note_button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentBottom="true" />
 
         <com.special.utils.UISwipableList
             android:id="@+id/listView"
