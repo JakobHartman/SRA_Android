@@ -133,6 +133,7 @@ public class Login extends Activity {
                                      DataSnapshot role = ld.child("roles");
                                      DataSnapshot country = ld.child("countries");
                                      final LoginObject info = new LoginObject();
+                                     info.setEmail(username);
                                      info.setUsername(username);
                                      info.setLoggedIn(true);
                                      for (DataSnapshot rs : country.getChildren()) {
