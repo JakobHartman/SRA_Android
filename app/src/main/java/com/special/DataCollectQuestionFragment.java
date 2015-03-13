@@ -80,6 +80,7 @@ public class DataCollectQuestionFragment extends Fragment {
         }
 
         // List of data points
+        // table is the root linear layout
         table = (LinearLayout) rootView.findViewById(R.id.layout);
         populateTable();
 
@@ -95,7 +96,7 @@ public class DataCollectQuestionFragment extends Fragment {
 
     // Populates the question views
     private void populateTable() {
-        //table.removeAllViews();
+        table.removeAllViews();
         ArrayList<Datapoint> points = question.getDataPoints();
         int numAnswers = 1;
         if (question.getMultiUse() && !points.isEmpty()) {
@@ -113,7 +114,7 @@ public class DataCollectQuestionFragment extends Fragment {
             for (final Datapoint dp : points) {
                 final ArrayList<String> answers = dp.getAnswers();
                 final LinearLayout row = new LinearLayout(getActivity());
-                //questionContainer.addView(row);
+                questionContainer.addView(row);
                 row.setOrientation(LinearLayout.HORIZONTAL);
                 String answer = "";
                 if (answerPosition < answers.size()) {
@@ -198,10 +199,17 @@ public class DataCollectQuestionFragment extends Fragment {
                     //final Spinner options = new Spinner(getActivity());
                     final Spinner options = new Spinner(getActivity(), Spinner.MODE_DROPDOWN);
 
-                    ArrayList<String> list = dp.getOptions();
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add("");
+                    for(String option : dp.getOptions()) {
+                        list.add(option);
+                    }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                             android.R.layout.simple_list_item_1, list);
                     options.setAdapter(adapter);
+                    if (answer == null) {
+                        answer = "";
+                    }
                     options.setSelection(list.indexOf(answer));
                     options.setOnItemSelectedListener(new OnItemSelectedListener() {
                         @Override
