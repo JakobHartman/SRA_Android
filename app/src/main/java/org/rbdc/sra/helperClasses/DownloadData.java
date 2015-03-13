@@ -247,26 +247,30 @@ public class DownloadData {
         });
     }
 
-    public static void downloadNotes() {
+    public static void downloadNotes(final String username) {
+        try {
 
-        Firebase fbNotes = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/notes");
-        fbNotes.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Note note = data.getValue(Note.class);
-                    if (note.getAuthor() == CRUDFlinger.getUser().getUsername()) {
-                        System.out.println("Note downloaded: " + note.getNoteTitle());
-                        CRUDFlinger.addNote(note);
+            Firebase fbNotes = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + organization + "/notes");
+            fbNotes.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Note note = data.getValue(Note.class);
+                        if (note.getAuthor().equals(username)) {
+                            System.out.println("Note downloaded: " + note.getNoteTitle());
+                            CRUDFlinger.addNote(note);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static HashMap buildMap(String json) throws IOException {

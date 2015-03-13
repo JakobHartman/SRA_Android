@@ -74,7 +74,7 @@ public class DataCollectQuestionFragment extends Fragment {
                     for (Datapoint dp : dps) {
                         dp.addAnswer("");
                     }
-                    //populateTable();
+                    populateTable();
                 }
             });
         }
