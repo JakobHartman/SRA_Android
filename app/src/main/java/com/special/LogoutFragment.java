@@ -29,6 +29,7 @@ public class LogoutFragment extends Fragment {
         login.setLoggedIn(false);
 
         CRUDFlinger.clearCRUD();
+        CRUDFlinger.removeNotes();
         CRUDFlinger.setRegion(new Region());
         Intent intent = new Intent(parentView.getContext(),Login.class);
         startActivity(intent);

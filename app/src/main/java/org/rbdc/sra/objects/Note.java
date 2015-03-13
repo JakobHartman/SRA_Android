@@ -1,5 +1,7 @@
 package org.rbdc.sra.objects;
 
+import org.rbdc.sra.helperClasses.CRUDFlinger;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,7 +30,7 @@ public class Note implements Serializable {
         this.noteContents = noteContents;
         // Need to add author to CRUDflinger so we can store it here
         // Need a temporary author in order for it do be stored in Firebase
-        this.author = "John Doe";
+        this.author = CRUDFlinger.getUser().getUsername();
         this.householdID = " ";
         this.areaName = area;
         this.noteID = "id_" + Calendar.getInstance().getTimeInMillis();
@@ -42,9 +44,7 @@ public class Note implements Serializable {
 
         this.noteTitle = title;
         this.noteContents = noteContents;
-        // Need to add author to CRUDflinger so we can store it here
-        // Need a temporary author in order for it do be stored in Firebase
-        this.author = "John Doe";
+        this.author = CRUDFlinger.getUser().getUsername();
 
         this.areaName = area;
         this.householdID = householdId;

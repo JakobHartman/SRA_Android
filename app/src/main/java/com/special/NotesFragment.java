@@ -2,6 +2,7 @@ package com.special;
 
 import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -65,8 +66,10 @@ public class NotesFragment extends Fragment {
                 dialog.setContentView(R.layout.view_note);
                 TextView title = (TextView) dialog.findViewById(R.id.noteTitle);
                 title.setText(theNote.getNoteTitle());
+                title.setTextColor(Color.BLACK);
                 TextView text = (TextView) dialog.findViewById(R.id.note_text);
                 text.setText(theNote.getNoteContents());
+                text.setTextColor(Color.BLACK);
 
                 dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));

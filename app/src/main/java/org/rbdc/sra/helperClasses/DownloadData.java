@@ -255,8 +255,10 @@ public class DownloadData {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     Note note = data.getValue(Note.class);
-                    System.out.println("Note downloaded: " + note.getNoteTitle());
-                    CRUDFlinger.addNote(note);
+                    if (note.getAuthor() == CRUDFlinger.getUser().getUsername()) {
+                        System.out.println("Note downloaded: " + note.getNoteTitle());
+                        CRUDFlinger.addNote(note);
+                    }
                 }
             }
 
