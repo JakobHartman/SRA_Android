@@ -161,6 +161,7 @@ public class Login extends Activity {
                                          info.addToRoles(Roles);
                                      }
                                      String userString;
+                                     CRUDFlinger.setUser(info);
                                      SharedPreferences.Editor user = getSharedPreferences("AppPrefs", MODE_PRIVATE).edit();
                                      try {
                                          userString = JSONUtilities.stringify(info);

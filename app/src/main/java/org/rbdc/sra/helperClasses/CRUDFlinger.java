@@ -48,6 +48,9 @@ public class CRUDFlinger {
     public static void setUser(){
         CRUDFlinger.user = CRUDFlinger.load("User",LoginObject.class);
     }
+    public static void setUser(LoginObject login){
+        CRUDFlinger.user = login;
+    }
 
 
     public static CRUDFlinger getInstance() {
