@@ -157,7 +157,16 @@ public class HouseholdFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 // lists members
-                householdId = position;
+                MemberFragment goToHouse = new MemberFragment();
+                Bundle args = new Bundle();
+                args.putInt("Area Index",areaId);
+                args.putInt("House Index",position);
+                goToHouse.setArguments(args);
+
+                // Change the fragment
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse)
+                        .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null).commit();
             }
         });
 
