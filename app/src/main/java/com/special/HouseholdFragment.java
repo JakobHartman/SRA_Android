@@ -82,71 +82,71 @@ public class HouseholdFragment extends Fragment {
         title = (TextView) getActivity().findViewById(R.id.title);
         listView = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
-//        interviewButton = (Button) parentView.findViewById(R.id.interview_button);
-//        noteButton = (Button) parentView.findViewById(R.id.new_note_button);
+        interviewButton = (Button) parentView.findViewById(R.id.interview_button);
+        noteButton = (Button) parentView.findViewById(R.id.new_note_button);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
 
         // Questions button
-//        interviewButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), InterviewActivity.class);
-//                intent.putExtra("areaID", areaId);
-//                intent.putExtra("householdID", householdId);
-//                intent.putExtra("interviewType", "area");
-//                startActivity(intent);
-//            }
-//        });
+        interviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), InterviewActivity.class);
+                intent.putExtra("areaID", areaId);
+                intent.putExtra("householdID", householdId);
+                intent.putExtra("interviewType", "area");
+                startActivity(intent);
+            }
+        });
 
         // New Note Button
-//        noteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog = new Dialog(getActivity(),
-//                        android.R.style.Theme_Translucent);
-//                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-//                dialog.setTitle("New Note");
-//                dialog.setCancelable(true);
-//                dialog.setContentView(R.layout.new_note);
-//                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-//
-//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
-//                dialog.show();
-//
-//                // Cancel Button
-//                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
-//                note_cancel.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//                // Save Button
-//                Button note_save = (Button) dialog.findViewById(R.id.note_save);
-//                note_save.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        // Create a new note
-//                        EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
-//                        EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
-//                        Note newNote;
-//
-//                            newNote = new Note("Household", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
-//                            // Add note to the list
-//                            System.out.println("Area name for the Note = "+CRUDFlinger.getAreas().get(areaId).getName());
-//                            notes_list.add(newNote);
-//                            // Notify Note created
-//                            Toast toast = new Toast(getActivity());
-//                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
-//                            CRUDFlinger.addNote(newNote);
-//                        // Close the view
-//                        dialog.cancel();
-//                    }
-//                });
-//            }
-//        });
+        noteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog = new Dialog(getActivity(),
+                        android.R.style.Theme_Translucent);
+                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+                dialog.setTitle("New Note");
+                dialog.setCancelable(true);
+                dialog.setContentView(R.layout.new_note);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
+                dialog.show();
+
+                // Cancel Button
+                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
+                note_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+
+                // Save Button
+                Button note_save = (Button) dialog.findViewById(R.id.note_save);
+                note_save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Create a new note
+                        EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
+                        EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
+                        Note newNote;
+
+                            newNote = new Note("Household", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
+                            // Add note to the list
+                            System.out.println("Area name for the Note = "+CRUDFlinger.getAreas().get(areaId).getName());
+                            notes_list.add(newNote);
+                            // Notify Note created
+                            Toast toast = new Toast(getActivity());
+                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+                            CRUDFlinger.addNote(newNote);
+                        // Close the view
+                        dialog.cancel();
+                    }
+                });
+            }
+        });
 
         title.setText("Households");
         mAdapter = new TransitionListAdapter(getActivity(), listHouseholds(areaId));
@@ -230,86 +230,6 @@ public class HouseholdFragment extends Fragment {
         dialog.show();
     }
 
-    /************************ add Member ******************************/
-
-    private void addMember(){
-        final Member member = new Member();
-        dialog = new Dialog(getActivity(),
-                android.R.style.Theme_Translucent);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.layout_member_dialog);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
-        final Spinner relationship = (Spinner)dialog.findViewById(R.id.spinner1);
-        final DatePicker datePicker = (DatePicker)dialog.findViewById(R.id.datePicker);
-        final Spinner education = (Spinner)dialog.findViewById(R.id.spinner2);
-        final UITabs gender = (UITabs)dialog.findViewById(R.id.toggle);
-        final UITabs school = (UITabs)dialog.findViewById(R.id.toggle3);
-
-
-        btn = (Button) dialog.findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast toast = new Toast(getActivity());
-                if (areaText.getText().toString().matches("")) {
-                    toast.makeText(getActivity(),"Please Enter A Valid Name",Toast.LENGTH_SHORT).show();
-                } else if (relationship.getSelectedItemPosition() == 0) {
-                    toast.makeText(getActivity(),"Please Select A Valid Relationship",Toast.LENGTH_SHORT).show();
-                } else if (education.getSelectedItemPosition() == 0) {
-                    toast.makeText(getActivity(),"Please Select A Valid Education Level",Toast.LENGTH_SHORT).show();
-                } else {
-                    member.setName(areaText.getText().toString());
-                    member.setRelationship(relationship.getSelectedItem().toString());
-                    member.setBirthday(getDateFromDatePicker(datePicker));
-                    member.setEducationLevel(education.getSelectedItem().toString());
-                    int genderSelected = gender.getCheckedRadioButtonId();
-                    RadioButton gSelected = (RadioButton)gender.findViewById(genderSelected);
-                    member.setGender(gSelected.getText().toString());
-                    int schoolSelected = school.getCheckedRadioButtonId();
-                    RadioButton sSelected = (RadioButton)school.findViewById(schoolSelected);
-                    boolean isInSchool;
-                    switch (sSelected.getText().toString()){
-                        case "Yes":
-                            isInSchool = true;
-                            break;
-                        case "No":
-                            isInSchool = false;
-                            break;
-                        default:
-                            isInSchool = false;
-                            break;
-                    }
-                    member.setInschool(isInSchool);
-                    dialog.cancel();
-
-                    CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).addMember(member);
-                    //mAdapter = new TransitionListAdapter(getActivity(),listMembers(areaId,householdId));
-                    listView.setAdapter(mAdapter);
-                    CRUDFlinger.saveRegion();
-                }
-            }
-        });
-
-        btnCancel = (Button) dialog.findViewById(R.id.btncancel);
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-
-        });
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
-        dialog.show();
-    }
-
-    /**************************** add Member with householdID *********************/
 
     private void addMember(final int householdID){
         final Member member = new Member();

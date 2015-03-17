@@ -49,7 +49,6 @@ public class AreasFragment extends Fragment {
     Button btn, btnCancel;
     Dialog dialog;
     private Bundle args;
-    private static int areaId;
     public TextView title;
     private List<Note> notes_list;
 

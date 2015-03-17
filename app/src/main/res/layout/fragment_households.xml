@@ -22,7 +22,7 @@
             android:layout_alignParentBottom="true">
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/interview_button"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
@@ -33,7 +33,7 @@
                 android:layout_alignParentLeft="true" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/new_note_button"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
