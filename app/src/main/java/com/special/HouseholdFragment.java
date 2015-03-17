@@ -1,6 +1,6 @@
 package com.special;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -71,85 +71,83 @@ public class HouseholdFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Get the parentview which is the dashboard
-        parentView = inflater.inflate(R.layout.fragment_areas, container, false);
+        parentView = inflater.inflate(R.layout.fragment_households, container, false);
+        Bundle args = getArguments();
+        if (args  != null && args.containsKey("Area Index")){
+            areaId = args.getInt("Area Index");
+        }
 
         notes_list = new ArrayList<>();
 
         title = (TextView) getActivity().findViewById(R.id.title);
         listView = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
-        interviewButton = (Button) parentView.findViewById(R.id.interview_button);
-        noteButton = (Button) parentView.findViewById(R.id.new_note_button);
+//        interviewButton = (Button) parentView.findViewById(R.id.interview_button);
+//        noteButton = (Button) parentView.findViewById(R.id.new_note_button);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
 
         // Questions button
-        interviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), InterviewActivity.class);
-                intent.putExtra("areaID", areaId);
-                intent.putExtra("householdID", householdId);
-                intent.putExtra("interviewType", "area");
-                startActivity(intent);
-            }
-        });
+//        interviewButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), InterviewActivity.class);
+//                intent.putExtra("areaID", areaId);
+//                intent.putExtra("householdID", householdId);
+//                intent.putExtra("interviewType", "area");
+//                startActivity(intent);
+//            }
+//        });
 
         // New Note Button
-        noteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog = new Dialog(getActivity(),
-                        android.R.style.Theme_Translucent);
-                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-                dialog.setTitle("New Note");
-                dialog.setCancelable(true);
-                dialog.setContentView(R.layout.new_note);
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//        noteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog = new Dialog(getActivity(),
+//                        android.R.style.Theme_Translucent);
+//                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+//                dialog.setTitle("New Note");
+//                dialog.setCancelable(true);
+//                dialog.setContentView(R.layout.new_note);
+//                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//
+//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
+//                dialog.show();
+//
+//                // Cancel Button
+//                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
+//                note_cancel.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//                // Save Button
+//                Button note_save = (Button) dialog.findViewById(R.id.note_save);
+//                note_save.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        // Create a new note
+//                        EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
+//                        EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
+//                        Note newNote;
+//
+//                            newNote = new Note("Household", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
+//                            // Add note to the list
+//                            System.out.println("Area name for the Note = "+CRUDFlinger.getAreas().get(areaId).getName());
+//                            notes_list.add(newNote);
+//                            // Notify Note created
+//                            Toast toast = new Toast(getActivity());
+//                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+//                            CRUDFlinger.addNote(newNote);
+//                        // Close the view
+//                        dialog.cancel();
+//                    }
+//                });
+//            }
+//        });
 
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
-                dialog.show();
-
-                // Cancel Button
-                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
-                note_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.cancel();
-                    }
-                });
-
-                // Save Button
-                Button note_save = (Button) dialog.findViewById(R.id.note_save);
-                note_save.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Create a new note
-                        EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
-                        EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
-                        Note newNote;
-
-                            newNote = new Note("Household", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
-                            // Add note to the list
-                            System.out.println("Area name for the Note = "+CRUDFlinger.getAreas().get(areaId).getName());
-                            notes_list.add(newNote);
-                            // Notify Note created
-                            Toast toast = new Toast(getActivity());
-                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
-                            CRUDFlinger.addNote(newNote);
-                        // Close the view
-                        dialog.cancel();
-                    }
-                });
-            }
-        });
-        return parentView;
-    }
-
-    // Set up for the household View
-    private void householdView(int pos) {
-
-        areaId = pos;
         title.setText("Households");
         mAdapter = new TransitionListAdapter(getActivity(), listHouseholds(areaId));
         listView.setAdapter(mAdapter);
@@ -162,8 +160,7 @@ public class HouseholdFragment extends Fragment {
                 householdId = position;
             }
         });
-        interviewButton.setVisibility(View.VISIBLE);
-        noteButton.setVisibility(View.VISIBLE);
+
 
         button.setText("Add Household");
         button.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +170,7 @@ public class HouseholdFragment extends Fragment {
             }
         });
 
-
+        return parentView;
     }
 
     /************************* add Household *******************************/

@@ -174,7 +174,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         }  else if (areaFrag != null && areaFrag.isVisible()){
             //Toast.makeText(getBaseContext(),"You are in the area frag",Toast.LENGTH_SHORT).show();
             System.out.println("You are in the area frag");
-           
+
         } else if (!resideMenu.isOpened()) {
             resideMenu.openMenu();
         }

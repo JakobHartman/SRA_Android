@@ -79,8 +79,8 @@ public class MemberFragment extends Fragment {
         title = (TextView) getActivity().findViewById(R.id.title);
         listView = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
-        interviewButton = (Button) parentView.findViewById(R.id.interview_button);
-        noteButton = (Button) parentView.findViewById(R.id.new_note_button);
+//        interviewButton = (Button) parentView.findViewById(R.id.interview_button);
+//        noteButton = (Button) parentView.findViewById(R.id.new_note_button);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
 
@@ -106,78 +106,78 @@ public class MemberFragment extends Fragment {
         });
 
         // New Note Button
-        noteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog = new Dialog(getActivity(),
-                        android.R.style.Theme_Translucent);
-                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-                dialog.setTitle("New Note");
-                dialog.setCancelable(true);
-                dialog.setContentView(R.layout.new_note);
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
-                dialog.show();
-
-                // Cancel Button
-                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
-                note_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.cancel();
-                    }
-                });
-
-                // Save Button
-                Button note_save = (Button) dialog.findViewById(R.id.note_save);
-                note_save.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Create a new note
-                        EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
-                        EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
-                        Note newNote;
-
-                        if (navigation.equals("household")) {
-                            newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
-                            // Add note to the list
-                            System.out.println("Area name for the Note = "+CRUDFlinger.getAreas().get(areaId).getName());
-                            notes_list.add(newNote);
-                            // Notify Note created
-                            Toast toast = new Toast(getActivity());
-                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
-                            CRUDFlinger.addNote(newNote);
-                        } else if (navigation.equals("members")) {
-                            newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
-                            // Add note to the list
-                            System.out.println("HouseholdID for the Note = " + CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
-                            notes_list.add(newNote);
-                            // Notify Note created
-                            Toast toast = new Toast(getActivity());
-                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
-                            CRUDFlinger.addNote(newNote);
-                        }
-                        // Close the view
-                        dialog.cancel();
-                    }
-                });
-            }
-        });
-
-        navigation = "area";
-
-        //System.out.println("AreaFrag tag = "+this.getTag());
-
-        // If the fragment is reached via menu, there will be no args
-        try {
-            args = getArguments();
-            if (!args.isEmpty()) {
-                navigation = "members";
-
-            }
-        } catch (Exception e) {//
-        }
+//        noteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog = new Dialog(getActivity(),
+//                        android.R.style.Theme_Translucent);
+//                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+//                dialog.setTitle("New Note");
+//                dialog.setCancelable(true);
+//                dialog.setContentView(R.layout.new_note);
+//                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//
+//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
+//                dialog.show();
+//
+//                // Cancel Button
+//                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
+//                note_cancel.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//                // Save Button
+//                Button note_save = (Button) dialog.findViewById(R.id.note_save);
+//                note_save.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        // Create a new note
+//                        EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
+//                        EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
+//                        Note newNote;
+//
+//                        if (navigation.equals("household")) {
+//                            newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
+//                            // Add note to the list
+//                            System.out.println("Area name for the Note = "+CRUDFlinger.getAreas().get(areaId).getName());
+//                            notes_list.add(newNote);
+//                            // Notify Note created
+//                            Toast toast = new Toast(getActivity());
+//                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+//                            CRUDFlinger.addNote(newNote);
+//                        } else if (navigation.equals("members")) {
+//                            newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
+//                            // Add note to the list
+//                            System.out.println("HouseholdID for the Note = " + CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
+//                            notes_list.add(newNote);
+//                            // Notify Note created
+//                            Toast toast = new Toast(getActivity());
+//                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+//                            CRUDFlinger.addNote(newNote);
+//                        }
+//                        // Close the view
+//                        dialog.cancel();
+//                    }
+//                });
+//            }
+//        });
+//
+//        navigation = "area";
+//
+//        //System.out.println("AreaFrag tag = "+this.getTag());
+//
+//        // If the fragment is reached via menu, there will be no args
+//        try {
+//            args = getArguments();
+//            if (!args.isEmpty()) {
+//                navigation = "members";
+//
+//            }
+//        } catch (Exception e) {//
+//        }
         initView();
 
         return parentView;

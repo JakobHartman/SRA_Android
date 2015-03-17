@@ -1,7 +1,6 @@
 package com.special;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -52,8 +51,6 @@ public class AreasFragment extends Fragment {
     private Bundle args;
     private static int areaId;
     public TextView title;
-    private Button interviewButton;
-    private Button noteButton;
     private List<Note> notes_list;
 
 
@@ -66,8 +63,6 @@ public class AreasFragment extends Fragment {
         title = (TextView) getActivity().findViewById(R.id.title);
         listView = (UISwipableList) parentView.findViewById(R.id.listView);
         button = (Button) parentView.findViewById(R.id.button3);
-        interviewButton = (Button) parentView.findViewById(R.id.interview_button);
-        noteButton = (Button) parentView.findViewById(R.id.new_note_button);
         Dashboard parentActivity = (Dashboard) getActivity();
         resideMenu = parentActivity.getResideMenu();
 
@@ -78,8 +73,6 @@ public class AreasFragment extends Fragment {
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);
-        interviewButton.setVisibility(View.INVISIBLE);
-        noteButton.setVisibility(View.INVISIBLE);
 
 
         button.setText("Add Community");
@@ -93,7 +86,15 @@ public class AreasFragment extends Fragment {
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, final int i, long l) {
+                HouseholdFragment goToHouse = new HouseholdFragment();
+                Bundle args = new Bundle();
+                args.putInt("Area Index",i);
+                goToHouse.setArguments(args);
 
+                // Change the fragment
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse)
+                        .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null).commit();
 
             }
         });
