@@ -174,20 +174,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         }  else if (areaFrag != null && areaFrag.isVisible()){
             //Toast.makeText(getBaseContext(),"You are in the area frag",Toast.LENGTH_SHORT).show();
             System.out.println("You are in the area frag");
-            if (areaFrag.navigation.equals("area")) {
-                resideMenu.openMenu();
-                System.out.println("You are in the areas navigation");
-            } else if (areaFrag.navigation.equals("household")) {
-                areaFrag.navigation = "area";
-                areaFrag.title.setText("Areas");
-                areaFrag.initView();
-                System.out.println("You are in the household navigation");
-            } else if (areaFrag.navigation.equals("members")) {
-                areaFrag.navigation = "household";
-                areaFrag.title.setText("Households");
-                areaFrag.initView();
-                System.out.println("You are in the members navigation");
-            }
+           
         } else if (!resideMenu.isOpened()) {
             resideMenu.openMenu();
         }

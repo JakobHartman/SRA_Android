@@ -42,7 +42,7 @@ public class DashboardFragment extends Fragment {
         CRUDFlinger.setApplication(getActivity().getApplication());
         for (Area area : CRUDFlinger.getAreas()){
             for(Household household : area.getResources()){
-                Log.i("House ID: ",household.getHouseholdID());
+//                Log.i("House ID: ",household.getHouseholdID());
             }
         }
         // get the listview
