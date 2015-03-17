@@ -49,25 +49,24 @@ import org.rbdc.sra.R;
 public class MemberFragment extends Fragment {
 
     //Views & Widgets
-    private View parentView;
+
     private UISwipableList listView;
     public TransitionListAdapter mAdapter;
-    private ResideMenu resideMenu;
-    private Button button;
     Button btn, btnCancel;
     Dialog dialog;
-    public static String navigation;
-    private Bundle args;
     private static int areaId;
     private static int householdId;
     public TextView title;
-    private Button interviewButton;
-    private Button noteButton;
     private List<Note> notes_list;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View parentView;
+        Button interviewButton;
+        Button noteButton;
+        Bundle args;
+        Button button;
         parentView = inflater.inflate(R.layout.fragment_member, container, false);
         args = getArguments();
         if (args  != null && args.containsKey("Area Index")){
@@ -82,7 +81,6 @@ public class MemberFragment extends Fragment {
         interviewButton = (Button) parentView.findViewById(R.id.interview_button);
         noteButton = (Button) parentView.findViewById(R.id.new_note_button);
         Dashboard parentActivity = (Dashboard) getActivity();
-        resideMenu = parentActivity.getResideMenu();
 
         // Questions button
         interviewButton.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +129,7 @@ public class MemberFragment extends Fragment {
                         Note newNote;
 
 
-                        newNote = new Note(navigation, noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
+                        newNote = new Note("Member", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                         // Add note to the list
                         System.out.println("HouseholdID for the Note = " + CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                         notes_list.add(newNote);
