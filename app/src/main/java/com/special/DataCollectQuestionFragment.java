@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -70,10 +71,14 @@ public class DataCollectQuestionFragment extends Fragment {
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // For the question, get all of the data points
                     ArrayList<Datapoint> dps = question.getDataPoints();
+                    // When you add the data point, have it set to null by default
                     for (Datapoint dp : dps) {
                         dp.addAnswer("");
                     }
+
+                    // Redraw the table
                     populateTable();
                 }
             });
@@ -101,6 +106,7 @@ public class DataCollectQuestionFragment extends Fragment {
         int numAnswers = 1;
         if (question.getMultiUse() && !points.isEmpty()) {
             numAnswers = points.get(0).getAnswers().size();
+            Log.i("Multiuse = ", "TRUE");
         }
 
         // Create a Linear Layout container for question
@@ -119,6 +125,9 @@ public class DataCollectQuestionFragment extends Fragment {
                 String answer = "";
                 if (answerPosition < answers.size()) {
                     answer = answers.get(i);
+                    //Testing
+                    Log.i("answers size = ", answers.size() +" ");
+                    Log.i("answer at position " + i + " = ", answers.get(i));
                 }
 
                 TextView label = new TextView(getActivity());
@@ -128,10 +137,15 @@ public class DataCollectQuestionFragment extends Fragment {
                 String dataType = dp.getType();
                 if (dataType.equals(DatapointTypes.TEXT)) {
                     final EditText input = new EditText(getActivity());
+                    Log.i("Data Type = ", "Text");
+                    Log.i("Text answer = ", answer);
 
-                    ViewGroup.LayoutParams params = input.getLayoutParams();
+                    // What is this for??
+                    //ViewGroup.LayoutParams params = input.getLayoutParams();
 
+                    input.setText(answer);
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
+
                     input.addTextChangedListener(new TextWatcher() {
                         public void afterTextChanged(Editable s) {}
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -142,6 +156,9 @@ public class DataCollectQuestionFragment extends Fragment {
                                 answers.set(answerPosition, input.getText().toString());
                         }
                     });
+                    // *******************************
+
+
 
                     // Add question to Question Container
                     questionContainer.addView(input);
