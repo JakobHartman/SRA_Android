@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="crash_toast_text">Sorry the app has crashed a report will be sent and we will try to resolve the issue as soon as possible</string>
     <string name="title_activity_detail_view">DetailView</string>
     <string name="button_placeholder_text">Button</string>
     <string name="checkbox">CheckBox</string>
