@@ -35,4 +35,5 @@ dependencies {
     compile 'org.springframework:spring-context:4.1.4.RELEASE'
     compile files('libs/openbeans-1.0.jar')
     compile files('libs/firebase-client-android-2.1.2.jar')
+    compile files('libs/acra-4.5.0.jar')
 }
