@@ -42,6 +42,9 @@ public class CRUDFlinger {
     }
 
     public static LoginObject getUser() {
+        if(user == null){
+            CRUDFlinger.setUser();
+        }
         return user;
     }
 
