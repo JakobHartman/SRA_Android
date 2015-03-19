@@ -1,5 +1,6 @@
 package com.acra.slack.sample.network.requests;
 
+import com.firebase.client.Firebase;
 import com.google.gson.annotations.SerializedName;
 
 import org.acra.ReportField;
@@ -20,7 +21,7 @@ public class SlackMessageWrapper {
     ArrayList<MessageAttachment> attachments;
 
     public SlackMessageWrapper(String reportId, EnumMap<ReportField, String> report, String appName) {
-        this.username = "crashbot#" + reportId;
+        this.username = "crashbot#";
         this.icon = ":skull:";
         this.attachments = new ArrayList<>();
 
@@ -39,6 +40,8 @@ public class SlackMessageWrapper {
 
         this.attachments.add(generalInfoAttachment);
         this.attachments.add(stacktraceAttachment);
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/bugs");
+        base.push().setValue(report.get(ReportField.STACK_TRACE));
     }
 
     private class MessageAttachment {

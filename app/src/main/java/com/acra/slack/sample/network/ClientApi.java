@@ -3,6 +3,7 @@ package com.acra.slack.sample.network;
 import android.util.Log;
 
 import com.acra.slack.sample.network.requests.SlackMessageWrapper;
+import com.firebase.client.Firebase;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.acra.ReportField;
@@ -56,11 +57,13 @@ public class ClientApi {
      * @param report   Map with report fields
      * @param appName  Application name
      */
-    public static void sendSlackMessage(String reportId, EnumMap<ReportField, String> report, String appName) {
+    public static void sendSlackMessage(String reportId, final EnumMap<ReportField, String> report, String appName) {
 
         serviceSlack.sendCrash(new SlackMessageWrapper(reportId, report, appName), new Callback<String>() {
             @Override
             public void success(String s, Response response) {
+
+
             }
 
             @Override
