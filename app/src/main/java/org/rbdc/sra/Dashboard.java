@@ -2,6 +2,7 @@ package org.rbdc.sra;
 
 import com.special.AreasFragment;
 import com.special.DashboardFragment;
+import com.special.EditQuestionSetFrag;
 import com.special.LogoutFragment;
 import com.special.NotesFragment;
 import com.special.QuestionsFragment;
@@ -123,7 +124,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
             name = "areas";
         }else if (view == itemQuestions){
             changeFragment(new QuestionsFragment(), "questions");
-            title.setText("Question Sets");
+            title.setText("Surveys");
         }else if (view == itemNotes){
             changeFragment(new NotesFragment(), "notes");
             title.setText("Notes");
@@ -166,14 +167,15 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
 
     @Override
     public void onBackPressed() {
-        AreasFragment areaFrag = (AreasFragment)getSupportFragmentManager().findFragmentByTag("areas");
+        EditQuestionSetFrag editQuestionSetFrag = (EditQuestionSetFrag)getSupportFragmentManager().findFragmentByTag("Edit Question Set");
 
         if (resideMenu.isOpened()){
             resideMenu.closeMenu();
 
-        }  else if (areaFrag != null && areaFrag.isVisible()){
+        }  else if (editQuestionSetFrag != null && editQuestionSetFrag.isVisible()){
             //Toast.makeText(getBaseContext(),"You are in the area frag",Toast.LENGTH_SHORT).show();
-            System.out.println("You are in the area frag");
+            editQuestionSetFrag.getFragmentManager().popBackStackImmediate();
+            System.out.println("You are in the edit questions frag");
 
         } else if (!resideMenu.isOpened()) {
             resideMenu.openMenu();

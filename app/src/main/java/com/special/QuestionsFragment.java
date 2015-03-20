@@ -43,11 +43,10 @@ import org.rbdc.sra.objects.QuestionSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/*
-    This Fragment is displayed when someone clicks on the Question Sets option
-    in the dashboard menu. This file also contains the adapters that
-    are used.
-
+/**
+ * This Fragment is displayed when someone clicks on the Question Sets option
+ * in the dashboard menu. This file also contains the adapters that
+ * are used.
  */
 public class QuestionsFragment extends Fragment {
     //Views & Widgets
@@ -96,11 +95,12 @@ public class QuestionsFragment extends Fragment {
         questionSetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
-                openQuestionSetDialog(questionSets.get(i),true);
+                openQuestionSetDialog(i);
             }
         });
     }
 
+    // Set up each question set list item
     private void populateListItems() {
         listItems.clear();
         String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
@@ -134,14 +134,36 @@ public class QuestionsFragment extends Fragment {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
-    // Opens the dialog for editing or viewing a question set
-    //
+
+    /**
+     * This is the new version of this method
+     * to open up the fragment instead of the dialog
+     * @param qsPosition
+     */
+    private void openQuestionSetDialog(int qsPosition) {
+        EditQuestionSetFrag goToEdit = new EditQuestionSetFrag();
+        Bundle args = new Bundle();
+        args.putInt("question set",qsPosition);
+        goToEdit.setArguments(args);
+        // Change the fragment
+        getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToEdit, "Edit Question Set")
+                .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null).commit();
+    }
+
+    /**
+     * This method will open up the question set in a dialog
+     * to create or edit
+     *
+     * @param qSet
+     * @param updating
+     */
     private void openQuestionSetDialog(final QuestionSet qSet, final boolean updating) {
+
         final Dialog alert = new Dialog(getActivity());
-        alert.setContentView(R.layout.edit_question_set_dialog);
+        alert.setContentView(R.layout.edit_question_set_frag);
         alert.setCancelable(true);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
         // The name of the question set
         final EditText nameField = (EditText) alert.findViewById(R.id.name_field);
@@ -217,6 +239,8 @@ public class QuestionsFragment extends Fragment {
         });
 
         alert.show();
+        alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
     }
 
     private void addOption(String option, final LinearLayout optionsList, final Datapoint dp) {

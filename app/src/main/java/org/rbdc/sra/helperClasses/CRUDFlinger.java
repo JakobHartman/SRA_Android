@@ -239,6 +239,10 @@ public class CRUDFlinger {
         }
         return sets;
     }
+    public static QuestionSet getQuestionSet(int index) {
+        if (questionSets == null) {loadQuestionSets();}
+        return questionSets.get(index);
+    }
     private static void loadQuestionSets() {
         setPreferences();
         questionSets = new ArrayList<QuestionSet>();

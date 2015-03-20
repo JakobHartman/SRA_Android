@@ -222,7 +222,7 @@ public class DataCollectQuestionFragment extends Fragment {
                         list.add(option);
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                            android.R.layout.simple_list_item_1, list);
+                            R.layout.spinner_dropdown_item, list);
                     options.setAdapter(adapter);
                     if (answer == null) {
                         answer = "";
