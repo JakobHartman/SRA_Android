@@ -82,16 +82,16 @@ public class InterviewActivity extends Activity {
             responseSets = interview.getQuestionsets();
             title.setText(household.getName() + " -> Response Sets");
         }
-        else if (interviewType.equals("area")) {
-            Area area = CRUDFlinger.getAreas().get(areaID);
-            ArrayList<Interview> interviews = area.getInterviews();
-            if (interviews.isEmpty()) interviews.add(new Interview());
-            interview = interviews.get(0);
-
-            // Gets the questionSets
-            responseSets = interview.getQuestionsets();
-            title.setText(area.getName() + " -> Response Sets");
-        }
+//        else if (interviewType.equals("area")) {
+//            Area area = CRUDFlinger.getAreas().get(areaID);
+//            ArrayList<Interview> interviews = area.getInterviews();
+//            if (interviews.isEmpty()) interviews.add(new Interview());
+//            interview = interviews.get(0);
+//
+//            // Gets the questionSets
+//            responseSets = interview.getQuestionsets();
+//            title.setText(area.getName() + " -> Response Sets");
+//        }
 
         // Put the Surverys in a swipable list
         responseSetList = (UISwipableList) findViewById(R.id.list_view);
