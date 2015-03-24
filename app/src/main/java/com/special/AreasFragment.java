@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -179,4 +180,15 @@ public class AreasFragment extends Fragment {
         }
         return listData;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("", "restarted");
+        mAdapter = new TransitionListAdapterArea(getActivity(),listArea());
+        listView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
 }

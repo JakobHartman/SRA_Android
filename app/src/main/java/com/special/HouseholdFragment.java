@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,10 +73,7 @@ public class HouseholdFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Get the parentview which is the dashboard
         parentView = inflater.inflate(R.layout.fragment_households, container, false);
-        Bundle args = getArguments();
-        if (args  != null && args.containsKey("Area Index")){
-            areaId = args.getInt("Area Index");
-        }
+
 
         notes_list = new ArrayList<>();
 
@@ -363,5 +361,19 @@ public class HouseholdFragment extends Fragment {
             //
         }
         return time;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("", "restarted");
+        Bundle args = getArguments();
+        if (args  != null && args.containsKey("Area Index")){
+            areaId = args.getInt("Area Index");
+        }
+
+        mAdapter = new TransitionListAdapterHousehold(getActivity(),listHouseholds(areaId));
+        listView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 }
