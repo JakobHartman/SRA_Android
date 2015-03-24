@@ -33,8 +33,8 @@ import java.util.ArrayList;
 
 /*
     This is the activity that is called when someone clicks
-    on the Questions button inside of the AreasFragment.
-    It displays a list of question sets
+    on the Questions button from the households and members
+    views
 
  */
 
@@ -162,7 +162,7 @@ public class InterviewActivity extends Activity {
     private void openResponseSetSelectDialog() {
         final Dialog alert = new Dialog(this);
         alert.setContentView(R.layout.response_set_dialog);
-        alert.setCancelable(false);
+        alert.setCancelable(true);
         alert.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         alert.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -202,8 +202,8 @@ public class InterviewActivity extends Activity {
         startActivity(intent);
     }
 
-    /*
-     *
+    /**
+     * Response Set Adapter
      */
     class ResponseSetAdapter extends BaseAdapter {
 
