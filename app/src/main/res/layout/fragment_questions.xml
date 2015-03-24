@@ -7,31 +7,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:orientation="horizontal"
-        android:background="#ffffff"
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="fill_parent"
+        android:background="@color/white">
 
-        <Button
-            android:layout_width="wrap_content"
+        <com.special.utils.UISwipableList
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/buttonContainer"
+            android:layout_marginRight="@dimen/list_horizontal_margin"
+            android:layout_marginLeft="@dimen/list_horizontal_margin" />
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            style="@style/UIButtonInverse"
-            android:text="New"
-            android:textSize="@dimen/textsize_medium"
-            android:padding="12dp"
-            android:id="@+id/new_question_set_button"
-            android:layout_gravity="right|center_vertical"
-            android:layout_margin="4dp"
-            android:layout_weight=".5" />
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:id="@+id/buttonContainer">
 
-    </FrameLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/UIButton"
+                android:text="New Survey"
+                android:textSize="@dimen/textsize_medium"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:id="@+id/new_question_set_button"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"/>
 
-    <com.special.utils.UISwipableList
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/list_horizontal_margin"
-        android:layout_marginLeft="@dimen/list_horizontal_margin" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
 </LinearLayout>
