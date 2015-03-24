@@ -54,14 +54,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class  TransitionListAdapterArea extends BaseAdapter {
+public class TransitionListAdapterMember extends BaseAdapter {
 
 	   ViewHolder viewHolder;
         private ArrayList<ListItem> mItems = new ArrayList<>();
         private Context mContext;
 
 
-        public TransitionListAdapterArea(Context context, ArrayList<ListItem> list) {
+        public TransitionListAdapterMember(Context context, ArrayList<ListItem> list) {
             mContext = context;
             mItems = list;
         }
@@ -135,10 +135,11 @@ public class  TransitionListAdapterArea extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    String text = desc.split("\\s++")[1];
-                    CRUDFlinger.save("house", 9999);
-                    CRUDFlinger.save("area", 9999);
-                    CRUDFlinger.save("pos", position);
+
+                        CRUDFlinger.save("house", houseId);
+                        CRUDFlinger.save("area", areaId);
+                        CRUDFlinger.save("pos", position);
+
                     image.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -154,9 +155,12 @@ public class  TransitionListAdapterArea extends BaseAdapter {
             hiddenViewEdit.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        editListItemArea(position);
-                        UISwipableList list = (UISwipableList)parent;
-                        list.onTouchEvent(buildEvent());
+
+                    editListItemMember(areaId,houseId,position);
+                    UISwipableList list = (UISwipableList)parent;
+                    list.onTouchEvent(buildEvent());
+
+
                 }
             });
 

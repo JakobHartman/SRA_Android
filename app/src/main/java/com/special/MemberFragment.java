@@ -24,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.special.menu.ResideMenu;
 import com.special.utils.UISwipableList;
 import com.special.utils.UITabs;
 
@@ -51,7 +50,7 @@ public class MemberFragment extends Fragment {
     //Views & Widgets
 
     private UISwipableList listView;
-    public TransitionListAdapter mAdapter;
+    public TransitionListAdapterMember mAdapter;
     Button btn, btnCancel;
     Dialog dialog;
     private static int areaId;
@@ -146,7 +145,7 @@ public class MemberFragment extends Fragment {
         });
 
         title.setText(CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getName());
-        mAdapter = new TransitionListAdapter(getActivity(), listMembers(areaId, householdId));
+        mAdapter = new TransitionListAdapterMember(getActivity(), listMembers(areaId, householdId));
         listView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
         System.out.println("Inside the member view");
@@ -228,7 +227,7 @@ public class MemberFragment extends Fragment {
                     dialog.cancel();
 
                     CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).addMember(member);
-                    mAdapter = new TransitionListAdapter(getActivity(),listMembers(areaId,householdId));
+                    mAdapter = new TransitionListAdapterMember(getActivity(),listMembers(areaId,householdId));
                     listView.setAdapter(mAdapter);
                     CRUDFlinger.saveRegion();
                 }

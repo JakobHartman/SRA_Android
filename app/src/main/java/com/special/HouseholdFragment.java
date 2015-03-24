@@ -54,7 +54,7 @@ public class HouseholdFragment extends Fragment {
     //Views & Widgets
     private View parentView;
     private UISwipableList listView;
-    public TransitionListAdapter mAdapter;
+    public TransitionListAdapterHousehold mAdapter;
     private ResideMenu resideMenu;
     private Button button;
     Button btn, btnCancel;
@@ -149,7 +149,7 @@ public class HouseholdFragment extends Fragment {
         });
 
         title.setText("Households");
-        mAdapter = new TransitionListAdapter(getActivity(), listHouseholds(areaId));
+        mAdapter = new TransitionListAdapterHousehold(getActivity(), listHouseholds(areaId));
         listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -215,7 +215,7 @@ public class HouseholdFragment extends Fragment {
                     newHousehold.setArea(CRUDFlinger.getAreas().get(areaId).getName());
                     newHousehold.setCountry(CRUDFlinger.getAreas().get(areaId).getCountry());
                     CRUDFlinger.addHousehold(areaId, newHousehold);
-                    mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(areaId));
+                    mAdapter = new TransitionListAdapterHousehold(getActivity(),listHouseholds(areaId));
                     listView.setAdapter(mAdapter);
                     dialog.cancel();
                     CRUDFlinger.saveRegion();
