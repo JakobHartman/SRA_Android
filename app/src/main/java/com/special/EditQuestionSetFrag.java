@@ -42,17 +42,30 @@ public class EditQuestionSetFrag extends Fragment {
         nameField = (EditText) parentView.findViewById(R.id.name_field);
         nameField.setText(questionSet.getName());
 
+        // Sets the question set type
+        if (questionSet.getType().equals("HOUSEHOLD")) {
+            RadioButton houseButton = (RadioButton) parentView.findViewById(R.id.radio_household);
+            houseButton.setChecked(true);
+        } else if (questionSet.getType().equals("AREA")) {
+            RadioButton areaButton = (RadioButton) parentView.findViewById(R.id.radio_community);
+            areaButton.setChecked(true);
+        }
+
+        // The list of questions
+        questionListAdapter = new QuestionAdapter(getActivity(), getFragmentManager(),qSetPosition);
+        final ListView questionList = (ListView) parentView.findViewById(R.id.list_view);
+        questionList.setAdapter(questionListAdapter);
+
         // Add button for adding a question to the set
         Button addButton = (Button) parentView.findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Question q = new Question("");
-                q.setName("");
+                q.setName("New Question");
                 questionSet.addQuestion(q);
                 CRUDFlinger.saveQuestionSets();
                 questionListAdapter.notifyDataSetChanged();
-                questionListAdapter.openQuestionDialog(q);
             }
         });
 
@@ -67,30 +80,20 @@ public class EditQuestionSetFrag extends Fragment {
                 RadioButton selectedButton = (RadioButton) parentView.findViewById(selectedRadioId);
                 String typeText = selectedButton.getText().toString();
                 System.out.println("Type selected: "+ typeText);
+
+                // get the changes
                 questionSet.setType(typeText);
+                questionSet.setName(nameField.getText().toString());
 
-                CRUDFlinger.addQuestionSet(questionSet);
+                //CRUDFlinger.addQuestionSet(questionSet);
 
+                //Save the changes
                 questionListAdapter.saveQuestionSets();
 
 
                 getFragmentManager().popBackStackImmediate();
             }
         });
-
-        // Sets the question set type
-        if (questionSet.getType().equals("HOUSEHOLD")) {
-            RadioButton houseButton = (RadioButton) parentView.findViewById(R.id.radio_household);
-            houseButton.setChecked(true);
-        } else if (questionSet.getType().equals("AREA")) {
-            RadioButton areaButton = (RadioButton) parentView.findViewById(R.id.radio_community);
-            areaButton.setChecked(true);
-        }
-
-        // The list of questions
-        questionListAdapter = new QuestionAdapter(getActivity(), questionSet);
-        final ListView questionList = (ListView) parentView.findViewById(R.id.list_view);
-        questionList.setAdapter(questionListAdapter);
 
         return parentView;
 

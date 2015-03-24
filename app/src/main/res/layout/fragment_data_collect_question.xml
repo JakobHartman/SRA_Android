@@ -23,8 +23,10 @@
             android:id="@+id/add_button"
             style="@style/UIButtonInverse"
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:textSize="18dp"
             android:text="Add response"/>
 
     </LinearLayout>

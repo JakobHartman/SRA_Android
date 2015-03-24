@@ -12,110 +12,143 @@
 
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:paddingBottom="2dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title: "
+                android:layout_marginRight="34dp"/>
+
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:hint="Survey Title"
-                android:textSize="@dimen/textsize_medium"
                 android:id="@+id/name_field"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+
                 style="@style/UIButtonInverse" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:paddingBottom="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:text="Category: "/>
 
 
             <com.special.utils.UITabs
                 android:id="@+id/radio_type"
                 android:layout_gravity="center"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
 
                 <RadioButton
                     android:id="@+id/radio_community"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:text="Community"
                     style="@style/UITabs" />
 
                 <RadioButton
                     android:id="@+id/radio_household"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:checked="true"
                     android:text="Household"
                     style="@style/UITabs" />
 
             </com.special.utils.UITabs>
 
-
         </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/UIButtonInverse"
-            android:text="Finish"
-            android:textSize="@dimen/textsize_medium"
-            android:padding="12dp"
-            android:id="@+id/finish_button"
-            android:layout_gravity="center"
-            android:layout_margin="1dp"
-            android:layout_weight=".5" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/UIButtonInverse"
-            android:text="Add Question"
-            android:textSize="@dimen/textsize_medium"
-            android:padding="12dp"
-            android:id="@+id/add_button"
-            android:layout_gravity="center"
-            android:layout_margin="1dp"
-            android:layout_weight=".5" />
-
-
-    </LinearLayout>
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:text="Questions: "
-        android:id="@+id/list_title"
-        android:singleLine="false"
-        android:padding="10dp" />
+        android:layout_above="@+id/list_view"
+        android:id="@+id/list_title" />
 
-        <ListView
-            android:id="@+id/list_view"
-            android:layout_width="fill_parent"
-            android:orientation="vertical"
-            android:layout_height="fill_parent"
-            android:layout_marginRight="@dimen/list_horizontal_margin"
-            android:layout_marginLeft="@dimen/list_horizontal_margin"
-            android:paddingLeft="50dip"
-            android:divider="@null"
-            android:paddingRight="0dip">
+   <RelativeLayout
+       android:layout_width="wrap_content"
+       android:layout_height="fill_parent"
+       android:id="@+id/relativelayout">
 
-            </ListView>
+       <ListView
+           android:id="@+id/list_view"
+           android:layout_width="fill_parent"
+           android:orientation="vertical"
+           android:layout_above="@+id/actionButtons"
+           android:layout_height="fill_parent"
+           android:layout_marginRight="@dimen/list_horizontal_margin"
+           android:layout_marginLeft="@dimen/list_horizontal_margin"
+           android:paddingLeft="69dip"
+           android:divider="@null"
+           android:paddingRight="0dip">
+
+       </ListView>
+
+       <LinearLayout
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true"
+           android:id="@+id/actionButtons">
+
+           <Button
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               style="@style/UIButtonInverse"
+               android:text="Finish"
+               android:textSize="@dimen/textsize_medium"
+               android:padding="12dp"
+               android:id="@+id/finish_button"
+               android:layout_gravity="center"
+               android:layout_margin="1dp"
+               android:layout_weight=".5" />
+
+           <Button
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               style="@style/UIButtonInverse"
+               android:text="Add Question"
+               android:textSize="@dimen/textsize_medium"
+               android:padding="12dp"
+               android:id="@+id/add_button"
+               android:layout_gravity="center"
+               android:layout_margin="1dp"
+               android:layout_weight=".5" />
+
+
+       </LinearLayout>
+
+
+
+
+   </RelativeLayout>
+
+
 
 </LinearLayout>
 

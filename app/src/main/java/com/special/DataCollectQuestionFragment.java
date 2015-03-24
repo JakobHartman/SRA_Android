@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -132,6 +133,8 @@ public class DataCollectQuestionFragment extends Fragment {
 
                 TextView label = new TextView(getActivity());
                 label.setText(dp.getLabel());
+                label.setTextSize(22);
+                label.setTypeface(null,Typeface.BOLD);
                 questionContainer.addView(label);
 
                 String dataType = dp.getType();
@@ -286,6 +289,11 @@ public class DataCollectQuestionFragment extends Fragment {
                 // if it is a multi-use response add delete option
                 questionContainer.addView(deleteDataPoint);
             }
+
+            TextView spacer = new TextView(getActivity());
+            spacer.setTextSize(24);
+            spacer.setText("\n");
+            questionContainer.addView(spacer);
         }
     }
 

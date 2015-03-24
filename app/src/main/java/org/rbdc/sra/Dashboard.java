@@ -11,6 +11,7 @@ import com.special.SyncFragment;
 
 import com.special.menu.ResideMenu;
 import com.special.menu.ResideMenuItem;
+import com.special.utils.EditQuestionFrag;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -168,14 +169,17 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     @Override
     public void onBackPressed() {
         EditQuestionSetFrag editQuestionSetFrag = (EditQuestionSetFrag)getSupportFragmentManager().findFragmentByTag("Edit Question Set");
+        EditQuestionFrag editQuestionFrag = (EditQuestionFrag)getSupportFragmentManager().findFragmentByTag("Edit Question");
 
         if (resideMenu.isOpened()){
             resideMenu.closeMenu();
 
         }  else if (editQuestionSetFrag != null && editQuestionSetFrag.isVisible()){
-            //Toast.makeText(getBaseContext(),"You are in the area frag",Toast.LENGTH_SHORT).show();
             editQuestionSetFrag.getFragmentManager().popBackStackImmediate();
             System.out.println("You are in the edit questions frag");
+
+        } else if (editQuestionFrag != null && editQuestionFrag.isVisible()) {
+            editQuestionFrag.getFragmentManager().popBackStackImmediate();
 
         } else if (!resideMenu.isOpened()) {
             resideMenu.openMenu();
