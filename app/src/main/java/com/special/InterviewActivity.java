@@ -82,6 +82,8 @@ public class InterviewActivity extends Activity {
             responseSets = interview.getQuestionsets();
             title.setText(household.getName() + " -> Response Sets");
         }
+
+        /***************** something is broken ************/
 //        else if (interviewType.equals("area")) {
 //            Area area = CRUDFlinger.getAreas().get(areaID);
 //            ArrayList<Interview> interviews = area.getInterviews();
@@ -92,6 +94,7 @@ public class InterviewActivity extends Activity {
 //            responseSets = interview.getQuestionsets();
 //            title.setText(area.getName() + " -> Response Sets");
 //        }
+        /***************** ^^^^^^^^^^^^^^^^^^^^ ************/
 
         // Put the Surverys in a swipable list
         responseSetList = (UISwipableList) findViewById(R.id.list_view);
@@ -133,15 +136,18 @@ public class InterviewActivity extends Activity {
         String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
 
         // For each question set add an icon, name, ... idk
-        for (QuestionSet qs : responseSets) {
-            listItems.add(new ListItem(
-                    R.drawable.ic_home,
-                    qs.getName(),
-                    qs.getType(),
-                    null, null,null));
+        try {
+            for (QuestionSet qs : responseSets) {
+                listItems.add(new ListItem(
+                        R.drawable.ic_home,
+                        qs.getName(),
+                        qs.getType(),
+                        null, null,null));
+            }
+        } catch(NullPointerException e) {
+            e.printStackTrace();
         }
     }
-
 
     private QuestionSet addResponseSet(QuestionSet qs) {
         Gson gson = new GsonBuilder().create();
