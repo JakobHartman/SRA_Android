@@ -156,6 +156,7 @@ public class CRUDFlinger {
             try{
                 saver.putString("Country",JSONUtilities.stringify(region));
                 boolean a = saver.commit();
+                Log.i("Region Contents: ",JSONUtilities.stringify(region));
                 Log.i("Region saved: ",a + "");
             }catch (JSONException e){
                 //
