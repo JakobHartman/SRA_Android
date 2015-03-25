@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class AreasFragment extends Fragment {
     //Views & Widgets
     private View parentView;
     private UISwipableList listView;
-    public TransitionListAdapter mAdapter;
+    public TransitionListAdapterArea mAdapter;
     private ResideMenu resideMenu;
     private Button button;
     Button btn, btnCancel;
@@ -66,7 +67,7 @@ public class AreasFragment extends Fragment {
         resideMenu = parentActivity.getResideMenu();
 
         // Lists Areas
-        mAdapter = new TransitionListAdapter(getActivity(), listArea());
+        mAdapter = new TransitionListAdapterArea(getActivity(), listArea());
         mAdapter.notifyDataSetChanged();
         listView.setActionLayout(R.id.hidden);
         listView.setItemLayout(R.id.front_layout);
@@ -138,7 +139,7 @@ public class AreasFragment extends Fragment {
                     newArea.setCountry(CRUDFlinger.getCountryName(regionText.getSelectedItem().toString()));
                     newArea.setName(areaText.getText().toString());
                     CRUDFlinger.addArea(newArea);
-                    mAdapter = new TransitionListAdapter(getActivity(),listArea());
+                    mAdapter = new TransitionListAdapterArea(getActivity(),listArea());
                     listView.setAdapter(mAdapter);
                     dialog.cancel();
                     CRUDFlinger.saveRegion();
@@ -179,4 +180,15 @@ public class AreasFragment extends Fragment {
         }
         return listData;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("", "restarted");
+        mAdapter = new TransitionListAdapterArea(getActivity(),listArea());
+        listView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
 }

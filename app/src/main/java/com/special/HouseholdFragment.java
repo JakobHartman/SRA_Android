@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class HouseholdFragment extends Fragment {
     //Views & Widgets
     private View parentView;
     private UISwipableList listView;
-    public TransitionListAdapter mAdapter;
+    public TransitionListAdapterHousehold mAdapter;
     private ResideMenu resideMenu;
     private Button button;
     Button btn, btnCancel;
@@ -72,10 +73,7 @@ public class HouseholdFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Get the parentview which is the dashboard
         parentView = inflater.inflate(R.layout.fragment_households, container, false);
-        Bundle args = getArguments();
-        if (args  != null && args.containsKey("Area Index")){
-            areaId = args.getInt("Area Index");
-        }
+
 
         notes_list = new ArrayList<>();
 
@@ -149,7 +147,7 @@ public class HouseholdFragment extends Fragment {
         });
 
         title.setText("Households");
-        mAdapter = new TransitionListAdapter(getActivity(), listHouseholds(areaId));
+        mAdapter = new TransitionListAdapterHousehold(getActivity(), listHouseholds(areaId));
         listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -215,7 +213,7 @@ public class HouseholdFragment extends Fragment {
                     newHousehold.setArea(CRUDFlinger.getAreas().get(areaId).getName());
                     newHousehold.setCountry(CRUDFlinger.getAreas().get(areaId).getCountry());
                     CRUDFlinger.addHousehold(areaId, newHousehold);
-                    mAdapter = new TransitionListAdapter(getActivity(),listHouseholds(areaId));
+                    mAdapter = new TransitionListAdapterHousehold(getActivity(),listHouseholds(areaId));
                     listView.setAdapter(mAdapter);
                     dialog.cancel();
                     CRUDFlinger.saveRegion();
@@ -363,5 +361,19 @@ public class HouseholdFragment extends Fragment {
             //
         }
         return time;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("", "restarted");
+        Bundle args = getArguments();
+        if (args  != null && args.containsKey("Area Index")){
+            areaId = args.getInt("Area Index");
+        }
+
+        mAdapter = new TransitionListAdapterHousehold(getActivity(),listHouseholds(areaId));
+        listView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 }
