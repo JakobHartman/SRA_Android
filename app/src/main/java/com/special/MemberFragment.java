@@ -132,6 +132,7 @@ public class MemberFragment extends Fragment {
                         newNote = new Note("Member", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                         // Add note to the list
                         System.out.println("HouseholdID for the Note = " + CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
+                        System.out.println("Actual householdID = " + CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                         notes_list.add(newNote);
                         // Notify Note created
                         Toast toast = new Toast(getActivity());
