@@ -8,9 +8,7 @@ import org.acra.ReportField;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
-/**
- * Created by romantolmachev on 11/3/15.
- */
+
 public class SlackMessageWrapper {
 
     String username;
@@ -40,8 +38,13 @@ public class SlackMessageWrapper {
 
         this.attachments.add(generalInfoAttachment);
         this.attachments.add(stacktraceAttachment);
-        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/bugs");
-        base.push().setValue(report.get(ReportField.STACK_TRACE));
+        Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/bugs/crash/");
+        Firebase under =  base.push();
+                under.child("trace").setValue(report.get(ReportField.STACK_TRACE));
+                under.child("version").setValue(report.get(ReportField.ANDROID_VERSION));
+                under.child("time").setValue(System.currentTimeMillis());
+                under.child("reportId").setValue(reportId);
+
     }
 
     private class MessageAttachment {

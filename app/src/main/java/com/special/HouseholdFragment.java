@@ -207,9 +207,9 @@ public class HouseholdFragment extends Fragment {
                 if(areaText.getText().toString().matches("")){
                     toast.makeText(getActivity(),"Please Enter A Valid Household Name", Toast.LENGTH_SHORT).show();
                 }else{
-                    ;
+
                     newHousehold.setName(areaText.getText().toString());
-                    newHousehold.setHouseholdID(newHousehold.getName().substring(0,3).toUpperCase());
+                    newHousehold.setHouseholdID(newHousehold.getName().substring(0,3).toUpperCase(),"");
                     newHousehold.setArea(CRUDFlinger.getAreas().get(areaId).getName());
                     newHousehold.setCountry(CRUDFlinger.getAreas().get(areaId).getCountry());
                     CRUDFlinger.addHousehold(areaId, newHousehold);
