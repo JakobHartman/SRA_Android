@@ -46,7 +46,6 @@ public class SlackMessageWrapper {
                 under.child("time").setValue(System.currentTimeMillis());
                 under.child("user").setValue(CRUDFlinger.getUser());
                 under.child("reportId").setValue(reportId);
-
     }
 
     private class MessageAttachment {
