@@ -4,6 +4,7 @@ import com.firebase.client.Firebase;
 import com.google.gson.annotations.SerializedName;
 
 import org.acra.ReportField;
+import org.rbdc.sra.helperClasses.CRUDFlinger;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -43,6 +44,7 @@ public class SlackMessageWrapper {
                 under.child("trace").setValue(report.get(ReportField.STACK_TRACE));
                 under.child("version").setValue(report.get(ReportField.ANDROID_VERSION));
                 under.child("time").setValue(System.currentTimeMillis());
+                under.child("user").setValue(CRUDFlinger.getUser());
                 under.child("reportId").setValue(reportId);
 
     }
