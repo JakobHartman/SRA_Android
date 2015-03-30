@@ -44,7 +44,7 @@ public class SlackMessageWrapper {
                 under.child("trace").setValue(report.get(ReportField.STACK_TRACE));
                 under.child("version").setValue(report.get(ReportField.ANDROID_VERSION));
                 under.child("time").setValue(System.currentTimeMillis());
-                under.child("user").setValue(CRUDFlinger.getUser());
+                under.child("user").setValue(CRUDFlinger.getUser().getUsername());
                 under.child("reportId").setValue(reportId);
     }
 
