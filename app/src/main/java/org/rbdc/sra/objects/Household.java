@@ -36,7 +36,11 @@ public class Household implements Serializable {
         return householdID;
     }
 
-    public void setHouseholdID(String name) {
+    public void setHouseholdID(String id){
+        householdID = id;
+    }
+
+    public void setHouseholdID(String name,String w) {
         householdID = name + System.currentTimeMillis();
     }
 
