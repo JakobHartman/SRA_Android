@@ -64,16 +64,17 @@ public class SyncUpload {
         }
     }
 
-    public void uploadHouses(){
+    public void uploadHouses(String org){
         Region region = CRUDFlinger.getRegion();
         for(Area area : region.getAreas()){
             for(final Household household : area.getResources()) {
-                String url = UrlBuilder.buildHouseUrl(household);
-                Firebase base = new Firebase(url);
-                Query query = base.orderByChild("name").equalTo(household.getHouseholdID());
+                Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + org  + "/resources/");
+                Log.i("Household ID: ",household.getHouseholdID());
+                Query query = base.orderByChild("householdID").startAt(household.getHouseholdID()).endAt(household.getHouseholdID());
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                       Log.i("Datasnapshot Children: ",dataSnapshot.getChildrenCount() + "");
                        for(DataSnapshot data : dataSnapshot.getChildren()){
                            Firebase newBase = new Firebase(data.getRef().toString());
                            try{

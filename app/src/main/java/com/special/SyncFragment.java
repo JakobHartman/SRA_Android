@@ -42,12 +42,13 @@ public class SyncFragment extends Fragment {
     //Layouts
     Button btn;
     Region region;
+    String org;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.relogin_dialog, container, false);
         final SyncUpload syncUp = new SyncUpload();
             final LoginObject login = syncUp.startUpload(getActivity());
-
+        org = "sra";
 
         final EditText password = (EditText) v.findViewById(R.id.password);
         final TextView textView = (TextView) v.findViewById(R.id.username);
@@ -111,7 +112,7 @@ public class SyncFragment extends Fragment {
                             try{
                                 Log.i("Being Pushed",JSONUtilities.stringify(CRUDFlinger.getAreas().get(0)));
                                 syncUp.uploadAreas();
-                                syncUp.uploadHouses();
+                                syncUp.uploadHouses(org);
                                 syncUp.uploadQuestions();
                                 syncUp.uploadNotes();
 
