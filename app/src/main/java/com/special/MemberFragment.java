@@ -214,23 +214,34 @@ public class MemberFragment extends Fragment {
     }
 
     public String getAge(String bday){
-        DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
-        String time = new String();
-        try {
-            Date date = formatter.parse(bday);
-            Date current = new Date();
-            long diff = current.getTime() - date.getTime();
-            Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(date.getTime());
-            int mYear = c.get(Calendar.YEAR);
-            c.setTimeInMillis(current.getTime());
-            int cYear = c.get(Calendar.YEAR);
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-            time = cYear - mYear + "";
-        }catch (ParseException e){
-            //
+        Calendar dob = Calendar.getInstance();
+
+
+        Calendar today = Calendar.getInstance();
+        System.out.println("Today year: " + today.get(Calendar.YEAR));
+
+        Date date;
+        try {
+            date = formatter.parse(bday);
+            dob.setTimeInMillis(date.getTime());
+            System.out.println("DOB Year: " + dob.get(Calendar.YEAR));
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return time;
+
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.MONTH) < dob.get(Calendar.MONTH)) {
+            age--;
+        } else if (today.get(Calendar.MONTH) == dob.get(Calendar.MONTH)
+                && today.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH)) {
+            age--;
+        }
+
+        return age + "";
     }
 
     @Override
