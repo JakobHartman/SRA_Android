@@ -68,21 +68,32 @@ public class SyncUpload {
         Region region = CRUDFlinger.getRegion();
         for(Area area : region.getAreas()){
             for(final Household household : area.getResources()) {
-                Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + org  + "/resources/");
+                final Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + org  + "/resources/");
                 Log.i("Household ID: ",household.getHouseholdID());
                 Query query = base.orderByChild("householdID").startAt(household.getHouseholdID()).endAt(household.getHouseholdID());
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                        Log.i("Datasnapshot Children: ",dataSnapshot.getChildrenCount() + "");
-                       for(DataSnapshot data : dataSnapshot.getChildren()){
-                           Firebase newBase = new Firebase(data.getRef().toString());
-                           try{
-                               newBase.setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
-                           }catch (JSONException e){return;}catch (IOException e){
-                               //
-                           }
-                       }
+                        if(dataSnapshot.getChildrenCount() == 0){
+                            try{
+                                base.push().setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
+                            }catch (JSONException e){
+                                //
+                            }catch (IOException e){
+                                //
+                            }
+                        }else{
+                            for(DataSnapshot data : dataSnapshot.getChildren()){
+                                Firebase newBase = new Firebase(data.getRef().toString());
+                                try{
+                                    newBase.setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
+                                }catch (JSONException e){return;}catch (IOException e){
+                                    //
+                                }
+                            }
+                        }
+
                     }
 
                     @Override
