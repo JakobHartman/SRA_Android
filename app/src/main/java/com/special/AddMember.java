@@ -42,7 +42,7 @@ public class AddMember extends android.support.v4.app.Fragment {
         args = getArguments();
         if (args  != null && args.containsKey("Area Index")){
             areaId = args.getInt("Area Index");
-            householdId = args.getInt("House Index");
+            householdId = args.getInt("Household Id");
         }
         final Member member = new Member();
 
