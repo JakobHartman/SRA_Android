@@ -3,7 +3,9 @@ package org.rbdc.sra;
 import com.special.AreasFragment;
 import com.special.DashboardFragment;
 import com.special.EditQuestionSetFrag;
+import com.special.HouseholdFragment;
 import com.special.LogoutFragment;
+import com.special.MemberFragment;
 import com.special.NotesFragment;
 import com.special.QuestionsFragment;
 import com.special.StatsFragment;
@@ -170,11 +172,19 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     public void onBackPressed() {
         EditQuestionSetFrag editQuestionSetFrag = (EditQuestionSetFrag)getSupportFragmentManager().findFragmentByTag("Edit Question Set");
         EditQuestionFrag editQuestionFrag = (EditQuestionFrag)getSupportFragmentManager().findFragmentByTag("Edit Question");
+        HouseholdFragment householdFragment = (HouseholdFragment) getSupportFragmentManager().findFragmentByTag("household fragment");
+        MemberFragment memberFragment = (MemberFragment) getSupportFragmentManager().findFragmentByTag("member fragment");
 
         if (resideMenu.isOpened()){
             resideMenu.closeMenu();
 
-        }  else if (editQuestionSetFrag != null && editQuestionSetFrag.isVisible()){
+        } else if (householdFragment != null && householdFragment.isVisible()){
+            householdFragment.getFragmentManager().popBackStackImmediate();
+
+        } else if (memberFragment != null && memberFragment.isVisible()) {
+            memberFragment.getFragmentManager().popBackStackImmediate();
+
+        } else if (editQuestionSetFrag != null && editQuestionSetFrag.isVisible()){
             editQuestionSetFrag.getFragmentManager().popBackStackImmediate();
             System.out.println("You are in the edit questions frag");
 
