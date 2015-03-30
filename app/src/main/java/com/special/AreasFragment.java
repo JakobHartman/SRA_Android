@@ -185,6 +185,8 @@ public class AreasFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.i("", "restarted");
+        TextView title = (TextView)getActivity().findViewById(R.id.title);
+        title.setText("Communities");
         mAdapter = new TransitionListAdapterArea(getActivity(),listArea());
         listView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
