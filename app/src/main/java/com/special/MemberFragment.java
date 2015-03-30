@@ -129,6 +129,7 @@ public class MemberFragment extends Fragment {
                         newNote = new Note("Member", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName(), CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                         // Add note to the list
                         System.out.println("HouseholdID for the Note = " + CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
+                        System.out.println("Actual householdID = " + CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getHouseholdID());
                         notes_list.add(newNote);
                         // Notify Note created
                         Toast toast = new Toast(getActivity());
@@ -171,80 +172,19 @@ public class MemberFragment extends Fragment {
     /************************ add Member ******************************/
 
     private void addMember(){
-        final Member member = new Member();
-        dialog = new Dialog(getActivity(),
-                android.R.style.Theme_Translucent);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.layout_member_dialog);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        AddMember goToAddMember = new AddMember();
+        Bundle args = new Bundle();
+        args.putInt("Area Index",areaId);
+        args.putInt("Household Id", householdId);
+        goToAddMember.setArguments(args);
 
-        final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
-        final Spinner relationship = (Spinner)dialog.findViewById(R.id.spinner1);
-        final DatePicker datePicker = (DatePicker)dialog.findViewById(R.id.datePicker);
-        final Spinner education = (Spinner)dialog.findViewById(R.id.spinner2);
-        final UITabs gender = (UITabs)dialog.findViewById(R.id.toggle);
-        final UITabs school = (UITabs)dialog.findViewById(R.id.toggle3);
+        // Change the fragment
+        getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToAddMember, "AddMember")
+                .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null).commit();
 
 
-        btn = (Button) dialog.findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast toast = new Toast(getActivity());
-                if (areaText.getText().toString().matches("")) {
-                    toast.makeText(getActivity(),"Please Enter A Valid Name",Toast.LENGTH_SHORT).show();
-                } else if (relationship.getSelectedItemPosition() == 0) {
-                    toast.makeText(getActivity(),"Please Select A Valid Relationship",Toast.LENGTH_SHORT).show();
-                } else if (education.getSelectedItemPosition() == 0) {
-                    toast.makeText(getActivity(),"Please Select A Valid Education Level",Toast.LENGTH_SHORT).show();
-                } else {
-                    member.setName(areaText.getText().toString());
-                    member.setRelationship(relationship.getSelectedItem().toString());
-                    member.setBirthday(getDateFromDatePicker(datePicker));
-                    member.setEducationLevel(education.getSelectedItem().toString());
-                    int genderSelected = gender.getCheckedRadioButtonId();
-                    RadioButton gSelected = (RadioButton)gender.findViewById(genderSelected);
-                    member.setGender(gSelected.getText().toString());
-                    int schoolSelected = school.getCheckedRadioButtonId();
-                    RadioButton sSelected = (RadioButton)school.findViewById(schoolSelected);
-                    boolean isInSchool;
-                    switch (sSelected.getText().toString()){
-                        case "Yes":
-                            isInSchool = true;
-                            break;
-                        case "No":
-                            isInSchool = false;
-                            break;
-                        default:
-                            isInSchool = false;
-                            break;
-                    }
-                    member.setInschool(isInSchool);
-                    dialog.cancel();
-
-                    CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).addMember(member);
-                    mAdapter = new TransitionListAdapterMember(getActivity(),listMembers(areaId,householdId));
-                    listView.setAdapter(mAdapter);
-                    CRUDFlinger.saveRegion();
-                }
-            }
-        });
-
-        btnCancel = (Button) dialog.findViewById(R.id.btncancel);
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-
-        });
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
-        dialog.show();
     }
 
     /********************** list Members *********************************/

@@ -14,6 +14,8 @@ public class Interview implements Serializable {
         questionsets.add(questionSet);
     }
 
+    public void removeQuestionSet(int position) {questionsets.remove(position);}
+
     public Interview(){
         questionsets = new ArrayList<QuestionSet>();
     }

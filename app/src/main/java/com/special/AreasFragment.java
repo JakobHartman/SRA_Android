@@ -92,7 +92,7 @@ public class AreasFragment extends Fragment {
                 goToHouse.setArguments(args);
 
                 // Change the fragment
-                getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse)
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse,"household fragment")
                         .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack(null).commit();
 

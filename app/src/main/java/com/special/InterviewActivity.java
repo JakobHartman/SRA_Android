@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ public class InterviewActivity extends Activity {
     private int areaID;
     private int householdID;
     private String interviewType;
+    private Household household;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class InterviewActivity extends Activity {
 
         // Pull information from the Intent that got us here
         Intent intent = getIntent();
+        // getIntExtra (tag, default value)
         areaID = intent.getIntExtra("areaID", -1);
         householdID = intent.getIntExtra("householdID", -1);
         interviewType = intent.getStringExtra("interviewType");
@@ -75,11 +78,25 @@ public class InterviewActivity extends Activity {
             return;
         }
         if (interviewType.equals("household") || interviewType.equals("members")) {
-            Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
+            household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
             ArrayList<Interview> interviews = household.getInterviews();
-            if (interviews.isEmpty()) interviews.add(new Interview());
+
+            //This should never happen because there needs to be one in Firebase
+            if (interviews.isEmpty()){
+                Log.i("Interview Activity", "Interviews array was empty. Adding a new interview");
+                interviews.add(new Interview());
+            }
+
             interview = interviews.get(0);
             responseSets = interview.getQuestionsets();
+
+
+        /*********** Testing *****************************/
+            for (QuestionSet qs: responseSets) {
+                Log.i("set inside Interview: ",qs.getName());
+            }
+        /**************************************************/
+
             title.setText(household.getName() + " -> Response Sets");
         }
 
@@ -133,6 +150,8 @@ public class InterviewActivity extends Activity {
     // Method for putting items in "listItems"
     private void populateListItems() {
         listItems.clear();
+
+        // What's the purpose of this??
         String[] typesArray = getResources().getStringArray(R.array.question_set_types_array);
 
         // For each question set add an icon, name, ... idk
@@ -150,10 +169,16 @@ public class InterviewActivity extends Activity {
     }
 
     private QuestionSet addResponseSet(QuestionSet qs) {
+        // Why are we converting into JSON
+        // then back to QuestionSet??
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(qs);
         QuestionSet clonedQS = gson.fromJson(json, QuestionSet.class);
+
         responseSets.add(clonedQS);
+
+        //set in crud
+        CRUDFlinger.getAreas().get(areaID).getResources().get(householdID).getInterviews().get(0).setQuestionsets(responseSets);
         populateListItems();
         responseSetAdapter.notifyDataSetChanged();
         return clonedQS;
@@ -169,6 +194,7 @@ public class InterviewActivity extends Activity {
         ArrayList<QuestionSet> sets = new ArrayList<QuestionSet>();
         if (interviewType.equals("household")) sets = CRUDFlinger.getQuestionSets("HOUSEHOLD");
         else if (interviewType.equals("area")) sets = CRUDFlinger.getQuestionSets("AREA");
+        // final sets are the result of either household or area sets
         final ArrayList<QuestionSet> finalSets = sets;
         QuestionSetSelectionAdapter adapter = new QuestionSetSelectionAdapter(this, sets);
         final ListView list = (ListView) alert.findViewById(R.id.list_view);
@@ -176,6 +202,7 @@ public class InterviewActivity extends Activity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) {
+                //clones the questions set selected
                 QuestionSet clonedSet = addResponseSet(finalSets.get(i));
                 alert.dismiss();
                 goToDataCollect(responseSets.indexOf(clonedSet));
@@ -194,6 +221,7 @@ public class InterviewActivity extends Activity {
     }
 
     private void goToDataCollect(int responseSetIndex) {
+
         Intent intent = new Intent(this, DataCollect.class);
         intent.putExtra("areaID", areaID);
         intent.putExtra("householdID", householdID);
@@ -299,6 +327,11 @@ public class InterviewActivity extends Activity {
         }
     }
 
+    /**
+     * Question set selection adapter
+     * This is the adapter used in the dialog
+     * that lists the Surveys
+     */
 
     public class QuestionSetSelectionAdapter extends ArrayAdapter<QuestionSet> {
         private Context context;

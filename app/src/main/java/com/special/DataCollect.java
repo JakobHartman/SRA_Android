@@ -29,6 +29,8 @@ import java.util.ArrayList;
     ViewPager which holds multiple or single
     DataCollectQuestionFragments
 
+    It also holds the "Finish" button
+
  */
 
 public class DataCollect extends FragmentActivity {
@@ -108,6 +110,8 @@ public class DataCollect extends FragmentActivity {
         });
         sliderChanged(0);
 
+        // The finish button
+        // Saves the responses
         Button finishButton = (Button) findViewById(R.id.finish_button);
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
