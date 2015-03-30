@@ -68,7 +68,7 @@ public class SyncUpload {
         Region region = CRUDFlinger.getRegion();
         for(Area area : region.getAreas()){
             for(final Household household : area.getResources()) {
-                String url = UrlBuilder.buildHouseUrl(household);
+                String url = UrlBuilder.buildHouseUrl();
                 Firebase base = new Firebase(url);
                 Query query = base.orderByChild("name").equalTo(household.getHouseholdID());
                 query.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -41,7 +41,7 @@ public class UrlBuilder {
         return url;
     }
 
-    public static String buildHouseUrl(Household area) {
+    public static String buildHouseUrl() {
         String url;
         url = "https://intense-inferno-7741.firebaseio.com/organizations/" + org  + "/resources/";
         Log.i("Url: ",url);
