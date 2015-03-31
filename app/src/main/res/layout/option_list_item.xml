@@ -9,7 +9,7 @@
     <EditText
         android:id="@+id/option_field"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:hint="option"
         style="@style/UIButtonInverse"
         android:gravity="left|center_vertical"

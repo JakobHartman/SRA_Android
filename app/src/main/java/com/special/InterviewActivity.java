@@ -171,17 +171,19 @@ public class InterviewActivity extends Activity {
     private QuestionSet addResponseSet(QuestionSet qs) {
         // Why are we converting into JSON
         // then back to QuestionSet??
+        /*
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(qs);
         QuestionSet clonedQS = gson.fromJson(json, QuestionSet.class);
+        */
 
-        responseSets.add(clonedQS);
+        responseSets.add(qs);
 
         //set in crud
         CRUDFlinger.getAreas().get(areaID).getResources().get(householdID).getInterviews().get(0).setQuestionsets(responseSets);
         populateListItems();
         responseSetAdapter.notifyDataSetChanged();
-        return clonedQS;
+        return qs;
     }
 
     private void openResponseSetSelectDialog() {

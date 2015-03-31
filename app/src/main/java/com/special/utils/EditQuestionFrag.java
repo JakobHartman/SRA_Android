@@ -139,6 +139,7 @@ public class EditQuestionFrag extends android.support.v4.app.Fragment {
                 R.layout.spinner_dropdown_item, typesList);
         dataTypeSpinner.setAdapter(typesAdapter);
         dataTypeSpinner.setSelection(DatapointTypes.getTypeIndex(dp.getType()));
+
         if (dp.dataTypeIsAList()) {
             optionsContainer.setVisibility(View.VISIBLE);
         }
