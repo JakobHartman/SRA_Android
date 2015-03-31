@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@android:id/text1"
         style="?android:attr/spinnerItemStyle"
-        android:singleLine="true"
         android:text="Test Text"
-        android:layout_width="match_parent"
+        android:singleLine="false"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:ellipsize="marquee" />
+        android:padding="10dp" />
+
 

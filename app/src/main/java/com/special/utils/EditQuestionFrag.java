@@ -100,10 +100,12 @@ public class EditQuestionFrag extends android.support.v4.app.Fragment {
             return parentView;
     }
 
+    //Populate the list of data points
     private void addDataPoint(final LinearLayout dpList, final Datapoint dp, final Question q) {
         final LinearLayout dpItemView = (LinearLayout) inflater.inflate(R.layout.data_point_list_item, null);
         dpList.addView(dpItemView);
 
+        // Data point Label
         final EditText label = (EditText) dpItemView.findViewById(R.id.label_field);
         label.setText(dp.getLabel());
         label.setSelection(label.length());
@@ -117,6 +119,8 @@ public class EditQuestionFrag extends android.support.v4.app.Fragment {
 
         final LinearLayout optionsContainer = (LinearLayout) dpItemView.findViewById(R.id.options_container);
         final LinearLayout optionsList = (LinearLayout) dpItemView.findViewById(R.id.options_list_view);
+
+        //Get the options for the data point
         final ArrayList<String> options = dp.getOptions();
         for (int i = 0; i < options.size(); i++) {
             addOption(options.get(i), optionsList, dp);
@@ -132,6 +136,7 @@ public class EditQuestionFrag extends android.support.v4.app.Fragment {
             }
         });
 
+        // The spinner that describes the type of data point
         Spinner dataTypeSpinner = (Spinner) dpItemView.findViewById(R.id.data_type_spinner);
         String[] types = context.getResources().getStringArray(R.array.data_point_types_array);
         ArrayList<String> typesList = new ArrayList<>(Arrays.asList(types));
@@ -140,14 +145,20 @@ public class EditQuestionFrag extends android.support.v4.app.Fragment {
         dataTypeSpinner.setAdapter(typesAdapter);
         dataTypeSpinner.setSelection(DatapointTypes.getTypeIndex(dp.getType()));
 
+        // If it is a list show the options view
         if (dp.dataTypeIsAList()) {
             optionsContainer.setVisibility(View.VISIBLE);
         }
+
         dataTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 dp.setType(DatapointTypes.getTypeFromIndex(position));
+                System.out.println("data type is " + DatapointTypes.getTypeFromIndex(position));
+
                 if (dp.dataTypeIsAList()) optionsContainer.setVisibility(View.VISIBLE);
+
+                //if it is not a list
                 else {
                     optionsContainer.setVisibility(View.GONE);
                     dp.getOptions().clear();

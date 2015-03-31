@@ -15,7 +15,7 @@ public class DatapointTypes {
         if (dataType.equals(DatapointTypes.NUMBER)) return 1;
         if (dataType.equals(DatapointTypes.DATE)) return 2;
         if (dataType.equals(DatapointTypes.LIST_SINGLE_ANSWER)) return 3;
-        if (dataType.equals(DatapointTypes.LIST_SINGLE_ANSWER)) return 4;
+        if (dataType.equals(DatapointTypes.LIST_MULTI_ANSWER)) return 4;
         return 0;
     }
 
