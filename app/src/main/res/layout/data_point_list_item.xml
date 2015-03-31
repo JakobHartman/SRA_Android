@@ -13,7 +13,7 @@
         <EditText
             android:id="@+id/label_field"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:hint="Label"
             style="@style/UIButtonInverse"
             android:gravity="left|center_vertical"
