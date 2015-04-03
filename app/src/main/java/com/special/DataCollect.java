@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -65,7 +66,7 @@ public class DataCollect extends FragmentActivity {
             System.out.println("responseSetIndex was either not passed from DataCollect or is invalid");
             return;
         }
-        if (interviewType.equals("household")) {
+        if (interviewType.equals("area")) {
             Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
             ArrayList<Interview> interviews = household.getInterviews();
             if (interviews.isEmpty()) interviews.add(new Interview());
@@ -74,6 +75,7 @@ public class DataCollect extends FragmentActivity {
             Interview interview = interviews.get(0);
             ArrayList<QuestionSet> responseSets = interview.getQuestionsets();
             questionSet = responseSets.get(responseSetIndex);
+            Log.i("question set", questionSet.getName());
             numQuestions = questionSet.getQuestions().size();
         }
         else if (interviewType.equals("area")) {
@@ -94,7 +96,11 @@ public class DataCollect extends FragmentActivity {
 
         // Question set title
         TextView pageTitle = (TextView) findViewById(R.id.title);
-        pageTitle.setText(questionSet.getName());
+        try {
+            pageTitle.setText(questionSet.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.question_view_pager);
@@ -108,7 +114,7 @@ public class DataCollect extends FragmentActivity {
                 sliderChanged(position);
             }
         });
-        sliderChanged(0);
+       sliderChanged(0);
 
         // The finish button
         // Saves the responses
