@@ -46,6 +46,7 @@ public class InterviewActivity extends Activity {
 
     private ArrayList<QuestionSet> responseSets;
     private ArrayList<ListItem> listItems;
+    private ArrayList<Interview> interviews = new ArrayList<>();
 
     private Interview interview;
     private int areaID;
@@ -60,7 +61,7 @@ public class InterviewActivity extends Activity {
         TextView title = (TextView) findViewById(R.id.title);
 
 
-        CRUDFlinger.setApplication(getApplication());
+        //CRUDFlinger.setApplication(getApplication());
 
         // Pull information from the Intent that got us here
         Intent intent = getIntent();
@@ -79,7 +80,7 @@ public class InterviewActivity extends Activity {
         }
         if (interviewType.equals("household") || interviewType.equals("members")) {
             household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
-            ArrayList<Interview> interviews = household.getInterviews();
+            interviews = household.getInterviews();
 
             //This should never happen because there needs to be one in Firebase
             if (interviews.isEmpty()){
@@ -101,16 +102,16 @@ public class InterviewActivity extends Activity {
         }
 
         /***************** something is broken ************/
-//        else if (interviewType.equals("area")) {
-//            Area area = CRUDFlinger.getAreas().get(areaID);
-//            ArrayList<Interview> interviews = area.getInterviews();
-//            if (interviews.isEmpty()) interviews.add(new Interview());
-//            interview = interviews.get(0);
-//
-//            // Gets the questionSets
-//            responseSets = interview.getQuestionsets();
-//            title.setText(area.getName() + " -> Response Sets");
-//        }
+        else if (interviewType.equals("area")) {
+            Area area = CRUDFlinger.getAreas().get(areaID);
+            interviews = area.getInterviews();
+            if (interviews.isEmpty()) interviews.add(new Interview());
+            interview = interviews.get(0);
+
+            // Gets the questionSets
+            responseSets = interview.getQuestionsets();
+            title.setText(area.getName() + " -> Response Sets");
+        }
         /***************** ^^^^^^^^^^^^^^^^^^^^ ************/
 
         // Put the Surverys in a swipable list

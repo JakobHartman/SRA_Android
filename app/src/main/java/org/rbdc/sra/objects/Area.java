@@ -10,7 +10,7 @@ public class Area implements Serializable {
     private String country;
     private ArrayList<Household> resources;
     private String region;
-    //private ArrayList<Interview> interviews;
+    private ArrayList<Interview> interviews;
     private ImageData mainImage;
     private ArrayList<ImageData> imageCollection;
 
@@ -48,7 +48,7 @@ public class Area implements Serializable {
     public Area(){
         imageCollection = new ArrayList<>();
         resources = new ArrayList<>();
-        //interviews = new ArrayList<>();
+        interviews = new ArrayList<>();
     }
 
     public String getName() {
@@ -87,10 +87,10 @@ public class Area implements Serializable {
         return region;
     }
 
-//    public void setInterviews(ArrayList<Interview> interviews) {
-//        this.interviews = interviews;
-//    }
-//    public ArrayList<Interview> getInterviews() {
-//        return interviews;
-//    }
+    public void setInterviews(ArrayList<Interview> interviews) {
+        this.interviews = interviews;
+    }
+    public ArrayList<Interview> getInterviews() {
+        return interviews;
+    }
 }
