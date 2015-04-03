@@ -1,5 +1,6 @@
 package org.rbdc.sra;
 
+import com.firebase.client.Firebase;
 import com.special.AreasFragment;
 import com.special.DashboardFragment;
 import com.special.EditQuestionSetFrag;
@@ -58,6 +59,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         changeFragment(new DashboardFragment(), "dashboard");
         title = (TextView)findViewById(R.id.title);
         title.setText("Dashboard");
+        Firebase.setAndroidContext(getApplicationContext());
 
     }
 
