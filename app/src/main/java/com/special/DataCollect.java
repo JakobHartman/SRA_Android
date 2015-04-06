@@ -66,7 +66,7 @@ public class DataCollect extends FragmentActivity {
             System.out.println("responseSetIndex was either not passed from DataCollect or is invalid");
             return;
         }
-        if (interviewType.equals("area")) {
+        if (interviewType.equals("household")) {
             Household household = CRUDFlinger.getAreas().get(areaID).getResources().get(householdID);
             ArrayList<Interview> interviews = household.getInterviews();
             if (interviews.isEmpty()) interviews.add(new Interview());
