@@ -65,6 +65,12 @@ public class FoodItem implements Serializable {
     @SerializedName("servings")
     @Expose
     private Object servings;
+    @SerializedName("frequency")
+    @Expose
+    private int frequency;
+    @SerializedName("brandName")
+    @Expose
+    private Object brandName;
 
     /**
      *
@@ -390,4 +396,27 @@ public class FoodItem implements Serializable {
         this.nfIronDv = nfIronDv;
     }
 
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
+    public Object getServings() {
+        return servings;
+    }
+
+    public void setServings(Object servings) {
+        this.servings = servings;
+    }
+
+    public Object getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(Object brandName) {
+        this.brandName = brandName;
+    }
 }
