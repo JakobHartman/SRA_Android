@@ -62,6 +62,9 @@ public class FoodItem implements Serializable {
     @SerializedName("nf_iron_dv")
     @Expose
     private Object nfIronDv;
+    @SerializedName("servings")
+    @Expose
+    private Object servings;
 
     /**
      *

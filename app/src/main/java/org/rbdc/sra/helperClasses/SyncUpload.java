@@ -11,6 +11,7 @@ import com.firebase.client.ValueEventListener;
 
 import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Household;
+import org.rbdc.sra.objects.Interview;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
 import org.rbdc.sra.objects.Note;
@@ -19,6 +20,7 @@ import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
@@ -61,6 +63,18 @@ public class SyncUpload {
             newBase.child("region").setValue(capitalize(area.getRegion()));
             newBase.child("country").setValue(capitalize(area.getCountry()));
             newBase.child("name").setValue(capitalize(area.getName()));
+            Log.i("Interview Count: ", area.getInterviews().size() + "");
+            for (Interview interview : area.getInterviews()){
+                try{
+                    String json = JSONUtilities.stringify(interview);
+                    HashMap obj = DownloadData.buildMap(json);
+                    newBase.child("interviews").setValue(obj);
+                }catch (JSONException e){
+                    //
+                }catch (IOException e) {
+
+                }
+            }
         }
     }
 

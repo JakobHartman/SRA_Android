@@ -2,13 +2,17 @@ package org.rbdc.sra.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by jakobhartman on 11/17/14.
  */
 public class Interview implements Serializable {
+
     private String dateCreated;
     private ArrayList<QuestionSet> questionsets;
+
+
 
     public void addQuestionSets(QuestionSet questionSet){
         questionsets.add(questionSet);
@@ -18,6 +22,7 @@ public class Interview implements Serializable {
 
     public Interview(){
         questionsets = new ArrayList<QuestionSet>();
+        dateCreated = new Date().toString();
     }
 
 

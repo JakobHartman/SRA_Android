@@ -141,11 +141,6 @@ public class SyncFragment extends Fragment {
         return v;
     }
 
-    public void breakApp(){
-        int i = 5 / 0;
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

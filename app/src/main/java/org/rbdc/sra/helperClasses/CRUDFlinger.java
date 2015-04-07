@@ -140,6 +140,7 @@ public class CRUDFlinger {
         if(loader.contains("Country")){
             String json = loader.getString("Country",null);
             Gson gson = new GsonBuilder().create();
+            Log.i("JSON : ",json);
             Region region = gson.fromJson(json,Region.class);
             CRUDFlinger.region = region;
         } else{
