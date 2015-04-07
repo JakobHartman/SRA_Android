@@ -81,7 +81,7 @@ public class DataCollect extends FragmentActivity {
         else if (interviewType.equals("area")) {
             Area area = CRUDFlinger.getAreas().get(areaID);
             ArrayList<Interview> interviews = area.getInterviews();
-            if (interviews.isEmpty()) interviews.add(new Interview());
+    //    if (interviews.isEmpty()) interviews.add(new Interview());
             Interview interview = interviews.get(0);
             ArrayList<QuestionSet> responseSets = interview.getQuestionsets();
             questionSet = responseSets.get(responseSetIndex);

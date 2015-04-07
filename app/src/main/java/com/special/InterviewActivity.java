@@ -102,6 +102,7 @@ public class InterviewActivity extends Activity {
         }
 
         /***************** something is broken ************/
+
         else if (interviewType.equals("area")) {
             Area area = CRUDFlinger.getAreas().get(areaID);
             ArrayList<Interview> interviews = area.getInterviews();
@@ -115,6 +116,7 @@ public class InterviewActivity extends Activity {
             responseSets = interview.getQuestionsets();
             title.setText(area.getName() + " -> Response Sets");
         }
+
         /***************** ^^^^^^^^^^^^^^^^^^^^ ************/
 
         // Put the Surverys in a swipable list
@@ -175,16 +177,16 @@ public class InterviewActivity extends Activity {
     private QuestionSet addResponseSet(QuestionSet qs) {
         // Why are we converting into JSON
         // then back to QuestionSet??
-        /*
+
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(qs);
         QuestionSet clonedQS = gson.fromJson(json, QuestionSet.class);
-        */
+
 
         responseSets.add(qs);
 
         //set in crud
-        CRUDFlinger.getAreas().get(areaID).getResources().get(householdID).getInterviews().get(0).setQuestionsets(responseSets);
+        //CRUDFlinger.getAreas().get(areaID).getResources().get(householdID).getInterviews().get(0).setQuestionsets(responseSets);
         populateListItems();
         responseSetAdapter.notifyDataSetChanged();
         return qs;
