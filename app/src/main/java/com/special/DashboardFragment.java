@@ -79,7 +79,8 @@ public class DashboardFragment extends Fragment {
                     MemberFragment goToHouse = new MemberFragment();
                     Bundle args = new Bundle();
                     args.putInt("Area Index",groupPosition);
-                    args.putInt("Household Id", childPosition);
+                    args.putInt("House Index", childPosition);
+                    Log.i("Position :",childPosition + "");
                     goToHouse.setArguments(args);
 
                     // Change the fragment

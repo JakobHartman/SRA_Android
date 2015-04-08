@@ -30,7 +30,7 @@ public class FoodItem implements Serializable {
         frequency  = 0;
         servings = "None";
         brandName  = "None";
-        
+
     }
 
 

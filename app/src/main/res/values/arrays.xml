@@ -3,8 +3,8 @@
 
     <string-array name="relationships">
         <item>Select Relationship</item>
-        <item>GrandFather</item>
-        <item>GrandMother</item>
+        <item>Grandfather</item>
+        <item>Grandmother</item>
         <item>Father</item>
         <item>Mother</item>
         <item>Daughter</item>
