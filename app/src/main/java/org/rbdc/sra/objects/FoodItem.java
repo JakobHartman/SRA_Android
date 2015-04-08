@@ -8,6 +8,32 @@ import java.io.Serializable;
 
 public class FoodItem implements Serializable {
 
+    public FoodItem(){
+        itemId = "None";
+        itemName = "None";
+        nfCalciumDv = "None";
+        nfCalories = "None";
+        nfCaloriesFromFat = "None";
+        nfCholesterol = "None";
+        nfDietaryFiber  = "None";
+        nfIronDv = "None";
+        nfProtein = "None";
+        nfSaturatedFat = "None";
+        nfSodium = "None";
+        nfSugars = "None";
+        nfTotalCarbohydrate = "None";
+        nfTotalFat = "None";
+        nfTransFattyAcid = "None";
+        nfVitaminADv = "None";
+        nfVitaminCDv = "None";
+        nfWaterGrams = "None";
+        frequency  = 0;
+        servings = "None";
+        brandName  = "None";
+        
+    }
+
+
     @SerializedName("item_id")
     @Expose
     private String itemId;
