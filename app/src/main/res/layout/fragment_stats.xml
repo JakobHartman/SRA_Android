@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    			xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@android:color/white"
-                tools:context="com.com.special.MenuActivity$HomeFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    tools:context="com.com.special.MenuActivity$HomeFragment">
 
 
 
@@ -18,9 +19,25 @@
 
         <TextView
             android:layout_width="wrap_content"
+            android:id="@+id/title"
             android:layout_height="wrap_content"
-            android:textSize="46dp"
+            android:textSize="36dp"
+            android:layout_marginBottom="20dp"
             android:text="Stats"/>
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:id="@+id/graph"
+            android:layout_marginBottom="20dp"/>
+
+        <com.jjoe64.graphview.helper.GraphViewXML
+            android:layout_width="300dp"
+            android:layout_height="200dip"
+            app:seriesData="0=5;2=5;3=0;4=2"
+            app:seriesType="line"
+            app:seriesColor="#ee0000" />
+
 
     </LinearLayout>
 
