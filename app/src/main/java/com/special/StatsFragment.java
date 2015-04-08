@@ -1,31 +1,21 @@
 package com.special;
 
-import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 import com.special.menu.ResideMenu;
 import android.app.Dialog;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class StatsFragment extends Fragment {
@@ -68,7 +58,7 @@ public class StatsFragment extends Fragment {
         series.setValuesOnTopColor(Color.RED);
 //series.setValuesOnTopSize(50);
 
-        title.setText("Sample Chart");
+        title.setText("Sample Charts");
 
 
         return parentView;
