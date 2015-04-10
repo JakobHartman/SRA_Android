@@ -306,6 +306,11 @@ public class CRUDFlinger {
         }
         return null;
     }
+    public static void clearQuestionSets() {
+        setPreferences();
+        questionSets = null;
+        saveQuestionSets();
+    }
     public static void deleteQuestionSet(QuestionSet qs) {
         setPreferences();
         if (questionSets == null) { loadQuestionSets(); }
@@ -385,8 +390,8 @@ public class CRUDFlinger {
 
     public static void removeNotes(){
         setPreferences();
-        saver.remove("NotesBank");
-        saver.commit();
+        notes = null;
+        saveNotes();
     }
 
     // Save Notes

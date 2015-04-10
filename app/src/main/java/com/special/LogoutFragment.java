@@ -4,6 +4,7 @@ package com.special;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,10 @@ public class LogoutFragment extends Fragment {
 
         CRUDFlinger.clearCRUD();
         CRUDFlinger.removeNotes();
+        CRUDFlinger.clearQuestionSets();
         CRUDFlinger.setRegion(new Region());
+        Log.e("log out # of Areas: ", CRUDFlinger.getAreas().size() + "");
+        Log.e("log out # of Notes", CRUDFlinger.getNotes().size() + "");
         Intent intent = new Intent(parentView.getContext(),Login.class);
         startActivity(intent);
         return parentView;

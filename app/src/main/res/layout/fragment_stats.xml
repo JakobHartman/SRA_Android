@@ -25,6 +25,28 @@
             android:layout_marginBottom="20dp"
             android:text="Stats"/>
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:id="@+id/areas"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_marginBottom="20dp"
+            android:text="Areas"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:id="@+id/notes"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_marginBottom="20dp"
+            android:text="Notes"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:id="@+id/qs"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_marginBottom="20dp"
+            android:text="Question Sets"/>
+
         <com.jjoe64.graphview.GraphView
             android:layout_width="300dp"
             android:layout_height="200dp"

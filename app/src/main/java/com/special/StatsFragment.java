@@ -1,6 +1,7 @@
 package com.special;
 
 import org.rbdc.sra.R;
+import org.rbdc.sra.helperClasses.CRUDFlinger;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
@@ -11,6 +12,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,14 @@ public class StatsFragment extends Fragment {
         View parentView = inflater.inflate(R.layout.fragment_stats, container, false);
 
         TextView title = (TextView) parentView.findViewById(R.id.title);
+        TextView areaCount = (TextView) parentView.findViewById(R.id.areas);
+        areaCount.setText("Number of Areas: " + CRUDFlinger.getAreas().size() + "");
+        TextView qsCount = (TextView) parentView.findViewById(R.id.qs);
+        qsCount.setText("Number of Question Sets: " + CRUDFlinger.getQuestionSets().size() + "");
+        TextView noteCount = (TextView) parentView.findViewById(R.id.notes);
+        noteCount.setText("Number of Notes: " +CRUDFlinger.getNotes().size() +"" );
+
+
 
 
         GraphView graph = (GraphView) parentView.findViewById(R.id.graph);
@@ -72,6 +82,10 @@ public class StatsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("Number areas: ", CRUDFlinger.getAreas().size() + "");
+        Log.e("Number of qs: ", CRUDFlinger.getQuestionSets().size() + "");
+        Log.e("Number of Notes: ", CRUDFlinger.getNotes().size() +"");
+
 
 
     }

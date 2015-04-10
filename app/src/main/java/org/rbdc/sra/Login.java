@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,6 +63,7 @@ public class Login extends Activity {
                 login();
             }
         });
+
 
     }
 
@@ -125,7 +127,7 @@ public class Login extends Activity {
                                  for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                      //loop through Users
                                      textview.setText("Saving User For Offline Use");
-                                     System.out.println(dataSnapshot1.getValue().toString());
+                                     //System.out.println(dataSnapshot1.getValue().toString());
 
                                      String username = dataSnapshot1.child("email").getValue().toString();
 
@@ -173,9 +175,8 @@ public class Login extends Activity {
                                          DownloadData.downloadNotes(username);
                                          DownloadData.downloadGoToDash(info, getBaseContext());
 
-
                                      } catch (JSONException e) {
-                                         //
+                                         System.out.println("Downloading Error: " + e.getMessage());
                                      }
                                  }
 
@@ -199,5 +200,7 @@ public class Login extends Activity {
                     }
                 });
             }
-    }
+
+
+}
 

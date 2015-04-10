@@ -84,9 +84,10 @@ public class DownloadData {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             passes = 0;
-                            Log.i("String: ",dataSnapshot.getValue().toString());
+                            //Log.i("String: ",dataSnapshot.getValue().toString());
                             for(DataSnapshot child : dataSnapshot.getChildren()){
                                 Household household = child.getValue(Household.class);
+                                Log.i("household: ", child.getValue().toString());
                                 if(passes > 0) {
                                     for (Area area1 : CRUDFlinger.getAreas()){
                                         if (area1.getName().equals(household.getArea())) {
@@ -214,6 +215,7 @@ public class DownloadData {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    System.out.println("downloading temp questions");
                     QuestionSet question = data.getValue(QuestionSet.class);
 
                     CRUDFlinger.addTempQuestionSet(question);
@@ -234,6 +236,7 @@ public class DownloadData {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    System.out.println("downloading temp notes");
                     Note note = data.getValue(Note.class);
 
                     CRUDFlinger.addTempNote(note);

@@ -63,10 +63,11 @@ public class SyncFragment extends Fragment {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         for(Area area : CRUDFlinger.getAreas()){
+                            // for each household
                             for(Household household : area.getResources()) {
                                 int areaId = CRUDFlinger.getAreas().indexOf(area);
                                 int householdId = CRUDFlinger.getAreas().get(areaId).getResources().indexOf(household);
-                                Log.i("Food: ", areaId + "");
+                                //Log.i("Food: ", areaId + "");
                                 ArrayList<Question> questions = null;
                                 try {
                                     questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
@@ -79,7 +80,7 @@ public class SyncFragment extends Fragment {
                                         for(Datapoint datapoint : question.getDataPoints()){
                                             for(String food : datapoint.getAnswers()){
                                                 CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getNutrition().clear();
-                                                Log.i("Food: ", food);
+                                                //Log.i("Food: ", food);
                                                 new Asyncer().execute(food, areaId, householdId);
                                             }
                                         }
@@ -113,14 +114,20 @@ public class SyncFragment extends Fragment {
                                 Log.i("Being Pushed",JSONUtilities.stringify(CRUDFlinger.getAreas().get(0)));
                                 syncUp.uploadAreas();
                                 syncUp.uploadHouses(org);
+                                System.out.println("uploading questions");
                                 syncUp.uploadQuestions();
+                                System.out.println("uploading notes");
                                 syncUp.uploadNotes();
 
                                 CRUDFlinger.saveRegion();
-                            }catch (JSONException e){return;}
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                                return;}
 
 
-                        }catch (Exception e){return;}
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            return;}
                         getFragmentManager().beginTransaction().replace(R.id.main_fragment,new DashboardFragment(), "dashboard")
                                 .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                 .addToBackStack(null).commit();
