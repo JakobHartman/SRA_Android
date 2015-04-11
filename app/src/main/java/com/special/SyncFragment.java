@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.client.AuthData;
@@ -52,6 +53,7 @@ public class SyncFragment extends Fragment {
 
         final EditText password = (EditText) v.findViewById(R.id.password);
         final TextView textView = (TextView) v.findViewById(R.id.username);
+        final ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.progress);
         textView.setText("Enter password for " + login.getUsername().split("@")[0]);
 
         btn = (Button) v.findViewById(R.id.btn);
@@ -62,9 +64,12 @@ public class SyncFragment extends Fragment {
                 base.authWithPassword(login.getUsername(),password.getText().toString(),new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
+                        progressBar.setVisibility(View.VISIBLE);
                         for(Area area : CRUDFlinger.getAreas()){
                             // for each household
                             for(Household household : area.getResources()) {
+                                textView.setText("Syncing Households");
+
                                 int areaId = CRUDFlinger.getAreas().indexOf(area);
                                 int householdId = CRUDFlinger.getAreas().get(areaId).getResources().indexOf(household);
                                 //Log.i("Food: ", areaId + "");
@@ -73,7 +78,7 @@ public class SyncFragment extends Fragment {
                                     questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
                                 }
                                 catch(NullPointerException e){
-                                    //
+                                    e.printStackTrace();
                                 }
                                 if(questions != null) {
                                     for (Question question : questions) {
@@ -90,6 +95,8 @@ public class SyncFragment extends Fragment {
                         }
                         DownloadData.downloadToSync(login,getActivity().getBaseContext());
                         // Download and merge question sets
+                        textView.setText("Syncing Question Sets");
+
                         DownloadData.downloadTempQuestions();
                         try {
                             CRUDFlinger.merge(CRUDFlinger.getTempQuestionSets(), CRUDFlinger.getQuestionSets());
@@ -99,6 +106,8 @@ public class SyncFragment extends Fragment {
                         }
 
                         // Download and merge notes
+                        textView.setText("Syncing Notes");
+
                         DownloadData.downloadTempNotes();
                         try {
                             CRUDFlinger.merge(CRUDFlinger.getTempNotes(), CRUDFlinger.getNotes());
@@ -139,6 +148,10 @@ public class SyncFragment extends Fragment {
 
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
+                        //Hide progress wheel
+                        progressBar.setVisibility(View.INVISIBLE);
+                        //display Error
+                        textView.setText(firebaseError.getMessage());
 
                     }
                 });
