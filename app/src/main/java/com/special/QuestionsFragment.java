@@ -121,7 +121,7 @@ public class QuestionsFragment extends Fragment {
     }
 
     private void addQuestionSet() {
-        QuestionSet newSet = new QuestionSet("New Question Set","","");
+        QuestionSet newSet = new QuestionSet("","","");
         CRUDFlinger.addQuestionSet(newSet);
         CRUDFlinger.saveQuestionSets();
         openQuestionSetDialog(CRUDFlinger.getQuestionSets().size()-1);

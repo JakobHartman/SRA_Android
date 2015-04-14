@@ -26,6 +26,7 @@ import android.util.Base64;
 
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.rbdc.sra.helperClasses.CRUDFlinger;
@@ -54,6 +55,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         UrlBuilder.setOrg("sra");
         setUpMenu();
         changeFragment(new DashboardFragment(), "dashboard");

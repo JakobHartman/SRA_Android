@@ -28,7 +28,7 @@ public class NotesFragment extends Fragment {
 	//Views & Widgets
     private View parentView;
     private UISwipableList listView;
-    private TransitionListAdapter mAdapter;
+    private TransitionListAdapterNote mAdapter;
     private ResideMenu resideMenu;
     
     //Vars
@@ -47,13 +47,14 @@ public class NotesFragment extends Fragment {
 
     private void initView(){
 
-        mAdapter = new TransitionListAdapter(getActivity(),getListData());
+        mAdapter = new TransitionListAdapterNote(getActivity(),getListData());
         listView.setAdapter(mAdapter);
         listView.setActionLayout(R.id.hidden);
         listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
         listView.setIgnoredViewHandler(resideMenu);
 
+        //Clicking on a note from the list
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewa, int i, long l) { 
