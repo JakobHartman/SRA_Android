@@ -183,13 +183,13 @@ public class InterviewActivity extends Activity {
         QuestionSet clonedQS = gson.fromJson(json, QuestionSet.class);
 
 
-        responseSets.add(qs);
+        responseSets.add(clonedQS);
 
         //set in crud
         //CRUDFlinger.getAreas().get(areaID).getResources().get(householdID).getInterviews().get(0).setQuestionsets(responseSets);
         populateListItems();
         responseSetAdapter.notifyDataSetChanged();
-        return qs;
+        return clonedQS;
     }
 
     private void openResponseSetSelectDialog() {
@@ -204,7 +204,7 @@ public class InterviewActivity extends Activity {
         else if (interviewType.equals("area")) sets = CRUDFlinger.getQuestionSets("AREA");
         // final sets are the result of either household or area sets
         final ArrayList<QuestionSet> finalSets = sets;
-        QuestionSetSelectionAdapter adapter = new QuestionSetSelectionAdapter(this, sets);
+        QuestionSetSelectionAdapter adapter = new QuestionSetSelectionAdapter(this, finalSets);
         final ListView list = (ListView) alert.findViewById(R.id.list_view);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
