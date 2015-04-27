@@ -1,8 +1,11 @@
 package org.rbdc.sra;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +28,7 @@ import org.rbdc.sra.helperClasses.DownloadData;
 import org.rbdc.sra.objects.AreaLogin;
 import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
 
 import quickconnectfamily.json.JSONException;
@@ -107,99 +111,135 @@ public class Login extends Activity {
 
         //Start a reference to the base firebase
         Firebase ref = new Firebase("https://intense-inferno-7741.firebaseio.com");
-                //authenticate user using firebase.
-                ref.authWithPassword(username, password, new Firebase.AuthResultHandler() {
-                    //Success
-                    @Override
-                    public void onAuthenticated(final AuthData authData) {
-                        status = true;
-                        textview.setText("Authenticating....");
-                        //Get reference to User Tree
 
-                        Firebase users = new Firebase("https://intense-inferno-7741.firebaseio.com/users/");
-                        Query user = users.orderByChild("email").equalTo(username);
-                        //Start download from firebase, once
-                         user.addListenerForSingleValueEvent(new ValueEventListener() {
+        if (internetConnected()) {
+            //authenticate user using firebase.
+            CRUDFlinger.setUserName(username);
+            CRUDFlinger.setPassword(password);
+            ref.authWithPassword(username, password, new Firebase.AuthResultHandler() {
+                //Success
+                @Override
+                public void onAuthenticated(final AuthData authData) {
+                    status = true;
+                    textview.setText("Authenticating....");
 
-                             //Success
-                             @Override
-                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                     //loop through Users
-                                     textview.setText("Saving User For Offline Use");
-                                     //System.out.println(dataSnapshot1.getValue().toString());
+                    CRUDFlinger.clearCRUD();
+                    CRUDFlinger.removeNotes();
+                    CRUDFlinger.clearQuestionSets();
+                    CRUDFlinger.setRegion(new Region());
 
-                                     String username = dataSnapshot1.child("email").getValue().toString();
+                    //Get reference to User Tree
 
-                                     DataSnapshot ld = dataSnapshot1.child("organizations").child(organization);
-                                     DataSnapshot role = ld.child("roles");
-                                     DataSnapshot country = ld.child("countries");
-                                     final LoginObject info = new LoginObject();
-                                     info.setEmail(username);
-                                     info.setUsername(username);
-                                     info.setLoggedIn(true);
-                                     for (DataSnapshot rs : country.getChildren()) {
-                                         CountryLogin countryLogin = new CountryLogin();
-                                         countryLogin.setName(rs.getKey());
-                                         for (DataSnapshot as : rs.child("regions").getChildren()) {
-                                             RegionLogin regionLogin = new RegionLogin();
-                                             regionLogin.setName(as.getKey());
-                                             for (DataSnapshot a : as.child("areas").getChildren()) {
-                                                 AreaLogin areaLogin = new AreaLogin();
-                                                 areaLogin.setName(a.getKey());
-                                                 regionLogin.addArea(areaLogin);
-                                             }
-                                             countryLogin.addRegion(regionLogin);
+                    Firebase users = new Firebase("https://intense-inferno-7741.firebaseio.com/users/");
+                    Query user = users.orderByChild("email").equalTo(username);
+                    //Start download from firebase, once
+                    user.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                                         }
-                                         info.getSiteLogin().addCountry(countryLogin);
-                                     }
+                        //Success
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                //loop through Users
+                                textview.setText("Saving User For Offline Use");
+                                //System.out.println(dataSnapshot1.getValue().toString());
 
-                                     textview.setText("Loading User Areas");
+                                String username = dataSnapshot1.child("email").getValue().toString();
 
-                                     //add roles to loginInfo
-                                     for (DataSnapshot roles : role.getChildren()) {
-                                         String Roles = roles.getValue().toString();
-                                         info.addToRoles(Roles);
-                                     }
-                                     String userString;
-                                     CRUDFlinger.setUser(info);
-                                     SharedPreferences.Editor user = getSharedPreferences("AppPrefs", MODE_PRIVATE).edit();
-                                     try {
-                                         userString = JSONUtilities.stringify(info);
-                                         user.putString("User", userString);
-                                         user.commit();
-                                         Firebase.setAndroidContext(getBaseContext());
-                                         DownloadData.downloadQuestions();
-                                         //download notes
-                                         DownloadData.downloadNotes(username);
-                                         DownloadData.downloadGoToDash(info, getBaseContext());
+                                DataSnapshot ld = dataSnapshot1.child("organizations").child(organization);
+                                DataSnapshot role = ld.child("roles");
+                                DataSnapshot country = ld.child("countries");
+                                final LoginObject info = new LoginObject();
+                                info.setEmail(username);
+                                info.setUsername(username);
+                                info.setLoggedIn(true);
+                                for (DataSnapshot rs : country.getChildren()) {
+                                    CountryLogin countryLogin = new CountryLogin();
+                                    countryLogin.setName(rs.getKey());
+                                    for (DataSnapshot as : rs.child("regions").getChildren()) {
+                                        RegionLogin regionLogin = new RegionLogin();
+                                        regionLogin.setName(as.getKey());
+                                        for (DataSnapshot a : as.child("areas").getChildren()) {
+                                            AreaLogin areaLogin = new AreaLogin();
+                                            areaLogin.setName(a.getKey());
+                                            regionLogin.addArea(areaLogin);
+                                        }
+                                        countryLogin.addRegion(regionLogin);
 
-                                     } catch (JSONException e) {
-                                         System.out.println("Downloading Error: " + e.getMessage());
-                                     }
-                                 }
+                                    }
+                                    info.getSiteLogin().addCountry(countryLogin);
+                                }
 
-                             }
-                             //Fail
-                             @Override
-                             public void onCancelled(FirebaseError firebaseError) {
-                                textview.setText(firebaseError.getMessage());
-                             }
-                         });
-                    }
+                                textview.setText("Loading User Areas");
 
-                    //Fail
-                    @Override
-                    public void onAuthenticationError(FirebaseError firebaseError) {
-                        //Hide progress wheel
-                        progress.setVisibility(View.INVISIBLE);
-                        //display Error
-                        textview.setText(firebaseError.getMessage());
-                        status = false;
-                    }
-                });
+                                //add roles to loginInfo
+                                for (DataSnapshot roles : role.getChildren()) {
+                                    String Roles = roles.getValue().toString();
+                                    info.addToRoles(Roles);
+                                }
+                                String userString;
+                                CRUDFlinger.setUser(info);
+                                SharedPreferences.Editor user = getSharedPreferences("AppPrefs", MODE_PRIVATE).edit();
+                                try {
+                                    userString = JSONUtilities.stringify(info);
+                                    user.putString("User", userString);
+                                    user.commit();
+                                    Firebase.setAndroidContext(getBaseContext());
+                                    DownloadData.downloadQuestions();
+                                    //download notes
+                                    DownloadData.downloadNotes(username);
+                                    DownloadData.downloadGoToDash(info, getBaseContext());
+
+                                } catch (JSONException e) {
+                                    System.out.println("Downloading Error: " + e.getMessage());
+                                }
+                            }
+
+                        }
+
+                        //Fail
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                            textview.setText(firebaseError.getMessage());
+                        }
+                    });
+                }
+
+                //Fail
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError) {
+                    //Hide progress wheel
+                    progress.setVisibility(View.INVISIBLE);
+                    //display Error
+                    textview.setText(firebaseError.getMessage());
+                    status = false;
+                }
+            });
+        } else {
+            //you are offline
+            System.out.println("Username: " + CRUDFlinger.getUserName() + "Password: " + CRUDFlinger.getPassword());
+            if (CRUDFlinger.getUserName().equals(username) && CRUDFlinger.getPassword().equals(password)) {
+                Intent intent = new Intent(getBaseContext(),Dashboard.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getBaseContext().startActivity(intent);
+            } else {
+                //Hide progress wheel
+                progress.setVisibility(View.INVISIBLE);
+                //display Error
+                textview.setText("Failed to Log in offline");
+                status = false;
             }
+        }
+
+    }
+
+
+    // Checks for internet connectivity
+    private boolean internetConnected() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
 }

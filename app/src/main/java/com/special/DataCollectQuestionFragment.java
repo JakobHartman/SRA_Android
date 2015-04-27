@@ -1,3 +1,4 @@
+
 package com.special;
 
 import android.app.AlertDialog;
@@ -26,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,12 +49,13 @@ import java.util.List;
     This class is called when someone selects a question and
     is what is displayed inside of the ViewPager inside of the
     DataCollect Activity
-
  */
 public class DataCollectQuestionFragment extends Fragment {
 
     private int questionIndex;
     private Question question;
+    private MultiSelectionSpinner multiOptions;
+    private ArrayList<Integer> multiOptionsInstance;
     private LinearLayout table; //Root element
 
     @Override
@@ -246,31 +249,58 @@ public class DataCollectQuestionFragment extends Fragment {
                     // add response to question container
                     questionContainer.addView(options);
                 }
+                // ************ Mulit Answer ********************
                 else if (dataType.equals(DatapointTypes.LIST_MULTI_ANSWER)) {
-                    final MultiSelectionSpinner options = new MultiSelectionSpinner(getActivity());
-                    if (!dp.getOptions().isEmpty())
-                        options.setItems(dp.getOptions());
-                    String json = answer;
-                    Gson gson = new GsonBuilder().create();
-                    List<String> selected = (List<String>) gson.fromJson(json, new TypeToken<List<String>>() {}.getType());
-                    if (answers != null) options.setSelection(selected);
-                    options.setOnHoverListener(new View.OnHoverListener() {
+                    // Create a multi selection view
+                    Button test = new Button(getActivity());
+                    test.setText("Test Multi answer");
+                    final String answerCopy = answer;
+                    test.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public boolean onHover(View v, MotionEvent event) {
-                            List<String> items = options.getSelectedStrings();
+                        public void onClick(View v) {
+                            multiOptions = new MultiSelectionSpinner(getActivity());
+                            if (!dp.getOptions().isEmpty())
+                                multiOptions.setItems(dp.getOptions());
+                            String json = answerCopy;
                             Gson gson = new GsonBuilder().create();
-                            String json = gson.toJson(items);
-                            if (answers.isEmpty())
-                                answers.add(answerPosition, json);
-                            else
-                                answers.set(answerPosition, json);
-
-                            return false;
+                            List<String> selected = (List<String>) gson.fromJson(json, new TypeToken<List<String>>() {}.getType());
+                            if (answers != null)
+                            multiOptions.setSelection(selected);
+                            multiOptions.setAnswerPosition(answerPosition);
+                            multiOptions.setAnswers(answers);
+                            multiOptions.performClick();
+                            selected = multiOptions.getSelectedStrings();
                         }
                     });
 
+                    //Check the hashmap to get previously selected data.
+
+
+//                    if (!dp.getOptions().isEmpty())
+//                        multiOptions.setItems(dp.getOptions());
+//                    String json = answer;
+//                    Gson gson = new GsonBuilder().create();
+//                    List<String> selected = (List<String>) gson.fromJson(json, new TypeToken<List<String>>() {}.getType());
+//                    if (answers != null) multiOptions.setSelection(selected);
+
+//                    multiOptions.setOnHoverListener(new View.OnHoverListener() {
+//                        @Override
+//                        public boolean onHover(View v, MotionEvent event) {
+//                            List<String> items = multiOptions.getSelectedStrings();
+//                            Gson gson = new GsonBuilder().create();
+//                            String json = gson.toJson(items);
+//                            if (answers.isEmpty())
+//                                answers.add(answerPosition, json);
+//                            else
+//                                answers.set(answerPosition, json);
+//
+//                            return false;
+//                        }
+//                    });
+
+
                     //add question to question container
-                    questionContainer.addView(options);
+                    questionContainer.addView(test);
                 }
             }
 
@@ -298,12 +328,12 @@ public class DataCollectQuestionFragment extends Fragment {
     }
 
 
-
-
     public class MultiSelectionSpinner extends Spinner implements
             OnMultiChoiceClickListener {
         String[] _items = null;
         boolean[] mSelection = null;
+        int answerPosition = 0;
+        ArrayList<String> answers;
 
         ArrayAdapter<String> simple_adapter;
 
@@ -339,6 +369,15 @@ public class DataCollectQuestionFragment extends Fragment {
         public boolean performClick() {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setMultiChoiceItems(_items, mSelection, this);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    String s = multiOptions.getSelectedItemsAsString();
+                    Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+                    System.out.println(s);
+                }
+            });
+
             builder.show();
             return true;
         }
@@ -473,5 +512,15 @@ public class DataCollectQuestionFragment extends Fragment {
             }
             return sb.toString();
         }
+
+        public void setAnswerPosition(int pos) {
+            answerPosition = pos;
+        }
+
+        public void setAnswers(ArrayList<String> answers) {
+            this.answers = answers;
+        }
     }
 }
+
+

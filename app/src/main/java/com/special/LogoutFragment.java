@@ -29,10 +29,7 @@ public class LogoutFragment extends Fragment {
         LoginObject login = CRUDFlinger.load("User", LoginObject.class);
         login.setLoggedIn(false);
 
-        CRUDFlinger.clearCRUD();
-        CRUDFlinger.removeNotes();
-        CRUDFlinger.clearQuestionSets();
-        CRUDFlinger.setRegion(new Region());
+
         Log.e("log out # of Areas: ", CRUDFlinger.getAreas().size() + "");
         Log.e("log out # of Notes", CRUDFlinger.getNotes().size() + "");
         Intent intent = new Intent(parentView.getContext(),Login.class);

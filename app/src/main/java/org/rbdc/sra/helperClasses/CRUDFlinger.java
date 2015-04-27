@@ -60,6 +60,8 @@ public class CRUDFlinger {
 
         if(instance == null) {
             CRUDFlinger.instance = new CRUDFlinger();
+            CRUDFlinger.setPassword("test");
+            CRUDFlinger.setUserName("test");
         }
         return instance;
     }
@@ -472,6 +474,30 @@ public class CRUDFlinger {
     }
 
     /***************************** End Notes Stuff ************************************/
+
+    public static String getUserName() {
+        setPreferences();
+        String username = loader.getString("username", "empty");
+        return username;
+    }
+
+    public static void setUserName(String uName) {
+        setPreferences();
+        saver.putString("username", uName);
+        saver.commit();
+    }
+
+    public static String getPassword() {
+        setPreferences();
+        String password = loader.getString("password", "empty");
+        return password;
+    }
+
+    public static void setPassword(String pWord) {
+        setPreferences();
+        saver.putString("password", pWord);
+        saver.commit();
+    }
 
 
 
