@@ -86,7 +86,7 @@ public class CRUDFlinger {
 
         }
         if (loader == null || saver == null) {
-            System.out.println("hello crud" + application);
+            //System.out.println("hello crud" + application);
             CRUDFlinger.loader = application.getSharedPreferences("AppPrefs", application.MODE_PRIVATE);
             CRUDFlinger.saver = application.getSharedPreferences("AppPrefs", application.MODE_PRIVATE).edit();
 
@@ -160,6 +160,12 @@ public class CRUDFlinger {
                 saver.putString("Country",JSONUtilities.stringify(region));
                 boolean a = saver.commit();
                 Log.i("Region Contents: ",JSONUtilities.stringify(region));
+                // Testing
+//                for (Area area : getAreas()) {
+//                    for (Household h : area.getResources()) {
+//                        System.out.println(h.getName() + " is in " +h.getArea());
+//                    }
+//                }
                 Log.i("Region saved: ",a + "");
             }catch (JSONException e){
                 //
@@ -277,7 +283,6 @@ public class CRUDFlinger {
                     //
                 }
             } catch (NullPointerException e){
-                System.out.println("Nothing Here");
             }
         }
     }
@@ -467,7 +472,6 @@ public class CRUDFlinger {
                     //
                 }
             } catch (NullPointerException e){
-                System.out.println("Nothing Here");
             }
         }
 

@@ -4,30 +4,21 @@ package com.special;
  * Created by chad on 4/13/15.
  */
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -128,7 +119,6 @@ public class  TransitionListAdapterNote extends BaseAdapter {
         hiddenViewEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 editListItemNote(position);
                 UISwipableList list = (UISwipableList)parent;
                 list.onTouchEvent(buildEvent());
@@ -168,6 +158,8 @@ public class  TransitionListAdapterNote extends BaseAdapter {
         }
         return index;
     }
+
+    /**************************** Edit Note **********************************/
 
     public void editListItemNote(final int position) {
         final Dialog dialog = new Dialog(mContext);

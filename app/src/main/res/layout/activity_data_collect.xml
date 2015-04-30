@@ -37,7 +37,7 @@
                     android:text="Data Collect"
                     android:textSize="@dimen/textsize_large"
                     android:textColor="@android:color/black"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/title"/>
 
                 <Button

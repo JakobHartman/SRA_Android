@@ -248,35 +248,35 @@ public class DataCollectQuestionFragment extends Fragment {
                 }
                 //********** MULTI ANSWER LIST ********
                 else if (dataType.equals(DatapointTypes.LIST_MULTI_ANSWER)) {
-                    final MultiSelectionSpinner options = new MultiSelectionSpinner(getActivity());
+                    final MultiSelectionSpinner options = new MultiSelectionSpinner(getActivity(),answerPosition, answers);
                     Button saveButton = new Button(getActivity());
                     saveButton.setText("Save Checked Answers");
-                    
+
                     if (!dp.getOptions().isEmpty())
                         options.setItems(dp.getOptions());
                     String json = answer;
                     Gson gson = new GsonBuilder().create();
                     List<String> selected = (List<String>) gson.fromJson(json, new TypeToken<List<String>>() {}.getType());
                     if (answers != null) options.setSelection(selected);
-                    saveButton.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            List<String> items = options.getSelectedStrings();
-                            Gson gson = new GsonBuilder().create();
-                            String json = gson.toJson(items);
-                            System.out.println("You touched the mulit answer" + json);
-                            if (answers.isEmpty())
-                                answers.add(answerPosition, json);
-                            else
-                                answers.set(answerPosition, json);
-
-                            return false;
-                        }
-                    });
+//                    saveButton.setOnTouchListener(new View.OnTouchListener() {
+//                        @Override
+//                        public boolean onTouch(View v, MotionEvent event) {
+//                            List<String> items = options.getSelectedStrings();
+//                            Gson gson = new GsonBuilder().create();
+//                            String json = gson.toJson(items);
+//                            System.out.println("You touched the mulit answer" + json);
+//                            if (answers.isEmpty())
+//                                answers.add(answerPosition, json);
+//                            else
+//                                answers.set(answerPosition, json);
+//
+//                            return false;
+//                        }
+//                    });
 
                     //add question to question container
                     questionContainer.addView(options);
-                    questionContainer.addView(saveButton);
+                    //questionContainer.addView(saveButton);
                 }
             }
 
@@ -310,11 +310,15 @@ public class DataCollectQuestionFragment extends Fragment {
             OnMultiChoiceClickListener {
         String[] _items = null;
         boolean[] mSelection = null;
+        int position;
+        List<String> answers;
 
         ArrayAdapter<String> simple_adapter;
 
-        public MultiSelectionSpinner(Context context) {
+        public MultiSelectionSpinner(Context context, int answerPosition, List<String> answers) {
             super(context);
+            position = answerPosition;
+            this.answers = answers;
 
             simple_adapter = new ArrayAdapter<String>(context,
                     android.R.layout.simple_spinner_item);
@@ -335,6 +339,17 @@ public class DataCollectQuestionFragment extends Fragment {
 
                 simple_adapter.clear();
                 simple_adapter.add(buildSelectedItemString());
+
+                //Save selected
+                List<String> items = getSelectedStrings();
+                Gson gson = new GsonBuilder().create();
+                String json = gson.toJson(items);
+                System.out.println("You touched the mulit answer" + json);
+                if (answers.isEmpty())
+                    answers.add(position, json);
+                else
+                    answers.set(position, json);
+
             } else {
                 throw new IllegalArgumentException(
                         "Argument 'which' is out of bounds.");

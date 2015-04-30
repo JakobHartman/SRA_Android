@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.special.menu.ResideMenu;
 import com.special.utils.UISwipableList;
 import com.special.utils.UITabs;
 
@@ -59,6 +60,8 @@ public class MemberFragment extends Fragment {
     public TextView title;
     private List<Note> notes_list;
     Bundle args;
+    private ResideMenu resideMenu;
+
 
 
     @Override
@@ -66,9 +69,10 @@ public class MemberFragment extends Fragment {
         View parentView;
         Button interviewButton;
         Button noteButton;
-
         Button button;
         parentView = inflater.inflate(R.layout.fragment_member, container, false);
+        Dashboard parentActivity = (Dashboard) getActivity();
+        resideMenu = parentActivity.getResideMenu();
 
         notes_list = new ArrayList<>();
 
@@ -77,7 +81,6 @@ public class MemberFragment extends Fragment {
         button = (Button) parentView.findViewById(R.id.button3);
         interviewButton = (Button) parentView.findViewById(R.id.interview_button);
         noteButton = (Button) parentView.findViewById(R.id.new_note_button);
-        Dashboard parentActivity = (Dashboard) getActivity();
 
         // Questions button
         interviewButton.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +148,10 @@ public class MemberFragment extends Fragment {
 
         title.setText(CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getName());
         mAdapter = new TransitionListAdapterMember(getActivity(), listMembers(areaId, householdId));
+        listView.setActionLayout(R.id.hidden);
+        listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
+        listView.setIgnoredViewHandler(resideMenu);
         mAdapter.notifyDataSetChanged();
         System.out.println("Inside the member view");
         button.setOnClickListener(new View.OnClickListener() {

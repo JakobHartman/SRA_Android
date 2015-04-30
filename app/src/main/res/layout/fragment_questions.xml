@@ -30,18 +30,13 @@
             android:id="@+id/buttonContainer">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/UIButton"
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                style="@style/UIButtonInverse"
                 android:text="New Survey"
                 android:textSize="@dimen/textsize_medium"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:id="@+id/new_question_set_button"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="10dp"/>
+                />
 
         </LinearLayout>
 

@@ -133,7 +133,6 @@ public class HouseholdFragment extends Fragment {
 
                             newNote = new Note("Household", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
                             // Add note to the list
-                            System.out.println("Area name for the Note = "+CRUDFlinger.getAreas().get(areaId).getName());
                             notes_list.add(newNote);
                             // Notify Note created
                             Toast toast = new Toast(getActivity());
@@ -148,7 +147,10 @@ public class HouseholdFragment extends Fragment {
 
         title.setText("Households");
         mAdapter = new TransitionListAdapterHousehold(getActivity(), listHouseholds(areaId));
+        listView.setActionLayout(R.id.hidden);
+        listView.setItemLayout(R.id.front_layout);
         listView.setAdapter(mAdapter);
+        listView.setIgnoredViewHandler(resideMenu);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -243,7 +245,6 @@ public class HouseholdFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("Area Index",areaId);
         args.putInt("Household Id", householdID);
-        System.out.println("add member to household index: " + householdID);
         goToAddMember.setArguments(args);
 
         // Change the fragment

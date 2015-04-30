@@ -77,39 +77,51 @@ public class DownloadData {
         for (CountryLogin country : info.getSiteLogin().getCountries()){
             for(RegionLogin regions : country.getRegions()){
                 for(AreaLogin area : regions.getAreas()){
+                    // For each area belonging to the user, look through the resources node
+                    // for child nodes that have areas with the same name
                     String id = capitalizeFirstLetter(area.getName());
                     Query query = base.orderByChild("area").equalTo(id);
                     Log.i("link: ", query.getRef().toString());
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            passes = 0;
-                            //Log.i("String: ",dataSnapshot.getValue().toString());
+                            passes = 1;
+                            Area currentArea = new Area();
                             for(DataSnapshot child : dataSnapshot.getChildren()){
                                 Household household = child.getValue(Household.class);
-                                Log.i("household: ", child.getValue().toString());
-                                if(passes > 0) {
-                                    for (Area area1 : CRUDFlinger.getAreas()){
-                                        if (area1.getName().equals(household.getArea())) {
-                                            area1.addHousehold(household);
-                                        } else {
-                                            createArea(household);
-                                        }
-                                    }
+                                Log.i("counts: ","" + passes);
+
+                                Log.i("household downloaded: ", household.getHouseholdID());
+
+                                //Check to see if Area has already been created, if so add the
+                                //household to that area
+                                if(passes > 1) {
+//                                    for (Area area1 : CRUDFlinger.getAreas()){
+//                                        if (area1.getName().equals(household.getArea())) {
+//                                            area1.addHousehold(household);
+//                                        } else {
+//                                            createArea(household);
+//                                        }
+//                                    }
+                                    currentArea.addHousehold(household);
+                                    System.out.println("Adding " + household.getName() + " to " + currentArea.getName());
 
                                 }else{
-                                    Log.i("counts: ","" + passes);
-                                    createArea(household);
+                                    currentArea = createArea(household);
+                                    System.out.println("Adding " + household.getName() + " to new area");
+                                    CRUDFlinger.getRegion().addArea(currentArea);
                                 }
-                                CRUDFlinger.getRegion().getAreas().addAll(areas);
-                                areas.clear();
-                                if(CRUDFlinger.getAreas().size() == number){
-                                    CRUDFlinger.saveRegion();
-                                    Intent intent = new Intent(activity,Dashboard.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    activity.startActivity(intent);
-                                }
+
                                 passes++;
+
+                            }
+                            CRUDFlinger.saveRegion();
+                            //CRUDFlinger.getRegion().getAreas().addAll(areas);
+                            //areas.clear();
+                            if(CRUDFlinger.getAreas().size() == number){
+                                Intent intent = new Intent(activity,Dashboard.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                activity.startActivity(intent);
                             }
 
                         }
@@ -165,13 +177,14 @@ public class DownloadData {
         CRUDFlinger.saveRegion();
     }
 
-    public static void createArea(Household household) {
+    public static Area createArea(Household household) {
         Area area = new Area();
         area.setCountry(household.getCountry());
         area.setRegion(household.getRegion());
         area.setName(household.getArea());
         area.addHousehold(household);
         areas.add(area);
+        return area;
     }
 
     public static void createTempArea(Household household){

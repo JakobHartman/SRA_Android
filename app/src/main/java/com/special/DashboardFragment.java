@@ -42,7 +42,7 @@ public class DashboardFragment extends Fragment {
         CRUDFlinger.setApplication(getActivity().getApplication());
         for (Area area : CRUDFlinger.getAreas()){
             for(Household household : area.getResources()){
-//                Log.i("House ID: ",household.getHouseholdID());
+                Log.i("House ID: ",household.getHouseholdID());
             }
         }
         // get the listview
@@ -56,7 +56,6 @@ public class DashboardFragment extends Fragment {
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
                 // Tell us what we clicked
-
 
                 if (CRUDFlinger.getAreas() == null) {
                      // need to be taken to login activity
@@ -97,12 +96,10 @@ public class DashboardFragment extends Fragment {
         try{
             prepareListData();
         } catch (JSONException e){
-            //
+
         }
 
-
-
-        System.out.println("After Preparing..."+listDataChild.get("Juja"));
+        //System.out.println("After Preparing..."+listDataChild.get("Juja"));
         listAdapter = new ExpandableListAdapter(parentView.getContext(), listDataHeader, listDataChild);
 
         // setting list adapter
@@ -132,9 +129,6 @@ public class DashboardFragment extends Fragment {
             area0.add("You need to sync or add areas");
             listDataChild.put(listDataHeader.get(0), area0);
 
-
-
-
         } else {
 
             // Add categories
@@ -143,11 +137,11 @@ public class DashboardFragment extends Fragment {
                 listDataHeader.add(a.getName());
                 //Get the households in area
                 households = a.getResources();
-                Log.i("","" + households);
+                //Log.i("Dashboard ", households);
                 ArrayList<String> houseNames = new ArrayList<String>();
                 //For each household in the list of households
                 for (Household h : households) {
-                    Log.i("House : ", JSONUtilities.stringify(h));
+                    Log.i("Household ID : ", h.getHouseholdID());
                     //for each household add their name to the list
                     houseNames.add(h.getName());
                 }
@@ -156,37 +150,6 @@ public class DashboardFragment extends Fragment {
                 //System.out.println("listDataChild ="+a.getName()+" "+houseNames.get(0));
 
             }
-
-
-            /*
-            listDataHeader.add("Area 1");
-            listDataHeader.add("Area 2");
-            listDataHeader.add("Area 3");
-
-
-            // Fill child list 1
-            List<String> area1 = new ArrayList<String>();
-            area1.add("Household 1");
-            area1.add("Household 2");
-
-
-            // Fill Child list 2
-            List<String> area2 = new ArrayList<String>();
-            area2.add("Household 1");
-            area2.add("Household 2");
-
-            /*
-            // Fill child list 3
-            List<String> area3 = new ArrayList<String>();
-            area3.add("Household 1");
-            area3.add("Household 2");
-            area3.add("Household 3");
-            */
-
-
-            //listDataChild.put(listDataHeader.get(0), area1); // Header, Child data
-            //listDataChild.put(listDataHeader.get(1), area2);
-            // listDataChild.put(listDataHeader.get(2), area3);
 
         }
 
