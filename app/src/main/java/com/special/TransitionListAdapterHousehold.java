@@ -108,6 +108,7 @@ public class TransitionListAdapterHousehold extends BaseAdapter {
         final String item = mItems.get(position).getTitle();
         final String desc = mItems.get(position).getDesc();
         final int imageid = mItems.get(position).getImageId();
+        /*
         int id = 0;
         int house = 0;
         if(mItems.get(position).getNr() != null){
@@ -116,14 +117,19 @@ public class TransitionListAdapterHousehold extends BaseAdapter {
         if(mItems.get(position).getNrTxt() != null){
             house = Integer.parseInt(mItems.get(position).getNrTxt());
         }
-        final int houseId = id;
-        final int areaId = id;
+        //final int houseId = id;
+        //final int areaId = id;
+        */
+        final int areaId = CRUDFlinger.load("area");
+        final int houseId = CRUDFlinger.load("house");
 
         viewHolder.image.setImageResource(imageid);
         if(mItems.get(position).getPictureTaken() != null){
             viewHolder.image.setImageBitmap(mItems.get(position).getPictureTaken());
         }
-        Log.i("posotion",houseId + " " + areaId);
+        Log.i("area",areaId +"");
+        Log.i("House", houseId +"");
+        Log.i("position", position +"");
         viewHolder.title.setText(item);
         viewHolder.descr.setText(desc);
         final ImageButton hiddenView = (ImageButton) v.findViewById(R.id.hidden_view1);
@@ -136,9 +142,10 @@ public class TransitionListAdapterHousehold extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 String text = desc.split("\\s++")[1];
-                    CRUDFlinger.save("house", 9999);
-                    CRUDFlinger.save("area", areaId);
-                    CRUDFlinger.save("pos", position);
+                    CRUDFlinger.save("house", position);
+                    //CRUDFlinger.save("area", areaId);
+                    CRUDFlinger.save("pos", 0);
+                    CRUDFlinger.save("picType", 1);
                 image.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {

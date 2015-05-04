@@ -42,13 +42,19 @@ public class EditQuestionSetFrag extends Fragment {
         nameField = (EditText) parentView.findViewById(R.id.name_field);
         nameField.setText(questionSet.getName());
 
+        RadioButton houseButton = (RadioButton) parentView.findViewById(R.id.radio_household);
+        RadioButton areaButton = (RadioButton) parentView.findViewById(R.id.radio_community);
+
         // Sets the question set type
         if (questionSet.getType().equals("HOUSEHOLD")) {
-            RadioButton houseButton = (RadioButton) parentView.findViewById(R.id.radio_household);
             houseButton.setChecked(true);
+            houseButton.setEnabled(false);
+            areaButton.setEnabled(false);
+
         } else if (questionSet.getType().equals("AREA")) {
-            RadioButton areaButton = (RadioButton) parentView.findViewById(R.id.radio_community);
             areaButton.setChecked(true);
+            areaButton.setEnabled(false);
+            houseButton.setEnabled(false);
         }
 
         // The list of questions

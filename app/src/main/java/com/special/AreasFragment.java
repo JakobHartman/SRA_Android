@@ -89,6 +89,9 @@ public class AreasFragment extends Fragment {
                 HouseholdFragment goToHouse = new HouseholdFragment();
                 Bundle args = new Bundle();
                 args.putInt("Area Index",i);
+
+                // Save the index of the area we are in
+                CRUDFlinger.save("area", i);
                 goToHouse.setArguments(args);
 
                 // Change the fragment

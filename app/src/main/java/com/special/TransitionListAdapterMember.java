@@ -20,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -40,13 +39,8 @@ import org.rbdc.sra.Dashboard;
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.DeleteRecord;
-import org.rbdc.sra.objects.Area;
-import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.ImageData;
-import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Member;
-import org.rbdc.sra.objects.Note;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -108,6 +102,7 @@ public class TransitionListAdapterMember extends BaseAdapter {
             final String item = mItems.get(position).getTitle();
             final String desc = mItems.get(position).getDesc();
             final int imageid = mItems.get(position).getImageId();
+            /*
             int id = 0;
             int house = 0;
             if(mItems.get(position).getNr() != null){
@@ -118,38 +113,45 @@ public class TransitionListAdapterMember extends BaseAdapter {
             }
             final int houseId = id;
             final int areaId = id;
+            */
+
+            final int houseId = CRUDFlinger.load("house");
+            final int areaId = CRUDFlinger.load("area");
 
             viewHolder.image.setImageResource(imageid);
             if(mItems.get(position).getPictureTaken() != null){
                 viewHolder.image.setImageBitmap(mItems.get(position).getPictureTaken());
             }
-            Log.i("posotion",houseId + " " + areaId);
+            Log.i("area",areaId +"");
+            Log.i("House", houseId +"");
+            Log.i("position", position +"");
             viewHolder.title.setText(item);
             viewHolder.descr.setText(desc);
             final ImageButton hiddenView = (ImageButton) v.findViewById(R.id.hidden_view1);
             final ImageButton hiddenViewEdit = (ImageButton) v.findViewById(R.id.hidden_view2);
             final ImageView image = (ImageView) v.findViewById(R.id.item_image);
 
-//            image.setOnClickListener(new OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//                        CRUDFlinger.save("house", houseId);
-//                        CRUDFlinger.save("area", areaId);
-//                        CRUDFlinger.save("pos", position);
-//
-//                    image.setOnClickListener(new OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//
-//                        }
-//                    });
-//                    Activity act = (Dashboard) mContext;
-//                    act.startActivityForResult(intent, 1);
-//                }
-//            });
+            image.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                        //CRUDFlinger.save("house", houseId);
+                        //CRUDFlinger.save("area", areaId);
+                        CRUDFlinger.save("pos", position);
+                        CRUDFlinger.save("picType", 2);
+
+                    image.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    Activity act = (Dashboard) mContext;
+                    act.startActivityForResult(intent, 1);
+                }
+            });
 
 
             hiddenViewEdit.setOnClickListener(new OnClickListener() {

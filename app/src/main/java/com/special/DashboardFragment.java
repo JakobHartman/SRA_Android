@@ -78,7 +78,9 @@ public class DashboardFragment extends Fragment {
                     MemberFragment goToHouse = new MemberFragment();
                     Bundle args = new Bundle();
                     args.putInt("Area Index",groupPosition);
+                    CRUDFlinger.save("area", groupPosition);
                     args.putInt("House Index", childPosition);
+                    CRUDFlinger.save("house", childPosition);
                     Log.i("Position :",childPosition + "");
                     goToHouse.setArguments(args);
 

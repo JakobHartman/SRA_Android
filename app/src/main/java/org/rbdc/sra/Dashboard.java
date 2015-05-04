@@ -84,7 +84,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         itemAreas = new ResideMenuItem(this, R.drawable.ic_map,  "Communities");
         itemQuestions = new ResideMenuItem(this, R.drawable.ic_question, "Surveys");
         itemNotes = new ResideMenuItem(this, R.drawable.ic_notes, "Notes");
-        itemStats = new ResideMenuItem(this,R.drawable.ic_stats,"Stats");
+        // hide stats
+        //itemStats = new ResideMenuItem(this,R.drawable.ic_stats,"Stats");
         itemSync = new ResideMenuItem(this,R.drawable.ic_sync,"Sync");
         itemLogout = new ResideMenuItem(this,R.drawable.ic_logout,"Logout");
 
@@ -92,7 +93,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         itemAreas.setOnClickListener(this);
         itemQuestions.setOnClickListener(this);
         itemNotes.setOnClickListener(this);
-        itemStats.setOnClickListener(this);
+        //hide stats
+        //itemStats.setOnClickListener(this);
         itemSync.setOnClickListener(this);
         itemLogout.setOnClickListener(this);
 
@@ -100,7 +102,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         resideMenu.addMenuItem(itemAreas);
         resideMenu.addMenuItem(itemQuestions);
         resideMenu.addMenuItem(itemNotes);
-        resideMenu.addMenuItem(itemStats);
+        //hide stats
+        //resideMenu.addMenuItem(itemStats);
         resideMenu.addMenuItem(itemSync);
         resideMenu.addMenuItem(itemLogout);
 
@@ -218,10 +221,11 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
                 int house = CRUDFlinger.load("house");
                 int area = CRUDFlinger.load("area");
                 int pos = CRUDFlinger.load("pos");
-                if(house == 9999 && area == 9999){
-                    CRUDFlinger.getAreas().get(pos).addImage(image);
-                }else if (house == 9999){
-                    CRUDFlinger.getAreas().get(area).getResources().get(pos).addImage(image);
+                int picType = CRUDFlinger.load("picType");
+                if(picType == 0){
+                    CRUDFlinger.getAreas().get(area).addImage(image);
+                }else if (picType == 1){
+                    CRUDFlinger.getAreas().get(area).getResources().get(house).addImage(image);
                 } else {
                     CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(pos).addImage(image);
                 }
