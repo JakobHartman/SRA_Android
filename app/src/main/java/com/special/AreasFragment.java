@@ -23,6 +23,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.special.menu.ResideMenu;
 import com.special.utils.UISwipableList;
 
@@ -131,7 +136,7 @@ public class AreasFragment extends Fragment {
             public void onClick(View v) {
                 Toast toast = new Toast(getActivity());
 
-                Area newArea = new Area();
+                final Area newArea = new Area();
 
                 if(areaText.getText().toString().matches("")){
                     toast.makeText(getActivity(),"Please Enter A Valid Area Name", Toast.LENGTH_SHORT).show();
@@ -146,6 +151,8 @@ public class AreasFragment extends Fragment {
                     listView.setAdapter(mAdapter);
                     dialog.cancel();
                     CRUDFlinger.saveRegion();
+                    CRUDFlinger.addToAreaCount();
+
                 }
             }
         });

@@ -1,8 +1,10 @@
 package com.special.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -29,6 +31,9 @@ import org.rbdc.sra.objects.Question;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * This class is used when editing a single question from a question set
+ */
 
 public class EditQuestionFrag extends android.support.v4.app.Fragment {
 
@@ -49,7 +54,9 @@ public class EditQuestionFrag extends android.support.v4.app.Fragment {
 
         // Name of the question
             final EditText nameField = (EditText) parentView.findViewById(R.id.name_field);
-            nameField.setText(q.getName());
+            if (!q.getName().equals("")) {
+                nameField.setText(q.getName());
+            }
             nameField.setSelection(nameField.length());
             nameField.addTextChangedListener(new TextWatcher() {
                 public void afterTextChanged(Editable s) { }
@@ -72,7 +79,7 @@ public class EditQuestionFrag extends android.support.v4.app.Fragment {
 
             // List of data points
             final LinearLayout dataPointList = (LinearLayout) parentView.findViewById(R.id.list_view);
-            ArrayList<Datapoint> datapoints = q.getDataPoints();
+            final ArrayList<Datapoint> datapoints = q.getDataPoints();
             for (Datapoint dp : datapoints) {
                 addDataPoint(dataPointList, dp, q);
             }
@@ -81,8 +88,48 @@ public class EditQuestionFrag extends android.support.v4.app.Fragment {
             finishButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CRUDFlinger.saveQuestionSets();
-                    getFragmentManager().popBackStackImmediate();
+                    boolean needsLabel = false;
+                    for (Datapoint dp : datapoints) {
+                        if (dp.getLabel().toString().equals("")) {
+                            needsLabel = true;
+                            break;
+                        }
+                    }
+                    if (nameField.getText().toString().equals("")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent);
+                        builder.setTitle("Error: Empty title");
+                        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else if (datapoints.isEmpty()) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent);
+                        builder.setTitle("Please add a data point");
+                        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else if (needsLabel) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent);
+                        builder.setTitle("One or more data points need a label");
+                        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else {
+                        CRUDFlinger.saveQuestionSets();
+                        getFragmentManager().popBackStackImmediate();
+                    }
+
                 }
             });
 

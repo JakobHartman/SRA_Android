@@ -182,7 +182,6 @@ public class InterviewActivity extends Activity {
         String json = gson.toJson(qs);
         QuestionSet clonedQS = gson.fromJson(json, QuestionSet.class);
 
-
         responseSets.add(clonedQS);
 
         //set in crud

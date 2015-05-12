@@ -23,6 +23,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import org.acra.collector.CrashReportData;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
 import org.rbdc.sra.helperClasses.DownloadData;
 import org.rbdc.sra.objects.AreaLogin;
@@ -30,6 +31,8 @@ import org.rbdc.sra.objects.CountryLogin;
 import org.rbdc.sra.objects.LoginObject;
 import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
+
+import java.util.ArrayList;
 
 import quickconnectfamily.json.JSONException;
 import quickconnectfamily.json.JSONUtilities;
@@ -114,8 +117,6 @@ public class Login extends Activity {
 
         if (internetConnected()) {
             //authenticate user using firebase.
-            CRUDFlinger.setUserName(username);
-            CRUDFlinger.setPassword(password);
             ref.authWithPassword(username, password, new Firebase.AuthResultHandler() {
                 //Success
                 @Override
@@ -123,59 +124,72 @@ public class Login extends Activity {
                     status = true;
                     textview.setText("Authenticating....");
 
+                    //Clear the data
                     CRUDFlinger.clearCRUD();
                     CRUDFlinger.removeNotes();
                     CRUDFlinger.clearQuestionSets();
+                    CRUDFlinger.setUserName(username);
+                    CRUDFlinger.setLoggedIn("true");
                     CRUDFlinger.setRegion(new Region());
 
                     //Get reference to User Tree
 
                     Firebase users = new Firebase("https://intense-inferno-7741.firebaseio.com/users/");
                     Query user = users.orderByChild("email").equalTo(username);
-                    //Start download from firebase, once
+                    //Find the user that logged in
                     user.addListenerForSingleValueEvent(new ValueEventListener() {
 
                         //Success
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            ArrayList<String> areaNames = new ArrayList<String>();
+
                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                 //loop through Users
                                 textview.setText("Saving User For Offline Use");
-                                //System.out.println(dataSnapshot1.getValue().toString());
+                                //get area names
+                                DataSnapshot areas = dataSnapshot1.child("areas");
+                                for (DataSnapshot area : areas.getChildren()) {
+                                    areaNames.add(area.getValue().toString());
+                                }
+
+                                CRUDFlinger.setAreaCount((int) dataSnapshot1.child("areas").getChildrenCount());
+                                CRUDFlinger.setAreaNames(areaNames);
 
                                 String username = dataSnapshot1.child("email").getValue().toString();
 
-                                DataSnapshot ld = dataSnapshot1.child("organizations").child(organization);
-                                DataSnapshot role = ld.child("roles");
-                                DataSnapshot country = ld.child("countries");
+//                                DataSnapshot ld = dataSnapshot1.child("organizations").child(organization);
+//                                DataSnapshot role = ld.child("roles");
+//                                DataSnapshot country = ld.child("countries");
                                 final LoginObject info = new LoginObject();
                                 info.setEmail(username);
                                 info.setUsername(username);
                                 info.setLoggedIn(true);
-                                for (DataSnapshot rs : country.getChildren()) {
-                                    CountryLogin countryLogin = new CountryLogin();
-                                    countryLogin.setName(rs.getKey());
-                                    for (DataSnapshot as : rs.child("regions").getChildren()) {
-                                        RegionLogin regionLogin = new RegionLogin();
-                                        regionLogin.setName(as.getKey());
-                                        for (DataSnapshot a : as.child("areas").getChildren()) {
-                                            AreaLogin areaLogin = new AreaLogin();
-                                            areaLogin.setName(a.getKey());
-                                            regionLogin.addArea(areaLogin);
-                                        }
-                                        countryLogin.addRegion(regionLogin);
-
-                                    }
-                                    info.getSiteLogin().addCountry(countryLogin);
-                                }
+                                // Save the users Countries and Areas assignments
+//                                for (DataSnapshot rs : country.getChildren()) {
+//                                    CountryLogin countryLogin = new CountryLogin();
+//                                    countryLogin.setName(rs.getKey());
+//                                    for (DataSnapshot as : rs.child("regions").getChildren()) {
+//                                        RegionLogin regionLogin = new RegionLogin();
+//                                        regionLogin.setName(as.getKey());
+//                                        for (DataSnapshot a : as.child("areas").getChildren()) {
+//                                            AreaLogin areaLogin = new AreaLogin();
+//                                            areaLogin.setName(a.getKey());
+//                                            regionLogin.addArea(areaLogin);
+//                                        }
+//                                        countryLogin.addRegion(regionLogin);
+//
+//                                    }
+//                                    info.getSiteLogin().addCountry(countryLogin);
+//                                }
 
                                 textview.setText("Loading User Areas");
 
                                 //add roles to loginInfo
-                                for (DataSnapshot roles : role.getChildren()) {
-                                    String Roles = roles.getValue().toString();
-                                    info.addToRoles(Roles);
-                                }
+//                                for (DataSnapshot roles : role.getChildren()) {
+//                                    String Roles = roles.getValue().toString();
+//                                    info.addToRoles(Roles);
+//                                }
                                 String userString;
                                 CRUDFlinger.setUser(info);
                                 SharedPreferences.Editor user = getSharedPreferences("AppPrefs", MODE_PRIVATE).edit();
@@ -184,9 +198,12 @@ public class Login extends Activity {
                                     user.putString("User", userString);
                                     user.commit();
                                     Firebase.setAndroidContext(getBaseContext());
+
+                                    // Download the data
                                     DownloadData.downloadQuestions();
                                     //download notes
                                     DownloadData.downloadNotes(username);
+                                    // This will also take you to the dashboard activity
                                     DownloadData.downloadGoToDash(info, getBaseContext());
 
                                 } catch (JSONException e) {
@@ -215,19 +232,23 @@ public class Login extends Activity {
                 }
             });
         } else {
-            //you are offline
-            System.out.println("Username: " + CRUDFlinger.getUserName() + "Password: " + CRUDFlinger.getPassword());
-            if (CRUDFlinger.getUserName().equals(username) && CRUDFlinger.getPassword().equals(password)) {
+                CRUDFlinger.setLoggedIn("false");
+                CRUDFlinger.setUserName(username);
                 Intent intent = new Intent(getBaseContext(),Dashboard.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getBaseContext().startActivity(intent);
-            } else {
-                //Hide progress wheel
-                progress.setVisibility(View.INVISIBLE);
-                //display Error
-                textview.setText("Failed to Log in offline");
-                status = false;
-            }
+            //you are offline
+//            if (CRUDFlinger.getUserName().equals(username)) {
+//                Intent intent = new Intent(getBaseContext(),Dashboard.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                getBaseContext().startActivity(intent);
+//            } else {
+//                //Hide progress wheel
+//                progress.setVisibility(View.INVISIBLE);
+//                //display Error
+//                textview.setText("Failed to Log in offline");
+//                status = false;
+//            }
         }
 
     }

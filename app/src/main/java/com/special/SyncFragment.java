@@ -29,6 +29,7 @@ import org.rbdc.sra.objects.Area;
 import org.rbdc.sra.objects.Datapoint;
 import org.rbdc.sra.objects.Household;
 import org.rbdc.sra.objects.LoginObject;
+import org.rbdc.sra.objects.Note;
 import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.Region;
 
@@ -65,78 +66,54 @@ public class SyncFragment extends Fragment {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         progressBar.setVisibility(View.VISIBLE);
-                        for(Area area : CRUDFlinger.getAreas()){
-                            // for each household
-                            for(Household household : area.getResources()) {
-                                textView.setText("Syncing Households");
+//                        for(Area area : CRUDFlinger.getAreas()){
+//                            // for each household for each area
+//                            for(Household household : area.getResources()) {
+//                                textView.setText("Syncing Households");
+//
+//                                int areaId = CRUDFlinger.getAreas().indexOf(area);
+//                                int householdId = CRUDFlinger.getAreas().get(areaId).getResources().indexOf(household);
+//                                //Log.i("Food: ", areaId + "");
+//                                ArrayList<Question> questions = null;
+//                                // Nutrition Data
+//                                try {
+//                                    questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
+//                                }
+//                                catch(NullPointerException e){
+//                                    e.printStackTrace();
+//                                }
+//                                if(questions != null) {
+//                                    for (Question question : questions) {
+//                                        for(Datapoint datapoint : question.getDataPoints()){
+//                                            for(String food : datapoint.getAnswers()){
+//                                                CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getNutrition().clear();
+//                                                //Log.i("Food: ", food);
+//                                                //new Asyncer().execute(food, areaId, householdId);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
 
-                                int areaId = CRUDFlinger.getAreas().indexOf(area);
-                                int householdId = CRUDFlinger.getAreas().get(areaId).getResources().indexOf(household);
-                                //Log.i("Food: ", areaId + "");
-                                ArrayList<Question> questions = null;
-                                try {
-                                    questions = CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getQuestionSet("nutrition").getQuestions();
-                                }
-                                catch(NullPointerException e){
-                                    e.printStackTrace();
-                                }
-                                if(questions != null) {
-                                    for (Question question : questions) {
-                                        for(Datapoint datapoint : question.getDataPoints()){
-                                            for(String food : datapoint.getAnswers()){
-                                                CRUDFlinger.getAreas().get(areaId).getResources().get(householdId).getNutrition().clear();
-                                                //Log.i("Food: ", food);
-                                                new Asyncer().execute(food, areaId, householdId);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        DownloadData.downloadToSync(login,getActivity().getBaseContext());
+
                         // Download and merge question sets
                         textView.setText("Syncing Question Sets");
 
+                        // Merges question sets
                         DownloadData.downloadTempQuestions();
-                        try {
-                            CRUDFlinger.merge(CRUDFlinger.getTempQuestionSets(), CRUDFlinger.getQuestionSets());
 
-                        }catch (Exception e) {
-                            System.out.println("There was an exception merging questions");
-                        }
 
                         // Download and merge notes
                         textView.setText("Syncing Notes");
 
+                        // Merges Notes
                         DownloadData.downloadTempNotes();
-                        try {
-                            CRUDFlinger.merge(CRUDFlinger.getTempNotes(), CRUDFlinger.getNotes());
-                        }catch (Exception e) {
-                            System.out.println("There was an exception merging notes");
-                        }
 
-                        try{
-                            region = CRUDFlinger.merge(CRUDFlinger.getTempRegion(), CRUDFlinger.getRegion());
-                            CRUDFlinger.setRegion(region);
-                            syncUp.removeFromDeleteRecord();
-                            try{
-                                Log.i("Being Pushed",JSONUtilities.stringify(CRUDFlinger.getAreas().get(0)));
-                                syncUp.uploadAreas();
-                                syncUp.uploadHouses(org);
-                                System.out.println("uploading questions");
-                                syncUp.uploadQuestions();
-                                System.out.println("uploading notes");
-                                syncUp.uploadNotes();
-
-                                CRUDFlinger.saveRegion();
-                            }catch (JSONException e){
-                                e.printStackTrace();
-                                return;}
+                        // Download areas
+                        DownloadData.downloadToSync(login,getActivity().getBaseContext());
 
 
-                        }catch (Exception e){
-                            e.printStackTrace();
-                            return;}
                         getFragmentManager().beginTransaction().replace(R.id.main_fragment,new DashboardFragment(), "dashboard")
                                 .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                 .addToBackStack(null).commit();

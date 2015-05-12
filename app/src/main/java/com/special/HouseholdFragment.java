@@ -198,9 +198,8 @@ public class HouseholdFragment extends Fragment {
 
         final EditText areaText = (EditText) dialog.findViewById(R.id.editText);
         final LoginObject loginObject = CRUDFlinger.load("User",LoginObject.class);
-        ArrayList<String> regions = new ArrayList<>();
-        regions.add("Select Region");
-        regions.addAll(loginObject.getSiteLogin().getRegionNames());
+
+        final String region = CRUDFlinger.getAreas().get(areaId).getRegion();
 
         btn = (Button) dialog.findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -214,9 +213,10 @@ public class HouseholdFragment extends Fragment {
                 }else{
 
                     newHousehold.setName(areaText.getText().toString());
-                    newHousehold.setHouseholdID(newHousehold.getName().substring(0,3).toUpperCase(),"");
+                    newHousehold.setHouseholdID(newHousehold.getName().substring(0, 3).toUpperCase(), "");
                     newHousehold.setArea(CRUDFlinger.getAreas().get(areaId).getName());
                     newHousehold.setCountry(CRUDFlinger.getAreas().get(areaId).getCountry());
+                    newHousehold.setRegion(region);
                     CRUDFlinger.addHousehold(areaId, newHousehold);
                     mAdapter = new TransitionListAdapterHousehold(getActivity(),listHouseholds(areaId));
                     listView.setAdapter(mAdapter);

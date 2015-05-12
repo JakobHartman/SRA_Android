@@ -125,6 +125,5 @@ public class QuestionAdapter extends BaseAdapter {
                 .addToBackStack(null).commit();
     }
 
-
 }
 

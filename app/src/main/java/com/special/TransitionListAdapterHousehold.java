@@ -190,15 +190,6 @@ public class TransitionListAdapterHousehold extends BaseAdapter {
 
             }
         });
-//            viewHolder.image.setOnClickListener(new OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//
-//
-//
-//                }
-//            });
 
         return v;
     }
@@ -223,31 +214,6 @@ public class TransitionListAdapterHousehold extends BaseAdapter {
         return index;
     }
 
-    /**************************** delete List Item Area **********************************/
-
-
-    private void deleteListItemArea(final int position){
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("Delete Community: " + CRUDFlinger.getAreas().get(position).getName());
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                DeleteRecord.addArea(CRUDFlinger.getAreas().get(position));
-                CRUDFlinger.getAreas().remove(position);
-                updateArea();
-                CRUDFlinger.saveRegion();
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
     /**************************** delete List Item Household **********************************/
 
@@ -261,57 +227,6 @@ public class TransitionListAdapterHousehold extends BaseAdapter {
                 CRUDFlinger.getAreas().get(area).getResources().remove(position);
                 updateHousehold(area);
                 CRUDFlinger.saveRegion();
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-    }
-
-    /**************************** delete List Item Member **********************************/
-
-    private void deleteListItemMember(final int area,final int house,final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("Delete member: " + CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(position).getName());
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                DeleteRecord.addMember(CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().get(position));
-                CRUDFlinger.getAreas().get(area).getResources().get(house).getMembers().remove(position);
-                updateMember(area,house);
-                CRUDFlinger.saveRegion();
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    /**************************** delete Note **********************************/
-
-    public void deleteListItemNote(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle("Delete Note: " + CRUDFlinger.getNote(position).getNoteTitle());
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                //TODO
-                DeleteRecord.addNote(CRUDFlinger.getNote(position));
-                CRUDFlinger.getNotes().remove(position);
-                updateNotes(position);
-                CRUDFlinger.saveNotes();
                 dialog.dismiss();
             }
         });
@@ -389,7 +304,6 @@ public class TransitionListAdapterHousehold extends BaseAdapter {
         dialog.show();
     }
 
-    /**************************** delete Note **********************************/
 
     public void editListItemHousehold(final int position,final int house){
         DeleteRecord.addHousehold(CRUDFlinger.getAreas().get(position).getResources().get(house));
@@ -581,11 +495,6 @@ public class TransitionListAdapterHousehold extends BaseAdapter {
 
     public void updateMember(int area,int house){
         this.mItems = listMembers(area,house);
-        this.notifyDataSetChanged();
-    }
-
-    public void updateNotes(int position) {
-        this.mItems = listNotes(position);
         this.notifyDataSetChanged();
     }
 

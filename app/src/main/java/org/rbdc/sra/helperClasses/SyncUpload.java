@@ -20,6 +20,7 @@ import org.rbdc.sra.objects.QuestionSet;
 import org.rbdc.sra.objects.Region;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import quickconnectfamily.json.JSONException;
@@ -56,14 +57,38 @@ public class SyncUpload {
 
     public void uploadAreas(){
         Region region = CRUDFlinger.getRegion();
-        for(Area area : region.getAreas()){
+
+        // Get the snapshot for the user and delete the areas node so we can replace it
+        // with an updated version
+        Firebase users = new Firebase("https://intense-inferno-7741.firebaseio.com/users/");
+        Query user = users.orderByChild("email").equalTo(CRUDFlinger.getUserName());
+        user.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    // Replace the areas node
+                    data.child("areas").getRef().removeValue();
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        // For each area
+        for(final Area area : region.getAreas()){
+            // Get the url of the area nodes
             String url = UrlBuilder.buildAreaUrl(area);
             Firebase base = new Firebase(url);
+            // Get the url of the specific area
             Firebase newBase = base.child(area.getName().toLowerCase());
+            // Set the values
             newBase.child("region").setValue(capitalize(area.getRegion()));
             newBase.child("country").setValue(capitalize(area.getCountry()));
             newBase.child("name").setValue(capitalize(area.getName()));
-            Log.i("Interview Count: ", area.getInterviews().size() + "");
+            //Log.i("Interview Count: ", area.getInterviews().size() + "");
+            // Set the interviews
             for (Interview interview : area.getInterviews()){
                 try{
                     String json = JSONUtilities.stringify(interview);
@@ -75,23 +100,46 @@ public class SyncUpload {
 
                 }
             }
+
+            user.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Firebase areas = new Firebase(data.getRef().toString() + "/areas/");
+                        areas.push().setValue(area.getName());
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
         }
     }
 
     public void uploadHouses(String org){
+        // Get the region
         Region region = CRUDFlinger.getRegion();
+        // For each area
         for(Area area : region.getAreas()){
+            // For each household
             for(final Household household : area.getResources()) {
+                // Get the household (Resources) node
                 final Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/" + org  + "/resources/");
-                Log.i("Household ID: ",household.getHouseholdID());
+                //Log.i("Household ID: ",household.getHouseholdID());
+                // query for household Id
                 Query query = base.orderByChild("householdID").startAt(household.getHouseholdID()).endAt(household.getHouseholdID());
+                // If the data has changed
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                       Log.i("Datasnapshot Children: ",dataSnapshot.getChildrenCount() + "");
+                       //Log.i("Datasnapshot Children: ",dataSnapshot.getChildrenCount() + "");
                         if(dataSnapshot.getChildrenCount() == 0){
                             try{
                                 base.push().setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
+                                Log.i("Updating household: ", household.getName());
                             }catch (JSONException e){
                                 //
                             }catch (IOException e){
@@ -102,6 +150,7 @@ public class SyncUpload {
                                 Firebase newBase = new Firebase(data.getRef().toString());
                                 try{
                                     newBase.setValue(DownloadData.buildMap(JSONUtilities.stringify(household)));
+                                    Log.i("Adding household: ", household.getName());
                                 }catch (JSONException e){return;}catch (IOException e){
                                     //
                                 }
@@ -126,6 +175,7 @@ public class SyncUpload {
     }
 
     public void removeFromDeleteRecord(){
+        // Remove Areas
         for(Area area : DeleteRecord.getAreas()){
             for(Area area1 : CRUDFlinger.getAreas()){
                 if(area1.getName().equals(area.getName())){
@@ -133,6 +183,7 @@ public class SyncUpload {
                 }
             }
         }
+        // Remove households
         for(Area area : CRUDFlinger.getAreas()){
             for(Household household : area.getResources()){
                 for (Household household1 : DeleteRecord.getHouseholds()){
@@ -142,6 +193,7 @@ public class SyncUpload {
                 }
             }
         }
+        // Remove members
         for(Area area : CRUDFlinger.getAreas()){
             for(Household household : area.getResources()){
                 for(Member member : household.getMembers()) {

@@ -54,6 +54,8 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("User: " + CRUDFlinger.getUserName());
+        System.out.println("Logged In: " + CRUDFlinger.getLoggedIn());
         setContentView(R.layout.activity_dashboard);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         UrlBuilder.setOrg("sra");
@@ -191,7 +193,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         } else if (memberFragment != null && memberFragment.isVisible()) {
             memberFragment.getFragmentManager().popBackStackImmediate();
 
-        } else if (editQuestionSetFrag != null && editQuestionSetFrag.isVisible()){
+      } else if (editQuestionSetFrag != null && editQuestionSetFrag.isVisible()){
             editQuestionSetFrag.getFragmentManager().popBackStackImmediate();
             System.out.println("You are in the edit questions frag");
 

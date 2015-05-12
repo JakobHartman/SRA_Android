@@ -38,10 +38,10 @@ public class QuestionSet implements Serializable {
     public void setType(String type) {
         if (type.equals("Community") ) {
             this.type = "AREA";
-            System.out.println("type==Community");
+            //System.out.println("type==Community");
         } else if (type.equals("Household")){
             this.type = "HOUSEHOLD";
-            System.out.println("type==Household");
+            //System.out.println("type==Household");
 
         }
     }

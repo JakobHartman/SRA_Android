@@ -21,6 +21,7 @@ import org.rbdc.sra.objects.Region;
 import org.rbdc.sra.objects.RegionLogin;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import quickconnectfamily.json.JSONException;
@@ -36,6 +37,7 @@ public class CRUDFlinger {
     private static Region tempRegion = null;
     private static ArrayList<QuestionSet> tempQuestionSets = new ArrayList<>();
     private static LoginObject user;
+
 
     protected CRUDFlinger(){
 
@@ -60,8 +62,6 @@ public class CRUDFlinger {
 
         if(instance == null) {
             CRUDFlinger.instance = new CRUDFlinger();
-            CRUDFlinger.setPassword("test");
-            CRUDFlinger.setUserName("test");
         }
         return instance;
     }
@@ -135,6 +135,56 @@ public class CRUDFlinger {
     public static void clearCRUD(){
         setPreferences();
         saver.clear().commit();
+    }
+
+    public static int getAreaCount() {
+        setPreferences();
+        int count = loader.getInt("Area Count", 0);
+        return count;
+    }
+
+    public static void addToAreaCount() {
+        setPreferences();
+        int count = loader.getInt("Area Count", 0) + 1;
+        saver.putInt("Area Count", count);
+        saver.commit();
+    }
+
+    public static void setAreaNames(ArrayList<String> areaNames) {
+        setPreferences();
+        try {
+            Gson gson = new GsonBuilder().create();
+            String json = gson.toJson(areaNames);
+            saver.putString("Area Names", json);
+            saver.commit();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Exception: Couldn't store Area Names using KVStore.");
+        }
+    }
+
+    public static ArrayList<String> getAreaNames() {
+        setPreferences();
+        String stringNames = loader.getString("Area Names", null);
+        ArrayList<String> areaNames = new ArrayList<>();
+        try {
+            JSONArray jsonNames = new JSONArray(stringNames);
+            for (int i = 0; i < jsonNames.length();i++) {
+                String name = jsonNames.get(i).toString();
+                areaNames.add(name);
+            }
+            return areaNames;
+        } catch (Exception e) {
+            System.out.println("Error getting area names");
+        }
+        return null;
+    }
+
+    public static void setAreaCount(int count) {
+        setPreferences();
+        saver.putInt("Area Count", count);
+        saver.commit();
     }
 
     private static void loadRegion(){
@@ -219,7 +269,6 @@ public class CRUDFlinger {
             if (descriptor.getWriteMethod() != null) {
                 Object originalValue = descriptor.getReadMethod()
                         .invoke(target);
-
                 // Only copy values values where the destination values is null
                 if (originalValue == null) {
                     Object defaultValue = descriptor.getReadMethod().invoke(
@@ -231,6 +280,35 @@ public class CRUDFlinger {
         }
         return (Any)destination;
     }
+
+    public static void mergeNotes(ArrayList<Note> temps, ArrayList<Note> current) {
+        for (Note tempNote : temps) {
+            boolean found = false;
+            for (Note note : current) {
+                if (tempNote.getNoteID().toString().equals(note.getNoteID().toString())) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                addNote(tempNote);
+            }
+        }
+    }
+
+    public static void mergeQuestions() {
+        for (QuestionSet tempSet : tempQuestionSets) {
+            boolean found = false;
+            for (QuestionSet currentSet : questionSets) {
+                if (tempSet.getqSetId().toString().equals(currentSet.getqSetId().toString())) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                addQuestionSet(tempSet);
+            }
+        }
+    }
+
 
 
     /************************* Question set bank stuff ***********************/
@@ -420,6 +498,8 @@ public class CRUDFlinger {
         }
     }
 
+
+
     // Add Note
     public static void addNote(Note added_note) {
         setPreferences();
@@ -431,6 +511,8 @@ public class CRUDFlinger {
     public static void addTempNote(Note added_note){
         setPreferences();
         tempNotes.add(added_note);
+        System.out.println("temp note added: "+ added_note.getNoteTitle());
+
     }
 
     public static ArrayList<Note> getTempNotes() {return tempNotes;}
@@ -481,7 +563,7 @@ public class CRUDFlinger {
 
     public static String getUserName() {
         setPreferences();
-        String username = loader.getString("username", "empty");
+        String username = loader.getString("username", "error");
         return username;
     }
 
@@ -491,16 +573,16 @@ public class CRUDFlinger {
         saver.commit();
     }
 
-    public static String getPassword() {
+
+    public static void setLoggedIn(String check) {
         setPreferences();
-        String password = loader.getString("password", "empty");
-        return password;
+        saver.putString("loggedIn", check);
+        saver.commit();
     }
 
-    public static void setPassword(String pWord) {
+    public static String getLoggedIn() {
         setPreferences();
-        saver.putString("password", pWord);
-        saver.commit();
+        return loader.getString("loggedIn","error");
     }
 
 

@@ -1,9 +1,12 @@
 package com.special;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,8 +14,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
 import org.rbdc.sra.R;
 import org.rbdc.sra.helperClasses.CRUDFlinger;
+import org.rbdc.sra.helperClasses.DeleteRecord;
 import org.rbdc.sra.objects.Question;
 import org.rbdc.sra.objects.QuestionSet;
 
@@ -44,17 +50,28 @@ public class EditQuestionSetFrag extends Fragment {
 
         RadioButton houseButton = (RadioButton) parentView.findViewById(R.id.radio_household);
         RadioButton areaButton = (RadioButton) parentView.findViewById(R.id.radio_community);
+        RadioGroup rg = (RadioGroup) parentView.findViewById(R.id.radio_type);
 
         // Sets the question set type
         if (questionSet.getType().equals("HOUSEHOLD")) {
             houseButton.setChecked(true);
-            houseButton.setEnabled(false);
-            areaButton.setEnabled(false);
+            rg.removeView(areaButton);
+            houseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(),"This can't be changed",Toast.LENGTH_SHORT).show();
+                }
+            });
 
         } else if (questionSet.getType().equals("AREA")) {
             areaButton.setChecked(true);
-            areaButton.setEnabled(false);
-            houseButton.setEnabled(false);
+            rg.removeView(houseButton);
+            areaButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(),"This can't be changed",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         // The list of questions
@@ -68,10 +85,9 @@ public class EditQuestionSetFrag extends Fragment {
             @Override
             public void onClick(View v) {
                 Question q = new Question("");
-                q.setName("New Question");
+                //q.setName("New Question");
                 questionSet.addQuestion(q);
-                CRUDFlinger.saveQuestionSets();
-                questionListAdapter.notifyDataSetChanged();
+                questionListAdapter.openQuestionDialog(questionSet.getQuestions().size()-1);
             }
         });
 
@@ -86,18 +102,60 @@ public class EditQuestionSetFrag extends Fragment {
                 RadioButton selectedButton = (RadioButton) parentView.findViewById(selectedRadioId);
                 String typeText = selectedButton.getText().toString();
                 System.out.println("Type selected: "+ typeText);
+                boolean incomplete = false;
 
-                // get the changes
-                questionSet.setType(typeText);
-                questionSet.setName(nameField.getText().toString());
+                for (Question question : questionSet.getQuestions()) {
+                    if (question.getDataPoints().isEmpty() || question.getName().toString().equals("")) {
+                        incomplete = true;
+                    }
+                }
 
-                //CRUDFlinger.addQuestionSet(questionSet);
+                // Check for title
+                if (nameField.getText().toString().equals(""))
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent);
+                    builder.setTitle("Error: No title");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else if (questionSet.getQuestions().isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent);
+                    builder.setTitle("Please add a question");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else if (incomplete) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Translucent);
+                    builder.setTitle("Error: Incomplete Question");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                else {
+                    questionSet.setType(typeText);
+                    questionSet.setName(nameField.getText().toString());
 
-                //Save the changes
-                questionListAdapter.saveQuestionSets();
+                    //CRUDFlinger.addQuestionSet(questionSet);
+
+                    //Save the changes
+                    questionListAdapter.saveQuestionSets();
 
 
-                getFragmentManager().popBackStackImmediate();
+                    getFragmentManager().popBackStackImmediate();
+                }
+
             }
         });
 
