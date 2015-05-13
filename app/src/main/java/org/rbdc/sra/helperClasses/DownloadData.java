@@ -132,7 +132,7 @@ public class DownloadData {
 
                                             //Now match up areas with interviews
                                             for (Area area : storedAreas) {
-                                                if (area.getName().equals(areaSnapshot.getKey())) {
+                                                if (area.getName().equals(areaName)) {
                                                     area.setInterviews(interviews);
                                                 }
                                             }

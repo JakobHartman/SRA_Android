@@ -138,26 +138,26 @@ public class  TransitionListAdapterArea extends BaseAdapter {
             final ImageButton hiddenViewEdit = (ImageButton) v.findViewById(R.id.hidden_view2);
             final ImageView image = (ImageView) v.findViewById(R.id.item_image);
 
-            image.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    String text = desc.split("\\s++")[1];
-                    CRUDFlinger.save("house", 0);
-                    CRUDFlinger.save("area", position);
-                    CRUDFlinger.save("pos", 0);
-                    CRUDFlinger.save("picType", 0);
-                    image.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    });
-                    Activity act = (Dashboard) mContext;
-                    act.startActivityForResult(intent, 1);
-                }
-            });
+//            image.setOnClickListener(new OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    String text = desc.split("\\s++")[1];
+//                    CRUDFlinger.save("house", 0);
+//                    CRUDFlinger.save("area", position);
+//                    CRUDFlinger.save("pos", 0);
+//                    CRUDFlinger.save("picType", 0);
+//                    image.setOnClickListener(new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//
+//                        }
+//                    });
+//                    Activity act = (Dashboard) mContext;
+//                    act.startActivityForResult(intent, 1);
+//                }
+//            });
 
 
             hiddenViewEdit.setOnClickListener(new OnClickListener() {

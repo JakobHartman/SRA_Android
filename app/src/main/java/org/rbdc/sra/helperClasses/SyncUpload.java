@@ -1,6 +1,7 @@
 package org.rbdc.sra.helperClasses;
 
 import android.app.Activity;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -182,14 +183,38 @@ public class SyncUpload {
                     CRUDFlinger.getAreas().remove(area);
                 }
             }
+
         }
         // Remove households
         for(Area area : CRUDFlinger.getAreas()){
-            for(Household household : area.getResources()){
-                for (Household household1 : DeleteRecord.getHouseholds()){
+            for(final Household household : area.getResources()){
+                for (final Household household1 : DeleteRecord.getHouseholds()){
                     if(household.getHouseholdID().equals(household1.getHouseholdID())){
                         CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().remove(household);
                     }
+                    // Remove the household from firebase
+                    Firebase base = new Firebase("https://intense-inferno-7741.firebaseio.com/organizations/sra/resources/");
+                    Query query = base.orderByChild("householdID").equalTo(household1.getHouseholdID());
+
+                    // double check the right node was found
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot data : dataSnapshot. getChildren()) {
+                                System.out.println(data);
+                                if (data.child("householdID").getValue().toString().equals(household1.getHouseholdID().toString())) {
+                                    String ref = data.getRef().toString();
+                                    Firebase house = new Firebase(ref);
+                                    house.removeValue();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
                 }
             }
         }
@@ -201,6 +226,8 @@ public class SyncUpload {
                         if(member.getName().equals(member1.getName()) && member.getBirthday().equals(member1.getBirthday())){
                             CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().get(CRUDFlinger.getAreas().get(CRUDFlinger.getAreas().indexOf(area)).getResources().indexOf(household)).getMembers().remove(member1);
                         }
+
+
                     }
                 }
             }
@@ -218,6 +245,7 @@ public class SyncUpload {
                         CRUDFlinger.getNotes().remove(note);
                     }
                 }
+                // Clear the delete record
                 DeleteRecord.initData();
             }
 
