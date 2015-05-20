@@ -3,6 +3,7 @@ package org.rbdc.sra;
 import com.firebase.client.Firebase;
 import com.special.AreasFragment;
 import com.special.DashboardFragment;
+import com.special.DrillDownNotes;
 import com.special.EditQuestionSetFrag;
 import com.special.HouseholdFragment;
 import com.special.LogoutFragment;
@@ -183,6 +184,7 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         EditQuestionFrag editQuestionFrag = (EditQuestionFrag)getSupportFragmentManager().findFragmentByTag("Edit Question");
         HouseholdFragment householdFragment = (HouseholdFragment) getSupportFragmentManager().findFragmentByTag("household fragment");
         MemberFragment memberFragment = (MemberFragment) getSupportFragmentManager().findFragmentByTag("member fragment");
+        DrillDownNotes drillDownNotes = (DrillDownNotes) getSupportFragmentManager().findFragmentByTag("drilldown notes fragment");
 
         if (resideMenu.isOpened()){
             resideMenu.closeMenu();
@@ -193,7 +195,10 @@ public class Dashboard extends FragmentActivity implements View.OnClickListener{
         } else if (memberFragment != null && memberFragment.isVisible()) {
             memberFragment.getFragmentManager().popBackStackImmediate();
 
-      } else if (editQuestionSetFrag != null && editQuestionSetFrag.isVisible()){
+        } else if (drillDownNotes != null && drillDownNotes.isVisible()) {
+            drillDownNotes.getFragmentManager().popBackStackImmediate();
+
+        } else if (editQuestionSetFrag != null && editQuestionSetFrag.isVisible()){
             editQuestionSetFrag.getFragmentManager().popBackStackImmediate();
             System.out.println("You are in the edit questions frag");
 

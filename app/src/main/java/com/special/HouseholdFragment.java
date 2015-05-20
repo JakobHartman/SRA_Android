@@ -97,51 +97,56 @@ public class HouseholdFragment extends Fragment {
             }
         });
 
-        // New Note Button
+        // Notes Button
         noteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog = new Dialog(getActivity(),
-                        android.R.style.Theme_Translucent);
-                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-                dialog.setTitle("New Note");
-                dialog.setCancelable(true);
-                dialog.setContentView(R.layout.new_note);
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                DrillDownNotes viewNotes = DrillDownNotes.newInstance(CRUDFlinger.getAreas().get(areaId).getName(), "area");
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment,viewNotes,"drilldown notes fragment")
+                        .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null).commit();
 
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
-                dialog.show();
-
-                // Cancel Button
-                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
-                note_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.cancel();
-                    }
-                });
-
-                // Save Button
-                Button note_save = (Button) dialog.findViewById(R.id.note_save);
-                note_save.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Create a new note
-                        EditText noteTitle = (EditText)dialog.findViewById(R.id.noteTitle);
-                        EditText noteContent = (EditText)dialog.findViewById(R.id.note_text);
-                        Note newNote;
-
-                            newNote = new Note("Household", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
-                            // Add note to the list
-                            notes_list.add(newNote);
-                            // Notify Note created
-                            Toast toast = new Toast(getActivity());
-                            toast.makeText(getActivity(),"Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
-                            CRUDFlinger.addNote(newNote);
-                        // Close the view
-                        dialog.cancel();
-                    }
-                });
+//                dialog = new Dialog(getActivity(),
+//                        android.R.style.Theme_Translucent);
+//                dialog.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+//                dialog.setTitle("New Note");
+//                dialog.setCancelable(true);
+//                dialog.setContentView(R.layout.new_note);
+//                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//
+//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(R.color.bar_separator_color));
+//                dialog.show();
+//
+//                // Cancel Button
+//                Button note_cancel = (Button) dialog.findViewById(R.id.note_cancel);
+//                note_cancel.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//                // Save Button
+//                Button note_save = (Button) dialog.findViewById(R.id.note_save);
+//                note_save.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        // Create a new note
+//                        EditText noteTitle = (EditText) dialog.findViewById(R.id.noteTitle);
+//                        EditText noteContent = (EditText) dialog.findViewById(R.id.note_text);
+//                        Note newNote;
+//
+//                        newNote = new Note("Household", noteTitle.getText().toString(), noteContent.getText().toString(), CRUDFlinger.getAreas().get(areaId).getName());
+//                        // Add note to the list
+//                        notes_list.add(newNote);
+//                        // Notify Note created
+//                        Toast toast = new Toast(getActivity());
+//                        toast.makeText(getActivity(), "Note Created: " + newNote.getNoteTitle(), Toast.LENGTH_SHORT).show();
+//                        CRUDFlinger.addNote(newNote);
+//                        // Close the view
+//                        dialog.cancel();
+//                    }
+//                });
             }
         });
 
@@ -159,15 +164,15 @@ public class HouseholdFragment extends Fragment {
                 // lists members
                 MemberFragment goToHouse = new MemberFragment();
                 Bundle args = new Bundle();
-                args.putInt("Area Index",areaId);
-                args.putInt("House Index",position);
+                args.putInt("Area Index", areaId);
+                args.putInt("House Index", position);
 
                 // Save the index of the household we are in
                 CRUDFlinger.save("house", position);
                 goToHouse.setArguments(args);
 
                 // Change the fragment
-                getFragmentManager().beginTransaction().replace(R.id.main_fragment,goToHouse, "member fragment")
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment, goToHouse, "member fragment")
                         .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack(null).commit();
             }
@@ -261,15 +266,17 @@ public class HouseholdFragment extends Fragment {
 
     private ArrayList<ListItem> listHouseholds(int pos){
         ArrayList<ListItem>listData = new ArrayList<ListItem>();
+        Household sample = null;
         for(Household households : CRUDFlinger.getAreas().get(pos).getResources()){
+            sample = households;
             if (households.getImageCollection().size() > 0) {
                 int last = households.getImageCollection().size() - 1;
                 ImageData image = households.getImageCollection().get(last);
                 String imageData = image.getImageData();
                 Bitmap actImage = BitmapFactory.decodeByteArray(Base64.decode(imageData, Base64.DEFAULT), 0, Base64.decode(imageData, Base64.DEFAULT).length);
-                listData.add(new ListItem(R.drawable.ic_like,households.getName(),households.getMembers().size() + " Members","" + areaId,null,actImage));
+                listData.add(new ListItem(R.drawable.ic_home,households.getName(),households.getMembers().size() + " Members","" + areaId,null,actImage));
             } else {
-                listData.add(new ListItem(R.drawable.ic_like, households.getName(), households.getMembers().size() + " Members", "" + areaId, null, null));
+                listData.add(new ListItem(R.drawable.ic_home, households.getName(), households.getMembers().size() + " Members", "" + areaId, null, null));
             }
         }
         return listData;

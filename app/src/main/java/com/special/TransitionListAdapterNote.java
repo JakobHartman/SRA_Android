@@ -47,6 +47,9 @@ public class  TransitionListAdapterNote extends BaseAdapter {
     public TransitionListAdapterNote(Context context, ArrayList<ListItem> list) {
         mContext = context;
         mItems = list;
+        if (list.isEmpty()) {
+            mItems.add(new ListItem(R.drawable.ic_like,"No Notes found","",null,null,null));
+        }
     }
 
     @Override
@@ -79,7 +82,7 @@ public class  TransitionListAdapterNote extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.title = (TextView) v.findViewById(R.id.item_title);
             viewHolder.descr = (TextView) v.findViewById(R.id.item_description);
-            viewHolder.image = (UICircularImage) v.findViewById(R.id.item_image);
+            //viewHolder.image = (UICircularImage) v.findViewById(R.id.item_image);
 
             // store the holder with the view.
             v.setTag(viewHolder);
@@ -102,16 +105,16 @@ public class  TransitionListAdapterNote extends BaseAdapter {
         final int houseId = id;
         final int areaId = id;
 
-        viewHolder.image.setImageResource(imageid);
-        if(mItems.get(position).getPictureTaken() != null){
-            viewHolder.image.setImageBitmap(mItems.get(position).getPictureTaken());
-        }
+//        viewHolder.image.setImageResource(imageid);
+//        if(mItems.get(position).getPictureTaken() != null){
+//            viewHolder.image.setImageBitmap(mItems.get(position).getPictureTaken());
+//        }
         Log.i("posotion", houseId + " " + areaId);
         viewHolder.title.setText(item);
         viewHolder.descr.setText(desc);
         final ImageButton hiddenView = (ImageButton) v.findViewById(R.id.hidden_view1);
         final ImageButton hiddenViewEdit = (ImageButton) v.findViewById(R.id.hidden_view2);
-        final ImageView image = (ImageView) v.findViewById(R.id.item_image);
+       // final ImageView image = (ImageView) v.findViewById(R.id.item_image);
 
 
 

@@ -178,13 +178,16 @@ public class AreasFragment extends Fragment {
         ArrayList<ListItem> listData = new ArrayList<>();
         for(Area area : CRUDFlinger.getAreas()){
 
+            // If the areas are going to have images
             if (area.getImageCollection().size() > 0) {
                 int last = area.getImageCollection().size() - 1;
                 ImageData image = area.getImageCollection().get(last);
                 String imageData = image.getImageData();
                 Bitmap actImage = BitmapFactory.decodeByteArray(Base64.decode(imageData, Base64.DEFAULT), 0, Base64.decode(imageData, Base64.DEFAULT).length);
                 listData.add(new ListItem(R.drawable.ic_like, area.getName(), area.getResources().size() + " Households", null, null,actImage));
-            } else {
+            }
+            // if they do not have images
+            else {
                 listData.add(new ListItem(R.drawable.ic_like, area.getName(), area.getResources().size() + " Households", null, null,null));
             }
         }

@@ -7,14 +7,15 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".MyApplication">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -31,9 +32,9 @@
         </activity>
         <activity
             android:name=".Dashboard"
-            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_dashboard" >
+            android:label="@string/title_activity_dashboard"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name="com.special.InterviewActivity"

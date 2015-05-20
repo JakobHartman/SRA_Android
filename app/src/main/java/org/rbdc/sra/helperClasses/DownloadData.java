@@ -309,6 +309,12 @@ public class DownloadData {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     System.out.println("downloading temp questions");
                     QuestionSet question = data.getValue(QuestionSet.class);
+
+                    //Check to see if it is an area question
+                    String type = data.child("type").getValue().toString();
+                    if (type.equals("AREA")) {
+                        question.setType("Community");
+                    }
                     CRUDFlinger.addTempQuestionSet(question);
 
                     // add the question merge here

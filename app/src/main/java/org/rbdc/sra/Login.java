@@ -158,30 +158,30 @@ public class Login extends Activity {
 
                                 String username = dataSnapshot1.child("email").getValue().toString();
 
-//                                DataSnapshot ld = dataSnapshot1.child("organizations").child(organization);
-//                                DataSnapshot role = ld.child("roles");
-//                                DataSnapshot country = ld.child("countries");
+                                DataSnapshot ld = dataSnapshot1.child("organizations").child(organization);
+                                DataSnapshot role = ld.child("roles");
+                                DataSnapshot country = ld.child("countries");
                                 final LoginObject info = new LoginObject();
                                 info.setEmail(username);
                                 info.setUsername(username);
                                 info.setLoggedIn(true);
                                 // Save the users Countries and Areas assignments
-//                                for (DataSnapshot rs : country.getChildren()) {
-//                                    CountryLogin countryLogin = new CountryLogin();
-//                                    countryLogin.setName(rs.getKey());
-//                                    for (DataSnapshot as : rs.child("regions").getChildren()) {
-//                                        RegionLogin regionLogin = new RegionLogin();
-//                                        regionLogin.setName(as.getKey());
+                                for (DataSnapshot rs : country.getChildren()) {
+                                    CountryLogin countryLogin = new CountryLogin();
+                                    countryLogin.setName(rs.getKey());
+                                    for (DataSnapshot as : rs.child("regions").getChildren()) {
+                                        RegionLogin regionLogin = new RegionLogin();
+                                        regionLogin.setName(as.getKey());
 //                                        for (DataSnapshot a : as.child("areas").getChildren()) {
 //                                            AreaLogin areaLogin = new AreaLogin();
 //                                            areaLogin.setName(a.getKey());
 //                                            regionLogin.addArea(areaLogin);
 //                                        }
-//                                        countryLogin.addRegion(regionLogin);
-//
-//                                    }
-//                                    info.getSiteLogin().addCountry(countryLogin);
-//                                }
+                                        countryLogin.addRegion(regionLogin);
+
+                                    }
+                                    info.getSiteLogin().addCountry(countryLogin);
+                                }
 
                                 textview.setText("Loading User Areas");
 
@@ -224,10 +224,29 @@ public class Login extends Activity {
                 //Fail
                 @Override
                 public void onAuthenticationError(FirebaseError firebaseError) {
+
+                    switch (firebaseError.getCode()) {
+                        case FirebaseError.USER_DOES_NOT_EXIST:
+                            // handle a non existing user
+                            textview.setText("User does not exist");
+                            break;
+                        case FirebaseError.INVALID_PASSWORD:
+                            // handle an invalid password
+                            textview.setText("Invalid Password");
+                            break;
+                        case FirebaseError.NETWORK_ERROR:
+                            textview.setText("There was a network error");
+                            break;
+                        default:
+                            textview.setText("There was an error connecting to the Database");
+                            // handle other errors
+                            break;
+                    }
+
                     //Hide progress wheel
                     progress.setVisibility(View.INVISIBLE);
                     //display Error
-                    textview.setText(firebaseError.getMessage());
+                    //textview.setText(firebaseError.getMessage());
                     status = false;
                 }
             });

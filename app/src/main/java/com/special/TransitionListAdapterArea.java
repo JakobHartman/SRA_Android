@@ -96,7 +96,7 @@ public class  TransitionListAdapterArea extends BaseAdapter {
                 viewHolder = new ViewHolder();
                 viewHolder.title = (TextView) v.findViewById(R.id.item_title);
                 viewHolder.descr = (TextView) v.findViewById(R.id.item_description);
-                viewHolder.image = (UICircularImage) v.findViewById(R.id.item_image);
+                //viewHolder.image = (UICircularImage) v.findViewById(R.id.item_image);
 
                 // store the holder with the view.
                 v.setTag(viewHolder);
@@ -107,7 +107,7 @@ public class  TransitionListAdapterArea extends BaseAdapter {
             }
             final String item = mItems.get(position).getTitle();
             final String desc = mItems.get(position).getDesc();
-            final int imageid = mItems.get(position).getImageId();
+           // final int imageid = mItems.get(position).getImageId();
             /*
             int id = 0;
             int house = 0;
@@ -125,10 +125,10 @@ public class  TransitionListAdapterArea extends BaseAdapter {
             final int areaId = CRUDFlinger.load("area");
 
 
-            viewHolder.image.setImageResource(imageid);
-            if(mItems.get(position).getPictureTaken() != null){
-                viewHolder.image.setImageBitmap(mItems.get(position).getPictureTaken());
-            }
+//            viewHolder.image.setImageResource(imageid);
+//            if(mItems.get(position).getPictureTaken() != null){
+//                viewHolder.image.setImageBitmap(mItems.get(position).getPictureTaken());
+//            }
             Log.i("area",areaId +"");
             Log.i("House", houseId +"");
             Log.i("position", position +"");

@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DrillDownNotes"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:background="@color/white">
+
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/drillNotes"
+        android:layout_above="@+id/buttonGroup"></ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonGroup"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            style="@style/UIButtonInverse"
+            android:text="Add Note"
+            android:id="@+id/newNoteButton"/>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
